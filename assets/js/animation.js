@@ -262,6 +262,21 @@
       this.modules.developer = new DeveloperDashboardAnimation(this);
       this.modules.developer.init();
 
+      this.modules.roadmap = new RoadmapAnimation(this);
+      this.modules.roadmap.init();
+
+      this.modules.achievements = new AchievementsAnimation(this);
+      this.modules.achievements.init();
+
+      this.modules.recommendations = new RecommendationsAnimation(this);
+      this.modules.recommendations.init();
+
+      this.modules.knowledgeHub = new KnowledgeHubAnimation(this);
+      this.modules.knowledgeHub.init();
+
+      this.modules.terminalFooter = new TerminalFooterAnimation(this);
+      this.modules.terminalFooter.init();
+
       this.modules.theme = new ThemeTransition(this);
       this.modules.theme.init();
 
@@ -295,6 +310,11 @@
       this.modules.expertise?.rescan();
       this.modules.projects?.rescan();
       this.modules.developer?.rescan();
+      this.modules.roadmap?.rescan();
+      this.modules.achievements?.rescan();
+      this.modules.recommendations?.rescan();
+      this.modules.knowledgeHub?.rescan();
+      this.modules.terminalFooter?.rescan();
       this.initSwiper();
       this.modules.scroll?.refresh();
     }
@@ -368,6 +388,15 @@
             grabCursor: true,
             autoplay: { delay: 5600, disableOnInteraction: false, pauseOnMouseEnter: true },
             pagination: { el: el.querySelector('.projects-swiper__pagination'), clickable: true },
+            breakpoints: { 768: { slidesPerView: 2 }, 1200: { slidesPerView: 3 } },
+          },
+          'hub-videos': {
+            slidesPerView: 1,
+            spaceBetween: 24,
+            loop: true,
+            grabCursor: true,
+            autoplay: { delay: 5200, disableOnInteraction: false, pauseOnMouseEnter: true },
+            pagination: { el: el.querySelector('.hub-videos__pagination'), clickable: true },
             breakpoints: { 768: { slidesPerView: 2 }, 1200: { slidesPerView: 3 } },
           },
         }[mode] || { slidesPerView: 1, spaceBetween: 24 };
@@ -5166,7 +5195,680 @@
   }
 
   /* ====================================================================
-   * 17. PUBLIC API — namespace + feature flags for app.js coordination
+   * 15c. LEARNING ROADMAP ANIMATION — roadmap reveals, workflow, expand
+   * ================================================================== */
+  class RoadmapAnimation {
+    constructor(engine) {
+      this.engine = engine;
+      this.gsap = engine.gsap;
+      this.section = $('#roadmap');
+      this.played = false;
+    }
+
+    init() {
+      if (!this.section) return;
+
+      this.bindExpand();
+
+      // Reduced motion: keep interactivity, skip choreography
+      if (!this.gsap || this.engine.reduced) {
+        this.played = true;
+        return;
+      }
+
+      if (this.engine.ScrollTrigger) {
+        this.engine.perf.registerTimeline(
+          this.gsap.to({}, {
+            scrollTrigger: {
+              trigger: this.section,
+              start: 'top 70%',
+              once: true,
+              onEnter: () => this.entrance(),
+            },
+          }),
+        );
+      } else if ('IntersectionObserver' in window) {
+        const io = this.engine.perf.createObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.entrance();
+            io.disconnect();
+          }
+        }, { threshold: 0.05 });
+        io.observe(this.section);
+      }
+    }
+
+    /** Expandable future-learning cards — toggle + ARIA sync */
+    bindExpand() {
+      $$('.rm-expand-card__toggle', this.section).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const wasExpanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!wasExpanded));
+          btn.closest('.rm-expand-card').classList.toggle('is-open', !wasExpanded);
+          const detail = btn.parentElement.querySelector('.rm-expand-card__detail');
+          if (detail) detail.hidden = wasExpanded;
+        });
+      });
+    }
+
+    /** Staggered reveal for every roadmap grid group */
+    entrance() {
+      if (this.played) return;
+      this.played = true;
+
+      const targets = $$('[data-rm-reveal]', this.section);
+      if (this.gsap && !this.engine.reduced && targets.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            targets,
+            { y: 32, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.07,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      this.drawWorkflow();
+      this.drawVision();
+    }
+
+    /** Progress bar fill + step entrance for the learning loop */
+    drawWorkflow() {
+      const steps = $$('[data-rm-flow]', this.section);
+      if (this.gsap && !this.engine.reduced && steps.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            steps,
+            { y: 22, opacity: 0, scale: 0.92 },
+            {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 0.6,
+              ease: 'back.out(1.7)',
+              stagger: 0.08,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      const fill = $('[data-rm-flow-progress]', this.section);
+      if (this.gsap && !this.engine.reduced && fill) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            fill,
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.9, ease: 'power2.inOut', delay: 0.4 },
+          ),
+        );
+      }
+    }
+
+    /** Career spine draw + role cards slide-in */
+    drawVision() {
+      const items = $$('[data-rm-vision]', this.section);
+      if (this.gsap && !this.engine.reduced && items.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            items,
+            { x: -28, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: 'power3.out',
+              stagger: 0.12,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      const rail = $('[data-rm-vision-rail]', this.section);
+      if (this.gsap && !this.engine.reduced && rail) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            rail,
+            { scaleY: 0 },
+            { scaleY: 1, duration: 1.1, ease: 'power2.inOut', transformOrigin: 'top center' },
+          ),
+        );
+      }
+    }
+
+    /** Re-check on refresh() in case the section became visible early */
+    rescan() {
+      if (this.played || !this.section) return;
+      const rect = this.section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) this.entrance();
+    }
+  }
+
+  /* ====================================================================
+   * 15d. ACHIEVEMENTS HUB ANIMATION — milestone reveals, leadership draw,
+   *      certification expand
+   * ================================================================== */
+  class AchievementsAnimation {
+    constructor(engine) {
+      this.engine = engine;
+      this.gsap = engine.gsap;
+      this.section = $('#achievements');
+      this.played = false;
+    }
+
+    init() {
+      if (!this.section) return;
+
+      this.bindExpand();
+
+      // Reduced motion: keep interactivity, skip choreography
+      if (!this.gsap || this.engine.reduced) {
+        this.played = true;
+        return;
+      }
+
+      if (this.engine.ScrollTrigger) {
+        this.engine.perf.registerTimeline(
+          this.gsap.to({}, {
+            scrollTrigger: {
+              trigger: this.section,
+              start: 'top 70%',
+              once: true,
+              onEnter: () => this.entrance(),
+            },
+          }),
+        );
+      } else if ('IntersectionObserver' in window) {
+        const io = this.engine.perf.createObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.entrance();
+            io.disconnect();
+          }
+        }, { threshold: 0.05 });
+        io.observe(this.section);
+      }
+    }
+
+    /** Expandable certification cards — toggle + ARIA sync */
+    bindExpand() {
+      $$('.ach-cert__toggle', this.section).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const wasExpanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!wasExpanded));
+          btn.closest('.ach-cert').classList.toggle('is-open', !wasExpanded);
+          const detail = document.getElementById(btn.getAttribute('aria-controls'));
+          if (detail) detail.hidden = wasExpanded;
+        });
+      });
+    }
+
+    /** Staggered reveal for every achievement grid group */
+    entrance() {
+      if (this.played) return;
+      this.played = true;
+
+      const targets = $$('[data-ach-reveal]', this.section);
+      if (this.gsap && !this.engine.reduced && targets.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            targets,
+            { y: 32, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.07,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      this.drawLeading();
+    }
+
+    /** Leadership spine draw + journey items slide-in */
+    drawLeading() {
+      const items = $$('[data-ach-lead]', this.section);
+      if (this.gsap && !this.engine.reduced && items.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            items,
+            { x: -28, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: 'power3.out',
+              stagger: 0.12,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      const rail = $('[data-ach-lead-rail]', this.section);
+      if (this.gsap && !this.engine.reduced && rail) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            rail,
+            { scaleY: 0 },
+            { scaleY: 1, duration: 1.1, ease: 'power2.inOut', transformOrigin: 'top center' },
+          ),
+        );
+      }
+    }
+
+    /** Re-check on refresh() in case the section became visible early */
+    rescan() {
+      if (this.played || !this.section) return;
+      const rect = this.section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) this.entrance();
+    }
+  }
+
+  /* ====================================================================
+   * 15e. RECOMMENDATIONS ANIMATION — reputation dashboard reveals,
+   *      timeline draw, CTA magnetic/ripple wiring
+   * ================================================================== */
+  class RecommendationsAnimation {
+    constructor(engine) {
+      this.engine = engine;
+      this.gsap = engine.gsap;
+      this.section = $('#recommendations');
+      this.played = false;
+    }
+
+    init() {
+      if (!this.section) return;
+
+      // Reduced motion: keep interactivity, skip choreography
+      if (!this.gsap || this.engine.reduced) {
+        this.played = true;
+        return;
+      }
+
+      if (this.engine.ScrollTrigger) {
+        this.engine.perf.registerTimeline(
+          this.gsap.to({}, {
+            scrollTrigger: {
+              trigger: this.section,
+              start: 'top 70%',
+              once: true,
+              onEnter: () => this.entrance(),
+            },
+          }),
+        );
+      } else if ('IntersectionObserver' in window) {
+        const io = this.engine.perf.createObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.entrance();
+            io.disconnect();
+          }
+        }, { threshold: 0.05 });
+        io.observe(this.section);
+      }
+    }
+
+    /** Staggered reveal for every recommendations grid group */
+    entrance() {
+      if (this.played) return;
+      this.played = true;
+
+      const targets = $$('[data-rec-reveal]', this.section);
+      if (this.gsap && !this.engine.reduced && targets.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            targets,
+            { y: 32, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.07,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      this.drawTimeline();
+    }
+
+    /** Recognition spine draw + milestone cards slide-in */
+    drawTimeline() {
+      const milestones = $$('[data-rec-milestone]', this.section);
+      if (this.gsap && !this.engine.reduced && milestones.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            milestones,
+            { x: -28, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: 'power3.out',
+              stagger: 0.12,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      const rail = $('[data-rec-rail]', this.section);
+      if (this.gsap && !this.engine.reduced && rail) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            rail,
+            { scaleY: 0 },
+            { scaleY: 1, duration: 1.1, ease: 'power2.inOut', transformOrigin: 'top center' },
+          ),
+        );
+      }
+    }
+
+    /** Re-check on refresh() in case the section became visible early */
+    rescan() {
+      if (this.played || !this.section) return;
+      const rect = this.section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) this.entrance();
+    }
+  }
+
+  /* ====================================================================
+   * 15f. KNOWLEDGE HUB ANIMATION — filters, live search, reveals, journal
+   * ================================================================== */
+  class KnowledgeHubAnimation {
+    constructor(engine) {
+      this.engine = engine;
+      this.gsap = engine.gsap;
+      this.section = $('#knowledge-hub');
+      this.activeCategory = 'all';
+      this.query = '';
+      this.played = false;
+    }
+
+    init() {
+      if (!this.section) return;
+
+      this.bindFilters();
+      this.bindSearch();
+      this.bindBookmarks();
+      this.bindNewsletter();
+
+      // Reduced motion: keep interactivity, skip choreography
+      if (!this.gsap || this.engine.reduced) {
+        this.played = true;
+        return;
+      }
+
+      if (this.engine.ScrollTrigger) {
+        this.engine.perf.registerTimeline(
+          this.gsap.to({}, {
+            scrollTrigger: {
+              trigger: this.section,
+              start: 'top 70%',
+              once: true,
+              onEnter: () => this.entrance(),
+            },
+          }),
+        );
+      } else if ('IntersectionObserver' in window) {
+        const io = this.engine.perf.createObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.entrance();
+            io.disconnect();
+          }
+        }, { threshold: 0.05 });
+        io.observe(this.section);
+      }
+    }
+
+    /** Category filter buttons — flip active state + re-filter */
+    bindFilters() {
+      $$('.hub-filter', this.section).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.hubFilter === this.activeCategory) return;
+          this.activeCategory = btn.dataset.hubFilter;
+          $$('.hub-filter', this.section).forEach((b) => {
+            const active = b.dataset.hubFilter === this.activeCategory;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', String(active));
+          });
+          this.applyFilters();
+        });
+      });
+    }
+
+    /** Live search input + clear button */
+    bindSearch() {
+      const input = $('[data-hub-search]', this.section);
+      const clear = $('[data-hub-clear]', this.section);
+      if (!input) return;
+      input.addEventListener('input', (e) => {
+        this.query = e.target.value.trim().toLowerCase();
+        if (clear) clear.classList.toggle('is-visible', this.query.length > 0);
+        this.applyFilters();
+      });
+      if (clear) {
+        clear.addEventListener('click', () => {
+          input.value = '';
+          this.query = '';
+          clear.classList.remove('is-visible');
+          input.focus();
+          this.applyFilters();
+        });
+      }
+    }
+
+    /** Decorative bookmark toggle (local UI state only) */
+    bindBookmarks() {
+      $$('[data-bookmark]', this.section).forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const marked = btn.getAttribute('aria-pressed') === 'true';
+          btn.setAttribute('aria-pressed', String(!marked));
+          btn.classList.toggle('is-bookmarked', !marked);
+          const icon = btn.querySelector('i');
+          if (icon) icon.className = marked ? 'fa-regular fa-bookmark' : 'fa-solid fa-bookmark';
+        });
+      });
+    }
+
+    /** Placeholder newsletter — prevent default until wired to a provider */
+    bindNewsletter() {
+      const form = $('[data-newsletter]', this.section);
+      if (!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Placeholder: real subscription hooks in here later.
+      });
+    }
+
+    shouldShow(card) {
+      const category = card.dataset.hubCat || '';
+      if (this.activeCategory !== 'all' && !category.split(/\s+/).includes(this.activeCategory)) return false;
+      if (!this.query) return true;
+      const hay = [
+        card.dataset.hubTitle || '',
+        category,
+        card.textContent || '',
+      ].join(' ').toLowerCase();
+      return hay.includes(this.query);
+    }
+
+    applyFilters() {
+      let visibleCount = 0;
+      $$('[data-hub-card]', this.section).forEach((card) => {
+        const show = this.shouldShow(card);
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+      const empty = $('[data-hub-empty]');
+      if (empty) empty.hidden = visibleCount > 0;
+      if (visibleCount && this.gsap && !this.engine.reduced) {
+        const visible = $$('[data-hub-card]', this.section).filter((c) => c.style.display !== 'none');
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            visible,
+            { autoAlpha: 0.4, y: 10 },
+            { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.04, ease: 'power2.out', overwrite: 'auto' },
+          ),
+        );
+      }
+    }
+
+    /** Staggered reveal for every knowledge-hub group */
+    entrance() {
+      if (this.played) return;
+      this.played = true;
+
+      const targets = $$('[data-hub-reveal]', this.section);
+      if (this.gsap && !this.engine.reduced && targets.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            targets,
+            { y: 32, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.07,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      this.drawJournal();
+      this.engine.initSwiper();
+    }
+
+    /** Learning journal spine draw + entry cards slide-in */
+    drawJournal() {
+      const items = $$('[data-hub-journal]', this.section);
+      if (this.gsap && !this.engine.reduced && items.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            items,
+            { x: -28, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: 'power3.out',
+              stagger: 0.12,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+
+      const rail = $('[data-hub-journal-rail]', this.section);
+      if (this.gsap && !this.engine.reduced && rail) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            rail,
+            { scaleY: 0 },
+            { scaleY: 1, duration: 1.1, ease: 'power2.inOut', transformOrigin: 'top center' },
+          ),
+        );
+      }
+    }
+
+    /** Re-check on refresh() in case the section became visible early */
+    rescan() {
+      if (this.played || !this.section) return;
+      const rect = this.section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) this.entrance();
+    }
+  }
+
+  /* ====================================================================
+   * 17. TERMINAL FOOTER ANIMATION — OS shutdown-screen reveal
+   * ================================================================== */
+  class TerminalFooterAnimation {
+    constructor(engine) {
+      this.engine = engine;
+      this.gsap = engine.gsap;
+      this.section = $('[data-terminal-footer]');
+      this.played = false;
+    }
+
+    init() {
+      if (!this.section) return;
+
+      // Reduced motion: keep static layout, skip choreography
+      if (!this.gsap || this.engine.reduced) {
+        this.played = true;
+        return;
+      }
+
+      if (this.engine.ScrollTrigger) {
+        this.engine.perf.registerTimeline(
+          this.gsap.to({}, {
+            scrollTrigger: {
+              trigger: this.section,
+              start: 'top 80%',
+              once: true,
+              onEnter: () => this.entrance(),
+            },
+          }),
+        );
+      } else if ('IntersectionObserver' in window) {
+        const io = this.engine.perf.createObserver((entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            this.entrance();
+            io.disconnect();
+          }
+        }, { threshold: 0.05 });
+        io.observe(this.section);
+      }
+    }
+
+    /** Staggered rise of hero, nav row, stack, panels, and bottom bar */
+    entrance() {
+      if (this.played) return;
+      this.played = true;
+
+      const targets = $$('[data-footer-reveal]', this.section);
+      if (this.gsap && !this.engine.reduced && targets.length) {
+        this.engine.perf.registerTimeline(
+          this.gsap.fromTo(
+            targets,
+            { y: 40, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.out',
+              stagger: 0.1,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+    }
+
+    /** Re-check on refresh() in case the footer became visible early */
+    rescan() {
+      if (this.played || !this.section) return;
+      const rect = this.section.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) this.entrance();
+    }
+  }
+
+  /* ====================================================================
+   * 18. PUBLIC API — namespace + feature flags for app.js coordination
    * ================================================================== */
   const engine = new AnimationEngine();
 
@@ -5182,6 +5884,11 @@
       swiper: true,     // app.js initSwiper stands down
       developerDashboard: true, // Developer Dashboard motion (Chart.js + reveals)
       expertise: true,  // Professional Expertise showcase motion + chips
+      roadmap: true,    // Learning Roadmap reveal, workflow + expand cards
+      achievements: true, // Achievements Hub reveals, leadership draw + expand cards
+      recommendations: true, // Recommendations reveals, timeline draw
+      knowledgeHub: true, // Knowledge Hub filters, search + reveals
+      terminalFooter: true, // Terminal Footer shutdown-screen reveal
     }),
     engine,
     refresh: () => engine.refresh(),

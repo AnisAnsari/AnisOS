@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Offline — ANIS OS</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: grid;
+      place-items: center;
+      font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      background: #050816;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 24px;
+    }
+    .card { max-width: 460px; }
+    .logo {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4, #8B5CF6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    h1 { color: #fff; font-size: 20px; margin: 24px 0 8px; }
+    p { font-size: 13px; line-height: 1.7; color: #64748b; margin: 0 0 20px; }
+    a {
+      display: inline-block;
+      padding: 12px 22px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-size: 13px;
+      color: #fff;
+      background: linear-gradient(135deg, #4F46E5, #8B5CF6);
+      box-shadow: 0 0 24px rgba(79, 70, 229, 0.35);
+    }
+    .hint { margin-top: 28px; font-size: 11px; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">ANIS&nbsp;OS</div>
+    <h1>You’re offline</h1>
+    <p>Your connection dropped, but the ANIS OS shell is cached and ready. Reconnect to browse the full experience.</p>
+    <a href="./">Try again</a>
+    <p class="hint">This is the offline fallback served by the service worker.</p>
+  </div>
+  <script>
+    // Auto-retry once the network returns.
+    window.addEventListener('online', () => { window.location.href = './'; });
+  </script>
+</body>
+</html>

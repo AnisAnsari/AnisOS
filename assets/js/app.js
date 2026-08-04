@@ -74,7 +74,22 @@
       terminalBody:      '[data-terminal-body]',
       contactForm:       '[data-contact-form]',
       formStatus:        '[data-form-status]',
+      formSubmit:        '[data-form-submit]',
+      formAutoGrow:      '[data-auto-grow]',
+      formCharCount:     '[data-charcount]',
+      copyButton:        '[data-copy]',
       footerYear:        '[data-footer-year]',
+      terminalFooter:    '[data-terminal-footer]',
+      footerReveal:      '[data-footer-reveal]',
+      footerTheme:       '[data-footer-theme]',
+      currentYear:       '[data-current-year]',
+      localTime:         '[data-local-time]',
+      timezone:          '[data-timezone]',
+      devConsole:        '[data-dev-console]',
+      devConsoleOpen:    '[data-dev-console-open]',
+      devConsoleClose:   '[data-dev-console-close]',
+      devStack:          '[data-dev-stack]',
+      stackMarquee:      '[data-stack-marquee]',
       countUp:           '[data-count-up]',
       parallax:          '[data-parallax]',
       tiltTargets:       '[data-tilt]',
@@ -178,6 +193,36 @@
       email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
       minNameLength: 2,
       minMessageLength: 10,
+      /** Fields that may be left empty */
+      optional: ['company', 'phone', 'country', 'budget', 'timeline'],
+    },
+
+    /**
+     * EmailJS delivery — PLACEHOLDER ARCHITECTURE.
+     * The form currently runs a simulated transmit. To wire real delivery:
+     *   1. Add the EmailJS browser SDK to index.html (before app.js).
+     *   2. Create a service + template at https://dashboard.emailjs.com.
+     *   3. Paste your IDs below and set `enabled: true`.
+     *   4. The template vars already sent are: name, email, company, phone,
+     *      country, subject, projectType, budget, timeline, message.
+     */
+    emailjs: {
+      enabled: false, // flip to true once IDs are provided
+      serviceId: 'YOUR_SERVICE_ID',
+      templateId: 'YOUR_TEMPLATE_ID',
+      publicKey: 'YOUR_PUBLIC_KEY',
+      replyTo: 'name,email', // template mapping for the reply-to header
+    },
+
+    /** Terminal footer — static content + marquee config */
+    terminalFooter: {
+      stack: [
+        'React.js', 'JavaScript', 'HTML5', 'CSS3', 'Bootstrap', 'Tailwind CSS',
+        'Python', 'Django', 'Flask', 'Git', 'GitHub', 'WordPress', 'Next.js',
+        'TypeScript', 'AI', 'Ollama', 'LM Studio', 'ComfyUI', 'OpenCode',
+        'DeepSeek', 'ChatGPT', 'Claude', 'Cursor',
+      ],
+      consoleCommands: 'help · status · version · debug · clear · exit',
     },
 
     /** Terminal boot script lines rendered in the overlay */
@@ -298,12 +343,15 @@
       this.modules.timeline = new TimelineModule();
       this.modules.developer = new DeveloperDashboard();
       this.modules.contact = new ContactForm();
+      this.modules.terminalFooter = new TerminalFooter();
       this.modules.data = new DataRenderer();
       this.modules.perf = new PerformanceMonitor();
 
       // Hydrate data-driven feeds (data.js) and refresh 3rd-party animators
       this.modules.data.render().then(() => {
         this.refreshRevealEngines();
+        this.modules.contact.init();
+        this.modules.terminalFooter.init();
         this.modules.counter.observe();
         this.modules.cards.init();
         this.modules.scroll.init();
@@ -1698,10 +1746,73 @@
     init() {
       if (!this.form) return;
       this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-      this.form.querySelectorAll('input, textarea').forEach((field) => {
+      this.form.querySelectorAll('input, textarea, select').forEach((field) => {
         field.addEventListener('blur', () => this.validateField(field));
         field.addEventListener('input', () => this.clearError(field));
+        field.addEventListener('change', () => {
+          if (field.type === 'select-one') this.validateField(field);
+        });
       });
+
+      // Auto-growing message textarea
+      this.form.querySelectorAll(CONFIG.selectors.formAutoGrow).forEach((area) => {
+        const grow = () => {
+          area.style.height = 'auto';
+          area.style.height = area.scrollHeight + 'px';
+          this.updateCharCount(area);
+        };
+        area.addEventListener('input', grow);
+        grow();
+      });
+
+      // Character counter synced to the message field
+      this.form.querySelectorAll(CONFIG.selectors.formCharCount).forEach((counter) => {
+        const target = counter.dataset.for
+          ? this.form.querySelector(`#${counter.dataset.for}`)
+          : counter.parentElement?.querySelector('textarea, input');
+        if (target) {
+          target.addEventListener('input', () => this.updateCharCount(target));
+          this.updateCharCount(target);
+        }
+      });
+
+      // Copy-to-clipboard buttons for contact details
+      this.form.querySelectorAll(CONFIG.selectors.copyButton).forEach((btn) => {
+        btn.addEventListener('click', (e) => this.handleCopy(e, btn));
+      });
+    }
+
+    /** Wrap the charcounter element so count reflects the target textarea */
+    updateCharCount(area) {
+      const counter = this.form.querySelector(`${CONFIG.selectors.formCharCount}[data-for="${area.id}"]`);
+      if (!counter) return;
+      const max = Number(area.getAttribute('maxlength')) || Infinity;
+      const len = area.value.length;
+      counter.textContent = `${len}${isFinite(max) ? ` / ${max}` : ''}`;
+      toggleClass(counter, 'is-warning', isFinite(max) && len >= max - 20);
+      toggleClass(counter, 'is-full', len >= max);
+    }
+
+    /** Copy a contact value to the clipboard with visual feedback */
+    handleCopy(e, btn) {
+      e.preventDefault();
+      const card = btn.closest('.hire-card');
+      const value = card?.querySelector('[data-copy-value]')?.textContent.trim()
+        || btn.dataset.copyValue;
+      if (!value) return;
+      const done = () => {
+        addClass(btn, 'is-copied');
+        btn.setAttribute('aria-label', 'Copied!');
+        setTimeout(() => {
+          removeClass(btn, 'is-copied');
+          btn.setAttribute('aria-label', btn.dataset.tooltip || 'Copy to clipboard');
+        }, 1800);
+      };
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(value).then(done).catch(done);
+      } else {
+        done(); // graceful fallback — clipboard API unavailable
+      }
     }
 
     /** Per-field validation */
@@ -1719,7 +1830,18 @@
       if (name === 'message' && value.length < CONFIG.validation.minMessageLength) {
         errors.push('Message must be at least 10 characters.');
       }
-      if (name !== 'subject' && !value) {
+      if (name === 'projectType' && !value) {
+        errors.push('Please choose a project type.');
+      }
+      if (name === 'subject' && !value) {
+        errors.push('This field is required.');
+      }
+      // Everything else must be filled unless explicitly optional
+      if (
+        !CONFIG.validation.optional.includes(name) &&
+        !['subject', 'projectType'].includes(name) &&
+        !value
+      ) {
         errors.push('This field is required.');
       }
 
@@ -1737,11 +1859,40 @@
       }
     }
 
-    /** Form submit handler with fake async + success animation */
+    /**
+     * EmailJS delivery path (placeholder). No-ops gracefully when the
+     * library is absent or `CONFIG.emailjs.enabled` is false.
+     */
+    async sendEmail(payload) {
+      const cfg = CONFIG.emailjs;
+      if (!cfg.enabled || typeof window.emailjs === 'undefined') return null;
+      window.emailjs.init(cfg.publicKey);
+      return window.emailjs
+        .send(cfg.serviceId, cfg.templateId, payload)
+        .then((res) => res)
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.warn('[ANIS OS] EmailJS failed:', err);
+          return null;
+        });
+    }
+
+    /** Collect all supported fields into a plain template object */
+    collectPayload() {
+      const wanted = ['name', 'email', 'company', 'phone', 'country', 'subject', 'projectType', 'budget', 'timeline', 'message'];
+      const payload = {};
+      wanted.forEach((name) => {
+        const el = this.form.elements[name];
+        if (el) payload[name] = el.value.trim();
+      });
+      return payload;
+    }
+
+    /** Form submit handler with (optionally real) email delivery */
     async handleSubmit(e) {
       e.preventDefault();
 
-      const fields = ['name', 'email', 'message']
+      const fields = ['name', 'email', 'company', 'phone', 'country', 'subject', 'projectType', 'budget', 'timeline', 'message']
         .map((name) => this.form.elements[name])
         .filter(Boolean);
 
@@ -1751,8 +1902,9 @@
         return;
       }
 
-      const submitBtn = this.form.querySelector('[data-form-submit]');
+      const submitBtn = this.form.querySelector(CONFIG.selectors.formSubmit);
       const original = submitBtn?.innerHTML;
+      const payload = this.collectPayload();
 
       // Transmitting state
       if (submitBtn) {
@@ -1762,10 +1914,15 @@
       }
       this.setStatus('Opening secure channel…', false);
 
-      // Simulated async payload delivery (swap for fetch/email service later)
-      await new Promise((resolve) => setTimeout(resolve, 1400));
+      // Real delivery when EmailJS is configured; otherwise simulated (placeholder)
+      const sent = await this.sendEmail(payload);
+      if (CONFIG.emailjs.enabled && sent) {
+        this.setStatus('Transmission received — I will reply shortly.', false);
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1400));
+        this.setStatus('Transmission received — I will reply shortly.', false);
+      }
 
-      this.setStatus('Transmission received — I will reply shortly.', false);
       if (submitBtn) {
         submitBtn.innerHTML = '<i class="fa-solid fa-check me-2"></i>Sent';
         addClass(submitBtn, 'is-sent');
@@ -1783,6 +1940,107 @@
       if (!this.status) return;
       this.status.textContent = message;
       toggleClass(this.status, 'is-error', isError);
+    }
+  }
+
+  /* ====================================================================
+   * 18b. TERMINAL FOOTER — OS shutdown screen wiring:
+   *      theme readout, uptime clock, marquee loop, dev console (Ctrl+Shift+A)
+   * ================================================================== */
+  class TerminalFooter {
+    constructor() {
+      this.footer = $(CONFIG.selectors.terminalFooter);
+      this.console = $(CONFIG.selectors.devConsole);
+    }
+
+    init() {
+      if (!this.footer) return;
+      this.bindThemeReadout();
+      this.bindUptime();
+      this.renderStack();
+      this.bindDevConsole();
+    }
+
+    /** Reflect the active theme in the System Information panel */
+    bindThemeReadout() {
+      const themeEl = $(CONFIG.selectors.footerTheme, this.footer);
+      if (!themeEl) return;
+
+      const update = () => {
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        themeEl.textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
+      };
+      update();
+      document.addEventListener('anis:theme-changed', update);
+    }
+
+    /** Live clock + timezone (placeholder-grade, real Intl data) */
+    bindUptime() {
+      const yearEl = $(CONFIG.selectors.currentYear, this.footer);
+      const timeEl = $(CONFIG.selectors.localTime, this.footer);
+      const tzEl = $(CONFIG.selectors.timezone, this.footer);
+
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+      if (tzEl) {
+        try {
+          tzEl.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local Timezone';
+        } catch {
+          tzEl.textContent = 'Local Timezone';
+        }
+      }
+      if (timeEl) {
+        const tick = () => {
+          timeEl.textContent = new Intl.DateTimeFormat([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          }).format(new Date());
+        };
+        tick();
+        setInterval(tick, 1000);
+      }
+    }
+
+    /** Build + duplicate the tech-stack marquee for a seamless loop */
+    renderStack() {
+      const marquee = $(CONFIG.selectors.stackMarquee, this.footer);
+      const track = marquee?.querySelector('.tf-marquee__track');
+      if (!marquee || !track || track.dataset.rendered) return;
+      track.dataset.rendered = 'true';
+
+      // Duplicate the chips so translateX(-50%) loops seamlessly
+      track.appendChild(track.cloneNode(true));
+
+      const devStack = $(CONFIG.selectors.devStack);
+      if (devStack) devStack.textContent = CONFIG.terminalFooter.stack.join(' · ');
+    }
+
+    /** Developer Console modal — Ctrl+Shift+A + footer trigger + Esc */
+    bindDevConsole() {
+      const openBtn = $(CONFIG.selectors.devConsoleOpen, this.footer);
+      const closeBtn = $(CONFIG.selectors.devConsoleClose);
+      if (!this.console) return;
+
+      const commands = $(CONFIG.selectors.devConsole + ' .tf-console-cmds');
+      if (commands) commands.textContent = CONFIG.terminalFooter.consoleCommands;
+
+      const open = () => { this.console.hidden = false; };
+      const close = () => { this.console.hidden = true; };
+
+      openBtn?.addEventListener('click', open);
+      closeBtn?.addEventListener('click', close);
+      this.console.addEventListener('click', (e) => {
+        if (e.target === this.console) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !this.console.hidden) close();
+        // Secret shortcut: Ctrl + Shift + A
+        if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+          e.preventDefault();
+          if (this.console.hidden) open();
+          else close();
+        }
+      });
     }
   }
 

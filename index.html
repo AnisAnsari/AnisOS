@@ -25,8 +25,35 @@
   <meta name="canonical" content="https://anis-os.github.io/">
   <meta name="theme-color" content="#0a0a0f">
 
-  <!-- Favicon (SVG data-URI placeholder so no binary file is required) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230a0a0f'/><text x='16' y='22' font-family='monospace' font-size='15' fill='%2363e2ff' text-anchor='middle'>A</text></svg>">
+  <!-- Favicon + PWA icon set (SVG source; no binary asset required) -->
+  <link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+  <link rel="mask-icon" href="assets/icons/icon.svg" color="#4F46E5">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Progressive Web App + Apple + Microsoft tile metadata -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="ANIS OS">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ANIS OS">
+  <meta name="msapplication-TileColor" content="#0a0a0f">
+  <meta name="msapplication-config" content="browserconfig.xml">
+
+  <!-- Security / privacy meta (CSP is enforced via HTTP header, see docs) -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()">
+
+  <!-- ======================= RESOURCE HINTS ============================ -->
+  <!-- Preconnect to every origin used at runtime; fonts already handled -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
 
   <!-- ========================= OPEN GRAPH (FACEBOOK / LINKEDIN) ======== -->
   <meta property="og:type" content="website">
@@ -62,16 +89,96 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 
   <!-- ===================== CUSTOM STYLES (LOAD ORDER = FOUNDATION) ===== -->
-  <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/animation.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
 
   <!-- ====================== PRELOAD (DEFER-READY MODULES) ============== -->
   <link rel="preload" as="script" href="assets/js/app.js">
   <link rel="preload" as="script" href="assets/js/theme.js">
   <link rel="preload" as="script" href="assets/js/animation.js">
   <link rel="preload" as="script" href="assets/js/data.js">
+
+  <!-- ===================== STRUCTURED DATA (JSON-LD) ================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Anis Ansari",
+    "jobTitle": "Senior Frontend Developer",
+    "description": "Senior Frontend Developer, React.js specialist, UI/UX manager and AI explorer.",
+    "url": "https://anis-os.github.io/",
+    "sameAs": [
+      "https://github.com/anis-os",
+      "https://www.linkedin.com/in/anis-ansari"
+    ],
+    "knowsAbout": ["React.js", "JavaScript", "CSS3", "UI/UX Design", "AI Engineering"]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ANIS OS",
+    "url": "https://anis-os.github.io/",
+    "description": "Ultra-premium, cinematic portfolio experience built like a futuristic operating system.",
+    "author": { "@type": "Person", "name": "Anis Ansari" },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://anis-os.github.io/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ANIS OS",
+    "url": "https://anis-os.github.io/",
+    "logo": "https://anis-os.github.io/assets/icons/icon.svg",
+    "foundingDate": "2024",
+    "sameAs": [
+      "https://github.com/anis-os",
+      "https://www.linkedin.com/in/anis-ansari"
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://anis-os.github.io/" },
+      { "@type": "ListItem", "position": 2, "name": "Projects", "item": "https://anis-os.github.io/#projects" },
+      { "@type": "ListItem", "position": 3, "name": "Contact", "item": "https://anis-os.github.io/#contact" }
+    ]
+  }
+  </script>
+
+  <!-- ===================== OPT-IN ANALYTICS (DISABLED BY DEFAULT) ======
+    Nothing below sends data. Uncomment one block and fill in your IDs to
+    enable tracking — see docs/DEPLOYMENT.md for details.
+
+    Google Analytics:
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXX', { anonymize_ip: true });
+    </script>
+
+    Google Tag Manager:
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+
+    Microsoft Clarity:
+    <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,'clarity','script','YOUR_CLARITY_ID');</script>
+
+    Plausible:
+    <script defer data-domain="anis-os.github.io" src="https://plausible.io/js/script.js"></script>
+  ======================================================================= -->
 </head>
 
 <body class="anis-os-body">
@@ -110,7 +217,9 @@
     [03] CUSTOM CURSOR — replaces native cursor in desktop mode
     =================================================================== -->
   <div class="cursor cursor--dot" data-cursor-dot aria-hidden="true"></div>
-  <div class="cursor cursor--ring" data-cursor-ring aria-hidden="true"></div>
+  <div class="cursor cursor--ring" data-cursor-ring aria-hidden="true">
+    <span class="cursor__label" data-cursor-label></span>
+  </div>
 
   <!-- ==================================================================
     [04] BACKGROUND LAYERS — fixed full-viewport canvases
@@ -161,6 +270,18 @@
             </li>
             <li class="nav-item" role="none">
               <a class="nav-link site-navbar__link" href="#ai-lab" role="menuitem">AI&nbsp;Lab</a>
+            </li>
+            <li class="nav-item" role="none">
+              <a class="nav-link site-navbar__link" href="#roadmap" role="menuitem">Roadmap</a>
+            </li>
+            <li class="nav-item" role="none">
+              <a class="nav-link site-navbar__link" href="#achievements" role="menuitem">Achievements</a>
+            </li>
+            <li class="nav-item" role="none">
+              <a class="nav-link site-navbar__link" href="#recommendations" role="menuitem">Recommendations</a>
+            </li>
+            <li class="nav-item" role="none">
+              <a class="nav-link site-navbar__link" href="#knowledge-hub" role="menuitem">Knowledge Hub</a>
             </li>
             <li class="nav-item" role="none">
               <a class="nav-link site-navbar__link" href="#contact" role="menuitem">Contact</a>
@@ -222,6 +343,10 @@
         <li><a href="#expertise" data-nav-link>Expertise</a></li>
         <li><a href="#projects" data-nav-link>Projects</a></li>
         <li><a href="#ai-lab" data-nav-link>AI Lab</a></li>
+        <li><a href="#roadmap" data-nav-link>Roadmap</a></li>
+        <li><a href="#achievements" data-nav-link>Achievements</a></li>
+        <li><a href="#recommendations" data-nav-link>Recommendations</a></li>
+        <li><a href="#knowledge-hub" data-nav-link>Knowledge Hub</a></li>
         <li><a href="#contact" data-nav-link>Contact</a></li>
       </ul>
 
@@ -3254,6 +3379,2108 @@
     </section>
 
     <!-- ================================================================
+      [08-F2] LEARNING ROADMAP — progress + future vision
+      ================================================================ -->
+    <section id="roadmap" class="section roadmap" aria-labelledby="roadmap-title">
+      <!-- Ambient background layer -->
+      <div class="rm-bg" aria-hidden="true">
+        <span class="rm-aurora rm-aurora--a"></span>
+        <span class="rm-aurora rm-aurora--b"></span>
+        <span class="rm-mesh"></span>
+        <span class="rm-orb rm-orb--one"></span>
+        <span class="rm-orb rm-orb--two"></span>
+        <span class="rm-orb rm-orb--three"></span>
+        <span class="rm-noise"></span>
+      </div>
+
+      <div class="container">
+        <div class="section__head" data-aos="fade-up">
+          <p class="section__eyebrow">// learning roadmap</p>
+          <h2 id="roadmap-title" class="section__title">Learning <span class="section__accent">Roadmap</span></h2>
+          <p class="section__sub">Continuous learning, engineering excellence and a future-ready technology roadmap.</p>
+        </div>
+
+        <!-- ================= SECTION 1 · CURRENT FOCUS ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">01</span>
+            <div>
+              <h3 class="rm-panel__title">Current <span class="section__accent">Focus</span></h3>
+              <p class="rm-panel__sub">Where my engineering time is invested right now — shown honestly, no over-claiming.</p>
+            </div>
+          </div>
+          <div class="rm-grid rm-grid--3">
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-atom"></i></span>
+              <h4 class="rm-card__title">React Advanced Patterns</h4>
+              <p class="rm-card__desc">Composition, rendering control, performance and architecture at scale.</p>
+              <span class="rm-status rm-status--strong"><span class="rm-status__dot" aria-hidden="true"></span>Strong Experience</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-dots"></i></span>
+              <h4 class="rm-card__title">Next.js</h4>
+              <p class="rm-card__desc">App Router, server components and production-grade data fetching.</p>
+              <span class="rm-status rm-status--learning"><span class="rm-status__dot" aria-hidden="true"></span>Learning</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+              <h4 class="rm-card__title">TypeScript</h4>
+              <p class="rm-card__desc">Strict typing and type-safe design for maintainable, confident code.</p>
+              <span class="rm-status rm-status--learning"><span class="rm-status__dot" aria-hidden="true"></span>Learning</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-brands fa-python"></i></span>
+              <h4 class="rm-card__title">Python</h4>
+              <p class="rm-card__desc">Readable, versatile language powering automation and backend work.</p>
+              <span class="rm-status rm-status--working"><span class="rm-status__dot" aria-hidden="true"></span>Working Knowledge</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+              <h4 class="rm-card__title">Django</h4>
+              <p class="rm-card__desc">Batteries-included Python web framework for solid, secure applications.</p>
+              <span class="rm-status rm-status--working"><span class="rm-status__dot" aria-hidden="true"></span>Working Knowledge</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-flask"></i></span>
+              <h4 class="rm-card__title">Flask</h4>
+              <p class="rm-card__desc">Lightweight, flexible micro-framework for focused API services.</p>
+              <span class="rm-status rm-status--working"><span class="rm-status__dot" aria-hidden="true"></span>Working Knowledge</span>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 2 · AI ENGINEERING JOURNEY ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">02</span>
+            <div>
+              <h3 class="rm-panel__title">AI Engineering <span class="section__accent">Journey</span></h3>
+              <p class="rm-panel__sub">Hands-on exploration of modern AI workflows, applied to real products.</p>
+            </div>
+          </div>
+          <div class="rm-grid rm-grid--4">
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span>
+              <h4 class="rm-card__title">Prompt Engineering</h4>
+              <p class="rm-card__desc">Structuring instructions to get reliable, controllable results.</p>
+              <span class="rm-status rm-status--using"><span class="rm-status__dot" aria-hidden="true"></span>Using</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-language"></i></span>
+              <h4 class="rm-card__title">Context Engineering</h4>
+              <p class="rm-card__desc">Feeding the right context so models reason over what matters.</p>
+              <span class="rm-status rm-status--hands-on"><span class="rm-status__dot" aria-hidden="true"></span>Hands-on</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-microchip"></i></span>
+              <h4 class="rm-card__title">Local LLM Setup</h4>
+              <p class="rm-card__desc">Running open models locally with Ollama and LM Studio.</p>
+              <span class="rm-status rm-status--hands-on"><span class="rm-status__dot" aria-hidden="true"></span>Hands-on</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-box-open"></i></span>
+              <h4 class="rm-card__title">Open Source Models</h4>
+              <p class="rm-card__desc">Evaluating and fine-tuning open-weight models for tasks.</p>
+              <span class="rm-status rm-status--exploring"><span class="rm-status__dot" aria-hidden="true"></span>Exploring</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+              <h4 class="rm-card__title">AI Assisted Coding</h4>
+              <p class="rm-card__desc">AI pair-programming woven into daily shipping workflows.</p>
+              <span class="rm-status rm-status--using"><span class="rm-status__dot" aria-hidden="true"></span>Using</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+              <h4 class="rm-card__title">AI Assisted UI Design</h4>
+              <p class="rm-card__desc">Using AI image pipelines (ComfyUI) to generate and iterate visuals.</p>
+              <span class="rm-status rm-status--exploring"><span class="rm-status__dot" aria-hidden="true"></span>Exploring</span>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-flask-vial"></i></span>
+              <h4 class="rm-card__title">LLM Experimentation</h4>
+              <p class="rm-card__desc">Systematic tests of models, settings and approaches to learn fast.</p>
+              <span class="rm-status rm-status--hands-on"><span class="rm-status__dot" aria-hidden="true"></span>Hands-on</span>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 3 · CURRENTLY EXPLORING ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">03</span>
+            <div>
+              <h3 class="rm-panel__title">Currently <span class="section__accent">Exploring</span></h3>
+              <p class="rm-panel__sub">Early-stage technologies I am actively digging into.</p>
+            </div>
+          </div>
+          <div class="rm-chipwall" data-rm-reveal>
+            <span class="rm-chip"><i class="fa-solid fa-arrow-up-right-dots" aria-hidden="true"></i>Next.js App Router<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-server" aria-hidden="true"></i>Server Components<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>TypeScript<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-key" aria-hidden="true"></i>Authentication<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i>API Routes<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i>Performance Optimization<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i>Testing<i class="rm-chip__live" aria-hidden="true"></i></span>
+            <span class="rm-chip"><i class="fa-solid fa-rocket" aria-hidden="true"></i>Deployment<i class="rm-chip__live" aria-hidden="true"></i></span>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 4 · FUTURE LEARNING ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">04</span>
+            <div>
+              <h3 class="rm-panel__title">Future <span class="section__accent">Learning</span></h3>
+              <p class="rm-panel__sub">Expandable roadmap cards — the frontier I plan to conquer next.</p>
+            </div>
+          </div>
+          <div class="rm-grid rm-grid--4 rm-grid--expand">
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-01">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-network-wired"></i></span>
+                <span class="rm-expand-card__label">MCP</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-01" hidden>
+                <p>Model Context Protocol — a standard for connecting AI models to tools and data sources seamlessly.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-02">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-user-astronaut"></i></span>
+                <span class="rm-expand-card__label">AI Agents</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-02" hidden>
+                <p>Building autonomous agents that plan, act and use tools to complete multi-step goals.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-03">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-link"></i></span>
+                <span class="rm-expand-card__label">LangChain</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-03" hidden>
+                <p>Frameworks for chaining LLM calls, tools and memory into reusable application pipelines.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-04">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span>
+                <span class="rm-expand-card__label">LangGraph</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-04" hidden>
+                <p>Graph-based orchestration for stateful, agentic AI workflows that can branch and loop.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-05">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-people-arrows"></i></span>
+                <span class="rm-expand-card__label">CrewAI</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-05" hidden>
+                <p>Role-driven, multi-agent crews that collaborate to break down complex tasks.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-06">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-gears"></i></span>
+                <span class="rm-expand-card__label">AutoGen</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-06" hidden>
+                <p>Microsoft's multi-agent conversation framework for complex problem solving.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-07">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-folder-tree"></i></span>
+                <span class="rm-expand-card__label">RAG</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-07" hidden>
+                <p>Retrieval-augmented generation — grounding models in private, up-to-date knowledge.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-08">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
+                <span class="rm-expand-card__label">Vector Databases</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-08" hidden>
+                <p>Semantic search over embeddings for fast, relevant retrieval at scale.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-09">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-cube"></i></span>
+                <span class="rm-expand-card__label">Model Context Protocol</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-09" hidden>
+                <p>The open protocol that standardises how AI models expose and consume tools and context.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-10">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></span>
+                <span class="rm-expand-card__label">OpenAI SDK</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-10" hidden>
+                <p>Production-ready integration with OpenAI APIs, streaming and function calling.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-11">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-cloud-bolt"></i></span>
+                <span class="rm-expand-card__label">Vercel AI SDK</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-11" hidden>
+                <p>A type-safe toolkit for streaming AI responses across React and edge runtimes.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-12">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                <span class="rm-expand-card__label">Cloud Deployment</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-12" hidden>
+                <p>Shipping and operating apps on modern cloud platforms with reliable CI/CD.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-13">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-brands fa-docker"></i></span>
+                <span class="rm-expand-card__label">Docker</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-13" hidden>
+                <p>Containerising applications for consistent, portable, reproducible environments.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-14">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-solid fa-circle-nodes"></i></span>
+                <span class="rm-expand-card__label">Kubernetes Basics</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-14" hidden>
+                <p>Orchestrating containers at scale for resilient, self-healing services.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-15">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-brands fa-aws"></i></span>
+                <span class="rm-expand-card__label">AWS Fundamentals</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-15" hidden>
+                <p>Core AWS services — compute, storage, networking and serverless patterns.</p>
+              </div>
+            </article>
+            <article class="rm-expand-card" data-rm-reveal>
+              <button type="button" class="rm-expand-card__toggle" aria-expanded="false" aria-controls="rm-expand-16">
+                <span class="rm-expand-card__icon" aria-hidden="true"><i class="fa-brands fa-microsoft"></i></span>
+                <span class="rm-expand-card__label">Azure Fundamentals</span>
+                <span class="rm-status rm-status--planned"><span class="rm-status__dot" aria-hidden="true"></span>Planned</span>
+                <i class="rm-expand-card__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <div class="rm-expand-card__detail" id="rm-expand-16" hidden>
+                <p>Foundational Azure concepts, core services and cloud governance basics.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 5 · CAREER VISION ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">05</span>
+            <div>
+              <h3 class="rm-panel__title">Career <span class="section__accent">Vision</span></h3>
+              <p class="rm-panel__sub">The trajectory I am building towards — one deliberate step at a time.</p>
+            </div>
+          </div>
+          <div class="rm-vision">
+            <div class="rm-vision__rail" data-rm-vision-rail aria-hidden="true"></div>
+            <ol class="rm-vision__list">
+              <li class="rm-vision__item is-current" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-circle-dot"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">Current</span>
+                  <p>Full-stack developer building AI-assisted web products.</p>
+                </div>
+              </li>
+              <li class="rm-vision__item" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">Senior Frontend Engineer</span>
+                  <p>Owning complex UIs, mentoring others and leading delivery.</p>
+                </div>
+              </li>
+              <li class="rm-vision__item" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">React Architect</span>
+                  <p>Designing scalable frontend architecture and design systems.</p>
+                </div>
+              </li>
+              <li class="rm-vision__item" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">Full Stack Engineer</span>
+                  <p>Shipping complete products across frontend and backend.</p>
+                </div>
+              </li>
+              <li class="rm-vision__item" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">AI Product Engineer</span>
+                  <p>Building AI-native products that put users in control.</p>
+                </div>
+              </li>
+              <li class="rm-vision__item" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-users-gear"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">Engineering Manager</span>
+                  <p>Growing teams and guiding engineering culture and strategy.</p>
+                </div>
+              </li>
+              <li class="rm-vision__item is-goal" data-rm-vision>
+                <span class="rm-vision__node" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span>
+                <div class="rm-vision__card">
+                  <span class="rm-vision__role">Global Product Company</span>
+                  <p>Contributing craft at a product organisation that ships at scale.</p>
+                </div>
+              </li>
+            </ol>
+            <div class="rm-vision__targets">
+              <span class="rm-vision__targets-label">Target companies</span>
+              <div class="rm-chipwall" data-rm-reveal>
+                <span class="rm-chip">Google</span>
+                <span class="rm-chip">Microsoft</span>
+                <span class="rm-chip">Adobe</span>
+                <span class="rm-chip">Atlassian</span>
+                <span class="rm-chip">Amazon</span>
+                <span class="rm-chip">Meta</span>
+                <span class="rm-chip">Netflix</span>
+                <span class="rm-chip">Vercel</span>
+                <span class="rm-chip">Cloudflare</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 6 · DEVELOPMENT PHILOSOPHY ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">06</span>
+            <div>
+              <h3 class="rm-panel__title">Development <span class="section__accent">Philosophy</span></h3>
+              <p class="rm-panel__sub">The engineering principles that guide every decision I make.</p>
+            </div>
+          </div>
+          <div class="rm-grid rm-grid--4">
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-broom"></i></span>
+              <h4 class="rm-card__title">Build Clean Code</h4>
+              <p class="rm-card__desc">Readable, tested, intentional code that teammates trust and enjoy.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
+              <h4 class="rm-card__title">Write Reusable Components</h4>
+              <p class="rm-card__desc">Compose, don't duplicate — small lego-like building blocks.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-lightbulb"></i></span>
+              <h4 class="rm-card__title">Think Like a Product Engineer</h4>
+              <p class="rm-card__desc">Own outcomes, not just tickets — design for user and business.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-users-viewfinder"></i></span>
+              <h4 class="rm-card__title">User First</h4>
+              <p class="rm-card__desc">Every decision starts from real user needs and friction points.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></span>
+              <h4 class="rm-card__title">Performance Matters</h4>
+              <p class="rm-card__desc">Fast by default — respect the user's time and their device.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-universal-access"></i></span>
+              <h4 class="rm-card__title">Accessibility First</h4>
+              <p class="rm-card__desc">Inclusive by design — the web should work for everyone.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+              <h4 class="rm-card__title">Continuous Learning</h4>
+              <p class="rm-card__desc">Stay curious, grow deliberately and never stop asking why.</p>
+            </article>
+            <article class="rm-card" data-rm-reveal data-tilt>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-robot"></i></span>
+              <h4 class="rm-card__title">AI as Productivity Tool</h4>
+              <p class="rm-card__desc">Use AI to remove toil and amplify human craft, never replace it.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 7 · LEARNING WORKFLOW ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">07</span>
+            <div>
+              <h3 class="rm-panel__title">Learning <span class="section__accent">Workflow</span></h3>
+              <p class="rm-panel__sub">A repeatable loop that turns ideas into real, shipped skills.</p>
+            </div>
+          </div>
+          <div class="rm-workflow">
+            <div class="rm-workflow__bar" aria-hidden="true"><span class="rm-workflow__bar-fill" data-rm-flow-progress></span></div>
+            <ol class="rm-workflow__steps" aria-label="Learning workflow steps">
+              <li class="rm-workflow__step" data-rm-flow>
+                <span class="rm-workflow__icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
+                <span class="rm-workflow__label">Learn</span>
+              </li>
+              <li class="rm-workflow__step" data-rm-flow>
+                <span class="rm-workflow__icon" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></span>
+                <span class="rm-workflow__label">Practice</span>
+              </li>
+              <li class="rm-workflow__step" data-rm-flow>
+                <span class="rm-workflow__icon" aria-hidden="true"><i class="fa-solid fa-hammer"></i></span>
+                <span class="rm-workflow__label">Build</span>
+              </li>
+              <li class="rm-workflow__step" data-rm-flow>
+                <span class="rm-workflow__icon" aria-hidden="true"><i class="fa-solid fa-share-nodes"></i></span>
+                <span class="rm-workflow__label">Share</span>
+              </li>
+              <li class="rm-workflow__step" data-rm-flow>
+                <span class="rm-workflow__icon" aria-hidden="true"><i class="fa-solid fa-arrow-trend-up"></i></span>
+                <span class="rm-workflow__label">Improve</span>
+              </li>
+              <li class="rm-workflow__step rm-workflow__step--repeat" data-rm-flow>
+                <span class="rm-workflow__icon" aria-hidden="true"><i class="fa-solid fa-arrows-rotate"></i></span>
+                <span class="rm-workflow__label">Repeat</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 8 · 2026–2027 GOALS ================= -->
+        <div class="rm-panel">
+          <div class="rm-panel__head" data-aos="fade-up">
+            <span class="rm-panel__index">08</span>
+            <div>
+              <h3 class="rm-panel__title">2026–2027 <span class="section__accent">Goals</span></h3>
+              <p class="rm-panel__sub">Concrete milestones that turn ambition into a defined path.</p>
+            </div>
+          </div>
+          <div class="rm-grid rm-grid--4">
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2026</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-dots"></i></span>
+              <h4 class="rm-card__title">Master Next.js</h4>
+              <p class="rm-card__desc">Deep command of the App Router and full-stack React workflows.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2026</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+              <h4 class="rm-card__title">Master TypeScript</h4>
+              <p class="rm-card__desc">Strict typing fluency and advanced generics in real codebases.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2026</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-cubes-stacked"></i></span>
+              <h4 class="rm-card__title">Build SaaS Products</h4>
+              <p class="rm-card__desc">Ship polished, recurring-revenue products users genuinely value.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2026</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-code-branch"></i></span>
+              <h4 class="rm-card__title">Contribute to Open Source</h4>
+              <p class="rm-card__desc">Give back to the ecosystem through meaningful, maintained PRs.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2027</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+              <h4 class="rm-card__title">Develop AI-powered Applications</h4>
+              <p class="rm-card__desc">Move from experimenting with AI to shipping AI-native products.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2027</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-cloud"></i></span>
+              <h4 class="rm-card__title">Learn Cloud Deployment</h4>
+              <p class="rm-card__desc">Comfortably deploy, monitor and scale services on the cloud.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2027</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-server"></i></span>
+              <h4 class="rm-card__title">Strengthen Backend Development</h4>
+              <p class="rm-card__desc">Go deeper on APIs, data modelling and service design.</p>
+            </article>
+            <article class="rm-card rm-card--goal" data-rm-reveal data-tilt>
+              <span class="rm-card__tag" aria-hidden="true">2027</span>
+              <span class="rm-card__icon" aria-hidden="true"><i class="fa-solid fa-briefcase"></i></span>
+              <h4 class="rm-card__title">Join a Global Product Company</h4>
+              <p class="rm-card__desc">Land an engineering role where craft and landscape meet.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+      [08-F3] ACHIEVEMENTS HUB — milestones, growth & recognition dashboard
+      ================================================================ -->
+    <section id="achievements" class="section achievements" aria-labelledby="achievements-title">
+      <!-- Ambient background layer -->
+      <div class="ach-bg" aria-hidden="true">
+        <span class="ach-aurora ach-aurora--a"></span>
+        <span class="ach-aurora ach-aurora--b"></span>
+        <span class="ach-mesh"></span>
+        <span class="ach-orb ach-orb--one"></span>
+        <span class="ach-orb ach-orb--two"></span>
+        <span class="ach-orb ach-orb--three"></span>
+        <span class="ach-noise"></span>
+      </div>
+
+      <div class="container">
+        <div class="section__head" data-aos="fade-up">
+          <p class="section__eyebrow">// achievements hub</p>
+          <h2 id="achievements-title" class="section__title">Achievements <span class="section__accent">Hub</span></h2>
+          <p class="section__sub">Professional milestones, education, achievements and continuous growth over 12+ years.</p>
+        </div>
+
+        <!-- ================= SECTION 1 · PROFESSIONAL HIGHLIGHTS ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">01</span>
+            <div>
+              <h3 class="ach-panel__title">Professional <span class="section__accent">Highlights</span></h3>
+              <p class="ach-panel__sub">The numbers behind 12+ years of engineering, design and delivery.</p>
+            </div>
+          </div>
+          <div class="ach-grid ach-grid--4">
+            <article class="ach-stat" data-ach-reveal data-tilt>
+              <span class="ach-stat__icon" aria-hidden="true"><i class="fa-solid fa-briefcase"></i></span>
+              <span class="ach-stat__value" data-count-up data-count-value="12" data-count-suffix="+" data-count-duration="1.6">0</span>
+              <span class="ach-stat__label">Years Experience</span>
+            </article>
+            <article class="ach-stat" data-ach-reveal data-tilt>
+              <span class="ach-stat__icon" aria-hidden="true"><i class="fa-solid fa-rocket"></i></span>
+              <span class="ach-stat__value" data-count-up data-count-value="100" data-count-suffix="+" data-count-duration="1.6">0</span>
+              <span class="ach-stat__label">Projects Delivered</span>
+            </article>
+            <article class="ach-stat" data-ach-reveal data-tilt>
+              <span class="ach-stat__icon" aria-hidden="true"><i class="fa-solid fa-users-gear"></i></span>
+              <span class="ach-stat__value" data-count-up data-count-value="7" data-count-suffix="+" data-count-duration="1.6">0</span>
+              <span class="ach-stat__label">Years Leadership</span>
+            </article>
+            <article class="ach-stat" data-ach-reveal data-tilt>
+              <span class="ach-stat__icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="ach-stat__value" data-count-up data-count-value="20" data-count-suffix="+" data-count-duration="1.6">0</span>
+              <span class="ach-stat__label">Technologies</span>
+            </article>
+            <article class="ach-stat" data-ach-reveal data-tilt>
+              <span class="ach-stat__icon" aria-hidden="true"><i class="fa-solid fa-building"></i></span>
+              <span class="ach-stat__value" data-count-up data-count-value="8" data-count-suffix="+" data-count-duration="1.6">0</span>
+              <span class="ach-stat__label">Industries</span>
+            </article>
+            <article class="ach-stat" data-ach-reveal data-tilt>
+              <span class="ach-stat__icon" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+              <span class="ach-stat__value" data-count-up data-count-value="100" data-count-suffix="%" data-count-duration="1.6">0</span>
+              <span class="ach-stat__label">Responsive Development</span>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 2 · EDUCATION ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">02</span>
+            <div>
+              <h3 class="ach-panel__title">Education</h3>
+              <p class="ach-panel__sub">The academic foundation behind engineering and design craft.</p>
+            </div>
+          </div>
+          <article class="ach-edu" data-ach-reveal>
+            <span class="ach-edu__icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
+            <div class="ach-edu__body">
+              <span class="ach-edu__overline">Postgraduate Degree</span>
+              <h4 class="ach-edu__title">Master in Information Technology</h4>
+              <p class="ach-edu__desc">Strong academic foundation supporting modern frontend engineering, UI/UX strategy and product development.</p>
+              <div class="ach-edu__chips">
+                <span class="ach-chip">Frontend Engineering</span>
+                <span class="ach-chip">UI/UX Strategy</span>
+                <span class="ach-chip">Product Development</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- ================= SECTION 3 · PROFESSIONAL ACHIEVEMENTS ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">03</span>
+            <div>
+              <h3 class="ach-panel__title">Professional <span class="section__accent">Achievements</span></h3>
+              <p class="ach-panel__sub">A track record of delivery, leadership and design discipline.</p>
+            </div>
+          </div>
+          <div class="ach-grid ach-grid--3">
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-circle-check"></i></span>
+              <h4 class="ach-tile__title">100+ Projects Delivered</h4>
+              <p class="ach-tile__desc">Successfully shipped over one hundred digital products end to end.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span>
+              <h4 class="ach-tile__title">Led UI/UX &amp; Frontend Teams</h4>
+              <p class="ach-tile__desc">Guided designers and engineers towards shared, high-quality outcomes.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-gauge-high"></i></span>
+              <h4 class="ach-tile__title">Enterprise Dashboards</h4>
+              <p class="ach-tile__desc">Designed data-dense control centers that turn metrics into decisions.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-object-group"></i></span>
+              <h4 class="ach-tile__title">Scalable Design Systems</h4>
+              <p class="ach-tile__desc">Built token-driven systems that keep products consistent at scale.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-briefcase"></i></span>
+              <h4 class="ach-tile__title">Business-Focused Products</h4>
+              <p class="ach-tile__desc">Delivered digital products that map directly to business outcomes.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></span>
+              <h4 class="ach-tile__title">Multi-Industry Experience</h4>
+              <p class="ach-tile__desc">Worked across diverse sectors with very different needs and users.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 4 · INDUSTRY EXPERIENCE ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">04</span>
+            <div>
+              <h3 class="ach-panel__title">Industry <span class="section__accent">Experience</span></h3>
+              <p class="ach-panel__sub">The sectors I have designed and shipped for.</p>
+            </div>
+          </div>
+          <div class="ach-grid ach-grid--4">
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-server" aria-hidden="true"></i>Enterprise Applications</span>
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i>SaaS Platforms</span>
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-building-user" aria-hidden="true"></i>Real Estate</span>
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-briefcase" aria-hidden="true"></i>Corporate Solutions</span>
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-chart-column" aria-hidden="true"></i>Analytics Dashboards</span>
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-store" aria-hidden="true"></i>Business Applications</span>
+            <span class="ach-industry" data-ach-reveal><i class="fa-solid fa-tv" aria-hidden="true"></i>Events &amp; Media</span>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 5 · LEADERSHIP JOURNEY ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">05</span>
+            <div>
+              <h3 class="ach-panel__title">Leadership <span class="section__accent">Journey</span></h3>
+              <p class="ach-panel__sub">How I have led, mentored and collaborated across teams.</p>
+            </div>
+          </div>
+          <div class="ach-lead">
+            <div class="ach-lead__rail" data-ach-lead-rail aria-hidden="true"></div>
+            <ol class="ach-lead__list">
+              <li class="ach-lead__item" data-ach-lead>
+                <span class="ach-lead__node" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+                <div class="ach-lead__card">
+                  <span class="ach-lead__role">Frontend Leadership</span>
+                  <p>Owned frontend direction, architecture and technical standards.</p>
+                </div>
+              </li>
+              <li class="ach-lead__item" data-ach-lead>
+                <span class="ach-lead__node" aria-hidden="true"><i class="fa-solid fa-pen-ruler"></i></span>
+                <div class="ach-lead__card">
+                  <span class="ach-lead__role">UI/UX Management</span>
+                  <p>Managed design quality, consistency and user experience decisions.</p>
+                </div>
+              </li>
+              <li class="ach-lead__item" data-ach-lead>
+                <span class="ach-lead__node" aria-hidden="true"><i class="fa-solid fa-user-graduate"></i></span>
+                <div class="ach-lead__card">
+                  <span class="ach-lead__role">Mentoring Team Members</span>
+                  <p>Coached developers and designers, growing their confidence and skill.</p>
+                </div>
+              </li>
+              <li class="ach-lead__item" data-ach-lead>
+                <span class="ach-lead__node" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+                <div class="ach-lead__card">
+                  <span class="ach-lead__role">Client Communication</span>
+                  <p>Translated stakeholder goals into clear, achievable engineering plans.</p>
+                </div>
+              </li>
+              <li class="ach-lead__item" data-ach-lead>
+                <span class="ach-lead__node" aria-hidden="true"><i class="fa-solid fa-list-check"></i></span>
+                <div class="ach-lead__card">
+                  <span class="ach-lead__role">Project Planning</span>
+                  <p>Broke large ambitions into shipped milestones with honest timelines.</p>
+                </div>
+              </li>
+              <li class="ach-lead__item" data-ach-lead>
+                <span class="ach-lead__node" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
+                <div class="ach-lead__card">
+                  <span class="ach-lead__role">Cross-functional Collaboration</span>
+                  <p>Bridged design, engineering and product to ship as one team.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 6 · CERTIFICATIONS ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">06</span>
+            <div>
+              <h3 class="ach-panel__title">Certifications</h3>
+              <p class="ach-panel__sub">Honest status across the learning track — nothing over-claimed.</p>
+            </div>
+          </div>
+
+          <div class="ach-cert-group">
+            <h4 class="ach-cert-group__label">Completed Certifications</h4>
+            <div class="ach-grid ach-grid--4">
+              <article class="ach-cert ach-cert--feature" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-00">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-solid fa-certificate"></i></span>
+                  <span class="ach-cert__label">Completed Certification</span>
+                  <span class="ach-status ach-status--completed"><span class="ach-status__dot" aria-hidden="true"></span>Completed</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-00" hidden>
+                  <p>Placeholder — completed certification credentials will be documented here. No specific certifications are claimed at this time.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="ach-cert-group">
+            <h4 class="ach-cert-group__label">Upcoming Certifications</h4>
+            <div class="ach-grid ach-grid--4">
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-01">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-solid fa-atom"></i></span>
+                  <span class="ach-cert__label">React Advanced</span>
+                  <span class="ach-status ach-status--planned"><span class="ach-status__dot" aria-hidden="true"></span>Planned</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-01" hidden>
+                  <p>Advanced React patterns and architecture — preparing a structured certification path.</p>
+                </div>
+              </article>
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-02">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-solid fa-arrow-up-right-dots"></i></span>
+                  <span class="ach-cert__label">Next.js</span>
+                  <span class="ach-status ach-status--in-progress"><span class="ach-status__dot" aria-hidden="true"></span>In Progress</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-02" hidden>
+                  <p>Working through the App Router and full-stack React workflows right now.</p>
+                </div>
+              </article>
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-03">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="ach-cert__label">TypeScript</span>
+                  <span class="ach-status ach-status--in-progress"><span class="ach-status__dot" aria-hidden="true"></span>In Progress</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-03" hidden>
+                  <p>Deepening strict typing and type-safe design in real projects.</p>
+                </div>
+              </article>
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-04">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-brands fa-aws"></i></span>
+                  <span class="ach-cert__label">AWS Cloud Practitioner</span>
+                  <span class="ach-status ach-status--future"><span class="ach-status__dot" aria-hidden="true"></span>Future Goal</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-04" hidden>
+                  <p>A foundational cloud certification planned ahead of deeper AWS work.</p>
+                </div>
+              </article>
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-05">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-brands fa-microsoft"></i></span>
+                  <span class="ach-cert__label">Azure Fundamentals</span>
+                  <span class="ach-status ach-status--future"><span class="ach-status__dot" aria-hidden="true"></span>Future Goal</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-05" hidden>
+                  <p>Foundational Azure concepts targeted as a near-future certification.</p>
+                </div>
+              </article>
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-06">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-brands fa-google"></i></span>
+                  <span class="ach-cert__label">Google Professional Certificates</span>
+                  <span class="ach-status ach-status--future"><span class="ach-status__dot" aria-hidden="true"></span>Future Goal</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-06" hidden>
+                  <p>Professional certificate paths reserved as long-term goals.</p>
+                </div>
+              </article>
+              <article class="ach-cert" data-ach-reveal>
+                <button type="button" class="ach-cert__toggle" aria-expanded="false" aria-controls="ach-cert-07">
+                  <span class="ach-cert__icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+                  <span class="ach-cert__label">AI Engineering Certifications</span>
+                  <span class="ach-status ach-status--planned"><span class="ach-status__dot" aria-hidden="true"></span>Planned</span>
+                  <i class="ach-cert__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="ach-cert__detail" id="ach-cert-07" hidden>
+                  <p>Structured AI engineering credentials aligned with ongoing hands-on work.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 7 · RECOGNITION ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">07</span>
+            <div>
+              <h3 class="ach-panel__title">Recognition</h3>
+              <p class="ach-panel__sub">Badges earned through consistent engineering and growth.</p>
+            </div>
+          </div>
+          <div class="ach-badgewall" data-ach-reveal>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-rocket" aria-hidden="true"></i>100+ Projects Delivered</span>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-award" aria-hidden="true"></i>12+ Years Experience</span>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-users-gear" aria-hidden="true"></i>Leadership Experience</span>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-book-open" aria-hidden="true"></i>Continuous Learner</span>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-brain" aria-hidden="true"></i>AI Explorer</span>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-atom" aria-hidden="true"></i>React Specialist</span>
+            <span class="ach-badge" data-ach-badge><i class="fa-solid fa-code" aria-hidden="true"></i>Frontend Engineer</span>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 8 · PROFESSIONAL VALUES ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">08</span>
+            <div>
+              <h3 class="ach-panel__title">Professional <span class="section__accent">Values</span></h3>
+              <p class="ach-panel__sub">The principles behind every line of code and every decision.</p>
+            </div>
+          </div>
+          <div class="ach-grid ach-grid--4">
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-broom"></i></span>
+              <h4 class="ach-tile__title">Clean Code</h4>
+              <p class="ach-tile__desc">Readable, intentional and maintainable engineering.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+              <h4 class="ach-tile__title">Continuous Learning</h4>
+              <p class="ach-tile__desc">Always growing, always curious about what comes next.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
+              <h4 class="ach-tile__title">Teamwork</h4>
+              <p class="ach-tile__desc">Stronger outcomes through collaboration and shared ownership.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-lightbulb"></i></span>
+              <h4 class="ach-tile__title">Innovation</h4>
+              <p class="ach-tile__desc">Fresh thinking applied to solve real user problems.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></span>
+              <h4 class="ach-tile__title">Performance</h4>
+              <p class="ach-tile__desc">Fast, efficient products that respect the user's time.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-universal-access"></i></span>
+              <h4 class="ach-tile__title">Accessibility</h4>
+              <p class="ach-tile__desc">Inclusive design that works for everyone, everywhere.</p>
+            </article>
+            <article class="ach-tile" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
+              <h4 class="ach-tile__title">Product Thinking</h4>
+              <p class="ach-tile__desc">Designing for real users and the outcomes that matter.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 9 · CAREER VISION ================= -->
+        <div class="ach-panel">
+          <div class="ach-panel__head" data-aos="fade-up">
+            <span class="ach-panel__index">09</span>
+            <div>
+              <h3 class="ach-panel__title">Career <span class="section__accent">Vision</span></h3>
+              <p class="ach-panel__sub">The direction I am building my craft towards.</p>
+            </div>
+          </div>
+          <div class="ach-grid ach-grid--4">
+            <article class="ach-tile ach-tile--vision" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+              <h4 class="ach-tile__title">Building Scalable Products</h4>
+              <p class="ach-tile__desc">Crafting systems that grow gracefully with their users.</p>
+            </article>
+            <article class="ach-tile ach-tile--vision" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-users-gear"></i></span>
+              <h4 class="ach-tile__title">Leading Engineering Teams</h4>
+              <p class="ach-tile__desc">Guiding talented people to ship their best work.</p>
+            </article>
+            <article class="ach-tile ach-tile--vision" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-code-branch"></i></span>
+              <h4 class="ach-tile__title">Contributing to Open Source</h4>
+              <p class="ach-tile__desc">Giving back to the ecosystem that powers my craft.</p>
+            </article>
+            <article class="ach-tile ach-tile--vision" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+              <h4 class="ach-tile__title">Learning AI Technologies</h4>
+              <p class="ach-tile__desc">Exploring how AI reshapes how great products are built.</p>
+            </article>
+            <article class="ach-tile ach-tile--vision" data-ach-reveal data-tilt>
+              <span class="ach-tile__icon" aria-hidden="true"><i class="fa-solid fa-earth-americas"></i></span>
+              <h4 class="ach-tile__title">Working in Global Product Companies</h4>
+              <p class="ach-tile__desc">Applying craft where products reach people around the world.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+      [08-F4] PROFESSIONAL RECOMMENDATIONS & IMPACT — reputation dashboard
+      (Placeholder-first architecture: real recommendations can replace
+      the clearly-labelled placeholder slots without structural changes.)
+      ================================================================ -->
+    <section id="recommendations" class="section recommendations" aria-labelledby="recommendations-title">
+      <!-- Ambient background layer -->
+      <div class="rec-bg" aria-hidden="true">
+        <span class="rec-aurora rec-aurora--a"></span>
+        <span class="rec-aurora rec-aurora--b"></span>
+        <span class="rec-mesh"></span>
+        <span class="rec-orb rec-orb--one"></span>
+        <span class="rec-orb rec-orb--two"></span>
+        <span class="rec-orb rec-orb--three"></span>
+        <span class="rec-noise"></span>
+      </div>
+
+      <div class="container">
+        <div class="section__head" data-aos="fade-up">
+          <p class="section__eyebrow">// recommendations</p>
+          <h2 id="recommendations-title" class="section__title">Professional <span class="section__accent">Recommendations</span></h2>
+          <p class="section__sub">Feedback, collaboration experience, leadership impact and professional reputation.</p>
+        </div>
+
+        <!-- ======== SECTION 1 · RECOMMENDATIONS OVERVIEW ======== -->
+        <div class="rec-panel">
+          <div class="rec-panel__head" data-aos="fade-up">
+            <span class="rec-panel__index">01</span>
+            <div>
+              <h3 class="rec-panel__title">Recommendations <span class="section__accent">Overview</span></h3>
+              <p class="rec-panel__sub">A high-level snapshot of feedback and reputation signals.</p>
+            </div>
+          </div>
+          <div class="rec-grid rec-grid--5">
+            <article class="rec-stat" data-rec-reveal data-tilt>
+              <span class="rec-stat__icon" aria-hidden="true"><i class="fa-solid fa-comment-dots"></i></span>
+              <span class="rec-stat__label">Professional Recommendations</span>
+              <span class="rec-status rec-status--future"><span class="rec-status__dot" aria-hidden="true"></span>Awaiting Data</span>
+            </article>
+            <article class="rec-stat" data-rec-reveal data-tilt>
+              <span class="rec-stat__icon" aria-hidden="true"><i class="fa-solid fa-arrows-down-to-people"></i></span>
+              <span class="rec-stat__label">Leadership Feedback</span>
+              <span class="rec-status rec-status--future"><span class="rec-status__dot" aria-hidden="true"></span>Awaiting Data</span>
+            </article>
+            <article class="rec-stat" data-rec-reveal data-tilt>
+              <span class="rec-stat__icon" aria-hidden="true"><i class="fa-solid fa-hand-holding-heart"></i></span>
+              <span class="rec-stat__label">Client Appreciation</span>
+              <span class="rec-status rec-status--future"><span class="rec-status__dot" aria-hidden="true"></span>Awaiting Data</span>
+            </article>
+            <article class="rec-stat" data-rec-reveal data-tilt>
+              <span class="rec-stat__icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
+              <span class="rec-stat__label">Team Collaboration</span>
+              <span class="rec-status rec-status--future"><span class="rec-status__dot" aria-hidden="true"></span>Awaiting Data</span>
+            </article>
+            <article class="rec-stat" data-rec-reveal data-tilt>
+              <span class="rec-stat__icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
+              <span class="rec-stat__label">LinkedIn Recommendations</span>
+              <span class="rec-status rec-status--future"><span class="rec-status__dot" aria-hidden="true"></span>Future</span>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 2 · RECOMMENDATION CARDS ======== -->
+        <div class="rec-panel">
+          <div class="rec-panel__head" data-aos="fade-up">
+            <span class="rec-panel__index">02</span>
+            <div>
+              <h3 class="rec-panel__title">Recommendation <span class="section__accent">Cards</span></h3>
+              <p class="rec-panel__sub">Real feedback lands here. Each placeholder slot is clearly labelled for future replacement.</p>
+            </div>
+          </div>
+          <div class="rec-grid rec-grid--3">
+            <!-- LinkedIn Recommendation Placeholder -->
+            <article class="rec-card" data-rec-reveal data-tilt aria-label="LinkedIn recommendation placeholder">
+              <span class="rec-card__badge rec-badge--linkedin">LinkedIn Recommendation Placeholder</span>
+              <div class="rec-card__profile">
+                <span class="rec-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                <div class="rec-card__meta">
+                  <span class="rec-card__name">Name Placeholder</span>
+                  <span class="rec-card__designation">Designation Placeholder</span>
+                  <span class="rec-card__company">Company Placeholder</span>
+                </div>
+              </div>
+              <p class="rec-card__text">Recommendation placeholder. Real endorsements will be documented here once received.</p>
+              <div class="rec-card__foot">
+                <span class="rec-card__date">Date Placeholder</span>
+                <span class="rec-verify rec-verify--pending"><span class="rec-verify__dot" aria-hidden="true"></span>Pending Verification</span>
+              </div>
+              <div class="rec-card__actions">
+                <a href="#" class="btn-rec btn-rec--linkedin" aria-label="View LinkedIn profile">
+                  <i class="fa-brands fa-linkedin" aria-hidden="true"></i>LinkedIn
+                </a>
+              </div>
+            </article>
+
+            <!-- Team Recommendation Placeholder -->
+            <article class="rec-card" data-rec-reveal data-tilt aria-label="Team recommendation placeholder">
+              <span class="rec-card__badge">Team Recommendation Placeholder</span>
+              <div class="rec-card__profile">
+                <span class="rec-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                <div class="rec-card__meta">
+                  <span class="rec-card__name">Name Placeholder</span>
+                  <span class="rec-card__designation">Designation Placeholder</span>
+                  <span class="rec-card__company">Company Placeholder</span>
+                </div>
+              </div>
+              <p class="rec-card__text">Recommendation placeholder. Colleague feedback will replace this text once provided.</p>
+              <div class="rec-card__foot">
+                <span class="rec-card__date">Date Placeholder</span>
+                <span class="rec-verify rec-verify--pending"><span class="rec-verify__dot" aria-hidden="true"></span>Pending Verification</span>
+              </div>
+              <div class="rec-card__actions">
+                <a href="#" class="btn-rec" aria-label="View team recommendation details">
+                  <i class="fa-solid fa-people-group" aria-hidden="true"></i>Team
+                </a>
+              </div>
+            </article>
+
+            <!-- Client Feedback Placeholder -->
+            <article class="rec-card" data-rec-reveal data-tilt aria-label="Client feedback placeholder">
+              <span class="rec-card__badge rec-badge--client">Client Feedback Placeholder</span>
+              <div class="rec-card__profile">
+                <span class="rec-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                <div class="rec-card__meta">
+                  <span class="rec-card__name">Name Placeholder</span>
+                  <span class="rec-card__designation">Designation Placeholder</span>
+                  <span class="rec-card__company">Company Placeholder</span>
+                </div>
+              </div>
+              <p class="rec-card__text">Recommendation placeholder. Client appreciation will be documented here once shared.</p>
+              <div class="rec-card__foot">
+                <span class="rec-card__date">Date Placeholder</span>
+                <span class="rec-verify rec-verify--pending"><span class="rec-verify__dot" aria-hidden="true"></span>Pending Verification</span>
+              </div>
+              <div class="rec-card__actions">
+                <a href="#" class="btn-rec" aria-label="View client feedback details">
+                  <i class="fa-solid fa-briefcase" aria-hidden="true"></i>Client
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 3 · LEADERSHIP IMPACT ======== -->
+        <div class="rec-panel">
+          <div class="rec-panel__head" data-aos="fade-up">
+            <span class="rec-panel__index">03</span>
+            <div>
+              <h3 class="rec-panel__title">Leadership <span class="section__accent">Impact</span></h3>
+              <p class="rec-panel__sub">The areas where leadership translates into measurable outcomes.</p>
+            </div>
+          </div>
+          <div class="rec-grid rec-grid--4">
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-user-graduate"></i></span>
+              <h4 class="rec-tile__title">Mentored Team Members</h4>
+              <p class="rec-tile__desc">Guided engineers and designers to grow confidence, skill and ownership.</p>
+            </article>
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-pen-ruler"></i></span>
+              <h4 class="rec-tile__title">Design Reviews</h4>
+              <p class="rec-tile__desc">Raising visual and interaction quality through regular, constructive reviews.</p>
+            </article>
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+              <h4 class="rec-tile__title">Code Reviews</h4>
+              <p class="rec-tile__desc">Maintaining clean, maintainable and performant code across teams.</p>
+            </article>
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+              <h4 class="rec-tile__title">Frontend Leadership</h4>
+              <p class="rec-tile__desc">Owning frontend direction, architecture and technical standards.</p>
+            </article>
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-people-arrows"></i></span>
+              <h4 class="rec-tile__title">Cross-functional Collaboration</h4>
+              <p class="rec-tile__desc">Bridging design, engineering and product to ship as one team.</p>
+            </article>
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-list-check"></i></span>
+              <h4 class="rec-tile__title">Project Planning</h4>
+              <p class="rec-tile__desc">Breaking ambition into realistic milestones with honest timelines.</p>
+            </article>
+            <article class="rec-tile" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+              <h4 class="rec-tile__title">Client Communication</h4>
+              <p class="rec-tile__desc">Translating stakeholder goals into clear, achievable engineering plans.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 4 · COLLABORATION HIGHLIGHTS ======== -->
+        <div class="rec-panel">
+          <div class="rec-panel__head" data-aos="fade-up">
+            <span class="rec-panel__index">04</span>
+            <div>
+              <h3 class="rec-panel__title">Collaboration <span class="section__accent">Highlights</span></h3>
+              <p class="rec-panel__sub">The cross-functional partners who make great products possible.</p>
+            </div>
+          </div>
+          <div class="rec-collab">
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-pen-nib" aria-hidden="true"></i>UI/UX Designers</span>
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-code" aria-hidden="true"></i>Frontend Developers</span>
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-server" aria-hidden="true"></i>Backend Developers</span>
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-bug-slash" aria-hidden="true"></i>QA Teams</span>
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-diagram-project" aria-hidden="true"></i>Product Managers</span>
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-briefcase" aria-hidden="true"></i>Business Stakeholders</span>
+            <span class="rec-chip" data-rec-reveal><i class="fa-solid fa-handshake" aria-hidden="true"></i>Clients</span>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 5 · PROFESSIONAL VALUES ======== -->
+        <div class="rec-panel">
+          <div class="rec-panel__head" data-aos="fade-up">
+            <span class="rec-panel__index">05</span>
+            <div>
+              <h3 class="rec-panel__title">Professional <span class="section__accent">Values</span></h3>
+              <p class="rec-panel__sub">The principles underlying every recommendation and working relationship.</p>
+            </div>
+          </div>
+          <div class="rec-grid rec-grid--4">
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-eye"></i></span>
+              <h4 class="rec-tile__title">Transparency</h4>
+              <p class="rec-tile__desc">Honest communication about progress, trade-offs and outcomes.</p>
+            </article>
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-user-check"></i></span>
+              <h4 class="rec-tile__title">Ownership</h4>
+              <p class="rec-tile__desc">Taking responsibility from first sketch to shipped product.</p>
+            </article>
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+              <h4 class="rec-tile__title">Communication</h4>
+              <p class="rec-tile__desc">Clear, timely and candid dialogue with every stakeholder.</p>
+            </article>
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-puzzle-piece"></i></span>
+              <h4 class="rec-tile__title">Problem Solving</h4>
+              <p class="rec-tile__desc">Breaking hard problems into pragmatic, buildable solutions.</p>
+            </article>
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+              <h4 class="rec-tile__title">Continuous Learning</h4>
+              <p class="rec-tile__desc">Always growing and keeping the craft current and sharp.</p>
+            </article>
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
+              <h4 class="rec-tile__title">Product Thinking</h4>
+              <p class="rec-tile__desc">Designing for real users and the outcomes that matter.</p>
+            </article>
+            <article class="rec-tile rec-tile--value" data-rec-reveal data-tilt>
+              <span class="rec-tile__icon" aria-hidden="true"><i class="fa-solid fa-gem"></i></span>
+              <h4 class="rec-tile__title">Engineering Excellence</h4>
+              <p class="rec-tile__desc">Pursuing quality in architecture, performance and detail.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 6 · RECOGNITION TIMELINE ======== -->
+        <div class="rec-panel">
+          <div class="rec-panel__head" data-aos="fade-up">
+            <span class="rec-panel__index">06</span>
+            <div>
+              <h3 class="rec-panel__title">Recognition <span class="section__accent">Timeline</span></h3>
+              <p class="rec-panel__sub">Milestones in how work is recognised — delivered, present and future.</p>
+            </div>
+          </div>
+          <div class="rec-timeline">
+            <div class="rec-timeline__rail" data-rec-rail aria-hidden="true"></div>
+            <ol class="rec-timeline__list">
+              <li class="rec-timeline__item" data-rec-milestone data-rec-reveal>
+                <span class="rec-timeline__node" aria-hidden="true"><i class="fa-solid fa-rocket"></i></span>
+                <div class="rec-timeline__card">
+                  <span class="rec-timeline__status rec-status--done">Delivered</span>
+                  <span class="rec-timeline__role">Successfully Delivered Projects</span>
+                  <p>Over one hundred digital products shipped end to end.</p>
+                </div>
+              </li>
+              <li class="rec-timeline__item" data-rec-milestone data-rec-reveal>
+                <span class="rec-timeline__node" aria-hidden="true"><i class="fa-solid fa-arrow-trend-up"></i></span>
+                <div class="rec-timeline__card">
+                  <span class="rec-timeline__status rec-status--done">Delivered</span>
+                  <span class="rec-timeline__role">Leadership Growth</span>
+                  <p>Seven-plus years leading teams across design and frontend.</p>
+                </div>
+              </li>
+              <li class="rec-timeline__item" data-rec-milestone data-rec-reveal>
+                <span class="rec-timeline__node" aria-hidden="true"><i class="fa-solid fa-lightbulb"></i></span>
+                <div class="rec-timeline__card">
+                  <span class="rec-timeline__status rec-status--ongoing">Ongoing</span>
+                  <span class="rec-timeline__role">Product Innovation</span>
+                  <p>Continuously shaping products with a designer-engineer perspective.</p>
+                </div>
+              </li>
+              <li class="rec-timeline__item" data-rec-milestone data-rec-reveal>
+                <span class="rec-timeline__node" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+                <div class="rec-timeline__card">
+                  <span class="rec-timeline__status rec-status--ongoing">Ongoing</span>
+                  <span class="rec-timeline__role">AI Learning Journey</span>
+                  <p>Exploring how AI reshapes the way quality products are built.</p>
+                </div>
+              </li>
+              <li class="rec-timeline__item" data-rec-milestone data-rec-reveal>
+                <span class="rec-timeline__node" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+                <div class="rec-timeline__card">
+                  <span class="rec-timeline__status rec-status--future">Future</span>
+                  <span class="rec-timeline__role">Future Recommendations</span>
+                  <p>New endorsements will be added here as they are received.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 7 · FUTURE RECOMMENDATION CTA ======== -->
+        <div class="rec-panel">
+          <div class="rec-cta" data-rec-reveal>
+            <div class="rec-cta__aura" aria-hidden="true"></div>
+            <span class="rec-cta__eyebrow">// future recommendation</span>
+            <h3 class="rec-cta__title">Let's Build Something <span class="section__accent">Great Together</span></h3>
+            <p class="rec-cta__desc">Have we worked together or collaborated in the past? A recommendation means a lot — and good things are worth building side by side.</p>
+            <div class="rec-cta__actions">
+              <a href="#" class="btn-magnetic btn-rec-cta btn-rec-cta--primary" data-magnetic data-ripple aria-label="Connect on LinkedIn">
+                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>Connect on LinkedIn
+              </a>
+              <a href="#" class="btn-magnetic btn-rec-cta btn-rec-cta--secondary" data-magnetic data-ripple aria-label="Send a recommendation">
+                <i class="fa-solid fa-pen" aria-hidden="true"></i>Send Recommendation
+              </a>
+              <a href="#contact" class="btn-magnetic btn-rec-cta btn-rec-cta--accent" data-magnetic data-ripple aria-label="Contact Me">
+                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>Contact Me
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+      [08-F5] KNOWLEDGE HUB & TECHNICAL INSIGHTS — article library,
+      video carousel, notes, experiments & future publishing placeholders.
+      (Placeholder-first: real posts/tutorials/notes can be added without
+      changing the layout.)
+      ================================================================ -->
+    <section id="knowledge-hub" class="section knowledge-hub" aria-labelledby="knowledge-hub-title">
+      <!-- Ambient background layer -->
+      <div class="hub-bg" aria-hidden="true">
+        <span class="hub-aurora hub-aurora--a"></span>
+        <span class="hub-aurora hub-aurora--b"></span>
+        <span class="hub-grid"></span>
+        <span class="hub-mesh"></span>
+        <span class="hub-orb hub-orb--one"></span>
+        <span class="hub-orb hub-orb--two"></span>
+        <span class="hub-orb hub-orb--three"></span>
+        <span class="hub-noise"></span>
+      </div>
+
+      <div class="container">
+        <div class="section__head" data-aos="fade-up">
+          <p class="section__eyebrow">// knowledge hub</p>
+          <h2 id="knowledge-hub-title" class="section__title">Knowledge <span class="section__accent">Hub</span></h2>
+          <p class="section__sub">Sharing ideas, technical learnings, frontend architecture, AI experiments and product development insights.</p>
+        </div>
+
+        <!-- ======== SECTION 1 · TOP FILTERS + SEARCH ======== -->
+        <div class="hub-toolbar" data-aos="fade-up">
+          <div class="hub-filters" role="group" aria-label="Filter articles by category">
+            <button type="button" class="hub-filter is-active" data-hub-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="hub-filter" data-hub-filter="frontend" aria-pressed="false">Frontend</button>
+            <button type="button" class="hub-filter" data-hub-filter="react" aria-pressed="false">React</button>
+            <button type="button" class="hub-filter" data-hub-filter="javascript" aria-pressed="false">JavaScript</button>
+            <button type="button" class="hub-filter" data-hub-filter="uiux" aria-pressed="false">UI/UX</button>
+            <button type="button" class="hub-filter" data-hub-filter="ai" aria-pressed="false">AI</button>
+            <button type="button" class="hub-filter" data-hub-filter="python" aria-pressed="false">Python</button>
+            <button type="button" class="hub-filter" data-hub-filter="django" aria-pressed="false">Django</button>
+            <button type="button" class="hub-filter" data-hub-filter="career" aria-pressed="false">Career</button>
+            <button type="button" class="hub-filter" data-hub-filter="opensource" aria-pressed="false">Open Source</button>
+            <button type="button" class="hub-filter" data-hub-filter="tutorials" aria-pressed="false">Tutorials</button>
+          </div>
+          <div class="hub-search">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" data-hub-search placeholder="Search by title, technology or category..." aria-label="Search articles" />
+            <button type="button" class="hub-search__clear" data-hub-clear aria-label="Clear search"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 2 · ARTICLE CARDS (masonry) ======== -->
+        <div class="hub-panel">
+          <div class="hub-panel__head" data-aos="fade-up">
+            <span class="hub-panel__index">01</span>
+            <div>
+              <h3 class="hub-panel__title">Latest <span class="section__accent">Articles</span></h3>
+              <p class="hub-panel__sub">Placeholder drafts across frontend, web development and machine learning.</p>
+            </div>
+          </div>
+          <div class="hub-masonry" aria-live="polite">
+            <article class="hub-card" data-hub-card data-hub-title="Building Scalable React Applications" data-hub-cat="react frontend tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb hub-card__thumb--degrade"><i class="fa-brands fa-react"></i></span>
+                <span class="hub-card__cat">React</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>9 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Building Scalable React Applications</h4>
+                <p class="hub-card__desc">Architecture patterns, component boundaries and state management for React apps that stay maintainable as they grow.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">React</span><span class="hub-tag">Architecture</span><span class="hub-tag">Scalability</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Building Scalable React Applications"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Building Scalable React Applications"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Building Scalable React Applications">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Modern UI/UX Design Systems" data-hub-cat="uiux frontend" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-object-group"></i></span>
+                <span class="hub-card__cat">UI/UX</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>7 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Modern UI/UX Design Systems</h4>
+                <p class="hub-card__desc">Tokens, primitives and component APIs — building calm, consistent products at scale without losing design freedom.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Design Systems</span><span class="hub-tag">Tokens</span><span class="hub-tag">UI/UX</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Modern UI/UX Design Systems"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Modern UI/UX Design Systems"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Modern UI/UX Design Systems">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Improving Frontend Performance" data-hub-cat="frontend javascript tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-gauge-high"></i></span>
+                <span class="hub-card__cat">Frontend</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>8 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Improving Frontend Performance</h4>
+                <p class="hub-card__desc">Core Web Vitals, code-splitting and rendering strategies that turn a functioning app into a fast, delightful one.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Performance</span><span class="hub-tag">Core Web Vitals</span><span class="hub-tag">JavaScript</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Improving Frontend Performance"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Improving Frontend Performance"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Improving Frontend Performance">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Creating Enterprise Dashboards" data-hub-cat="frontend uiux" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="hub-card__cat">Frontend</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>6 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Creating Enterprise Dashboards</h4>
+                <p class="hub-card__desc">Turning dense operational data into readable, decision-ready control rooms with clear visual hierarchy.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Dashboards</span><span class="hub-tag">Data Viz</span><span class="hub-tag">Enterprise</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Creating Enterprise Dashboards"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Creating Enterprise Dashboards"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Creating Enterprise Dashboards">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="React Hooks Best Practices" data-hub-cat="react javascript tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-equals"></i></span>
+                <span class="hub-card__cat">React</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>10 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">React Hooks Best Practices</h4>
+                <p class="hub-card__desc">Clean custom hooks, dependency discipline and avoiding the pitfalls that silently break large React apps.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Hooks</span><span class="hub-tag">React</span><span class="hub-tag">JavaScript</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark React Hooks Best Practices"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share React Hooks Best Practices"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read React Hooks Best Practices">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="REST API Integration Guide" data-hub-cat="javascript django tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-plug-circle-bolt"></i></span>
+                <span class="hub-card__cat">JavaScript</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>7 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">REST API Integration Guide</h4>
+                <p class="hub-card__desc">Modelling API clients, handling loading and error state cleanly, and keeping the frontend safe from backend churn.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">REST APIs</span><span class="hub-tag">Django</span><span class="hub-tag">JavaScript</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark REST API Integration Guide"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share REST API Integration Guide"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read REST API Integration Guide">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Next.js Learning Journey" data-hub-cat="react frontend tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-arrow-up-right-dots"></i></span>
+                <span class="hub-card__cat">Next.js</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>6 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Next.js Learning Journey</h4>
+                <p class="hub-card__desc">Practical notes on the App Router, server components and full-stack React workflows learned hands-on.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Next.js</span><span class="hub-tag">App Router</span><span class="hub-tag">React</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Next.js Learning Journey"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Next.js Learning Journey"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Next.js Learning Journey">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="TypeScript Notes" data-hub-cat="typescript javascript frontend" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-shield-halved"></i></span>
+                <span class="hub-card__cat">TypeScript</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>5 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">TypeScript Notes</h4>
+                <p class="hub-card__desc">Strict typing, useful utilities and patterns for type-safe design in real-world frontend projects.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">TypeScript</span><span class="hub-tag">Types</span><span class="hub-tag">JavaScript</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark TypeScript Notes"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share TypeScript Notes"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read TypeScript Notes">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Running Local LLMs using Ollama" data-hub-cat="ai python tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-microchip"></i></span>
+                <span class="hub-card__cat">AI</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>8 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Running Local LLMs using Ollama</h4>
+                <p class="hub-card__desc">Getting capable models running on a local machine — setup, prompt testing and working with models offline.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Ollama</span><span class="hub-tag">LLMs</span><span class="hub-tag">Python</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Running Local LLMs using Ollama"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Running Local LLMs using Ollama"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Running Local LLMs using Ollama">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="LM Studio Setup Guide" data-hub-cat="ai tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-desktop"></i></span>
+                <span class="hub-card__cat">AI</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>6 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">LM Studio Setup Guide</h4>
+                <p class="hub-card__desc">A walkthrough for installing and configuring LM Studio to chat with and evaluate local models easily.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">LM Studio</span><span class="hub-tag">Local Models</span><span class="hub-tag">AI</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark LM Studio Setup Guide"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share LM Studio Setup Guide"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read LM Studio Setup Guide">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Hugging Face Models on Local Machine" data-hub-cat="ai python" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-brain"></i></span>
+                <span class="hub-card__cat">AI</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>9 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Hugging Face Models on Local Machine</h4>
+                <p class="hub-card__desc">Pulling and running open-source models locally with the Transformers library — from download to inference.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Hugging Face</span><span class="hub-tag">Transformers</span><span class="hub-tag">Python</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Hugging Face Models on Local Machine"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Hugging Face Models on Local Machine"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Hugging Face Models on Local Machine">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="ComfyUI AI Workflow Experiments" data-hub-cat="ai tutorials" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                <span class="hub-card__cat">AI</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>7 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">ComfyUI AI Workflow Experiments</h4>
+                <p class="hub-card__desc">Building node-based generative workflows and learning how to compose reusable AI pipelines.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">ComfyUI</span><span class="hub-tag">Generative AI</span><span class="hub-tag">AI</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark ComfyUI AI Workflow Experiments"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share ComfyUI AI Workflow Experiments"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read ComfyUI AI Workflow Experiments">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Prompt Engineering Notes" data-hub-cat="ai" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-keyboard"></i></span>
+                <span class="hub-card__cat">AI</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>5 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Prompt Engineering Notes</h4>
+                <p class="hub-card__desc">Patterns for giving models clear context, structure and constraints to produce reliably useful output.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Prompting</span><span class="hub-tag">LLMs</span><span class="hub-tag">AI</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Prompt Engineering Notes"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Prompt Engineering Notes"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Prompt Engineering Notes">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="AI Assisted Frontend Development" data-hub-cat="ai frontend react" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb"><i class="fa-solid fa-robot"></i></span>
+                <span class="hub-card__cat">AI</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>8 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">AI Assisted Frontend Development</h4>
+                <p class="hub-card__desc">How AI coding tools fit into a real frontend workflow — where they help and where human judgment still matters.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">AI</span><span class="hub-tag">Frontend</span><span class="hub-tag">React</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark AI Assisted Frontend Development"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share AI Assisted Frontend Development"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read AI Assisted Frontend Development">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="hub-card" data-hub-card data-hub-title="Career Journey to Product Companies" data-hub-cat="career" data-hub-reveal data-tilt>
+              <div class="hub-card__cover" aria-hidden="true">
+                <span class="hub-card__thumb hub-card__thumb--career"><i class="fa-solid fa-briefcase"></i></span>
+                <span class="hub-card__cat">Career</span>
+              </div>
+              <div class="hub-card__body">
+                <div class="hub-card__meta">
+                  <span class="hub-card__time"><i class="fa-solid fa-clock" aria-hidden="true"></i>6 min read</span>
+                  <span class="hub-card__date">Draft · Publish Date TBD</span>
+                </div>
+                <h4 class="hub-card__title">Career Journey to Product Companies</h4>
+                <p class="hub-card__desc">Lessons on positioning engineering craft to land and thrive in global product-driven companies.</p>
+                <div class="hub-card__tags">
+                  <span class="hub-tag">Career</span><span class="hub-tag">Growth</span><span class="hub-tag">Product</span>
+                </div>
+                <div class="hub-card__foot">
+                  <span class="hub-author"><span class="hub-author__avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>Anis</span>
+                  <div class="hub-card__actions">
+                    <button type="button" class="hub-card__action" data-bookmark aria-pressed="false" aria-label="Bookmark Career Journey to Product Companies"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>
+                    <button type="button" class="hub-card__action" data-share aria-label="Share Career Journey to Product Companies"><i class="fa-regular fa-share-nodes" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="hub-card__read">
+                  <a href="#" class="hub-card__link" aria-label="Read Career Journey to Product Companies">Read More<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </article>
+          </div>
+          <p class="hub-empty" data-hub-empty hidden>No articles match your search or filter yet.</p>
+        </div>
+
+        <!-- ======== SECTION 2b · FEATURED ARTICLE ======== -->
+        <div class="hub-panel">
+          <div class="hub-featured" data-hub-reveal>
+            <div class="hub-featured__banner" aria-hidden="true">
+              <span class="hub-featured__gradient"></span>
+              <span class="hub-featured__icon"><i class="fa-solid fa-crown"></i></span>
+            </div>
+            <div class="hub-featured__body">
+              <span class="hub-featured__label"><i class="fa-solid fa-star" aria-hidden="true"></i>Featured Article</span>
+              <h3 class="hub-featured__title">The Evolution of the Modern Frontend</h3>
+              <p class="hub-featured__desc">From static pages to component-driven, AI-assisted and performance-first experiences — a long-view reflection on where frontend is heading.</p>
+              <div class="hub-featured__tags">
+                <span class="hub-tag">Frontend</span><span class="hub-tag">Architecture</span><span class="hub-tag">AI</span><span class="hub-tag">Career</span>
+              </div>
+              <a href="#" class="hub-featured__cta" data-magnetic data-ripple aria-label="Read the featured article">Read the Article<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 3 · VIDEO CONTENT CAROUSEL ======== -->
+        <div class="hub-panel">
+          <div class="hub-panel__head" data-aos="fade-up">
+            <span class="hub-panel__index">02</span>
+            <div>
+              <h3 class="hub-panel__title">Video <span class="section__accent">Content</span></h3>
+              <p class="hub-panel__sub">Future YouTube tutorials — placeholder slots for the channels planned.</p>
+            </div>
+          </div>
+          <div class="swiper hub-videos" data-swiper="hub-videos">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="hub-video" data-hub-reveal>
+                  <div class="hub-video__thumb" aria-hidden="true"><i class="fa-brands fa-youtube"></i><span class="hub-video__play"><i class="fa-solid fa-play" aria-hidden="true"></i></span></div>
+                  <span class="hub-video__cat">React Tutorials</span>
+                  <h4 class="hub-video__title">Series Placeholder</h4>
+                  <p class="hub-video__desc">Video placeholder. Tutorial series planned but not published yet.</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="hub-video" data-hub-reveal>
+                  <div class="hub-video__thumb" aria-hidden="true"><i class="fa-brands fa-youtube"></i><span class="hub-video__play"><i class="fa-solid fa-play" aria-hidden="true"></i></span></div>
+                  <span class="hub-video__cat">Frontend Tips</span>
+                  <h4 class="hub-video__title">Series Placeholder</h4>
+                  <p class="hub-video__desc">Video placeholder. Short frontend tips planned but not published yet.</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="hub-video" data-hub-reveal>
+                  <div class="hub-video__thumb" aria-hidden="true"><i class="fa-brands fa-youtube"></i><span class="hub-video__play"><i class="fa-solid fa-play" aria-hidden="true"></i></span></div>
+                  <span class="hub-video__cat">UI/UX Tips</span>
+                  <h4 class="hub-video__title">Series Placeholder</h4>
+                  <p class="hub-video__desc">Video placeholder. Design workflow tips planned but not published yet.</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="hub-video" data-hub-reveal>
+                  <div class="hub-video__thumb" aria-hidden="true"><i class="fa-brands fa-youtube"></i><span class="hub-video__play"><i class="fa-solid fa-play" aria-hidden="true"></i></span></div>
+                  <span class="hub-video__cat">AI Tutorials</span>
+                  <h4 class="hub-video__title">Series Placeholder</h4>
+                  <p class="hub-video__desc">Video placeholder. AI experimentation tutorials planned but not published yet.</p>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="hub-video" data-hub-reveal>
+                  <div class="hub-video__thumb" aria-hidden="true"><i class="fa-brands fa-youtube"></i><span class="hub-video__play"><i class="fa-solid fa-play" aria-hidden="true"></i></span></div>
+                  <span class="hub-video__cat">Travel &amp; Tech Vlogs</span>
+                  <h4 class="hub-video__title">Series Placeholder</h4>
+                  <p class="hub-video__desc">Video placeholder. Vlogs combining travel and tech planned but not published yet.</p>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-pagination hub-videos__pagination" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 4 · LINKEDIN POSTS ======== -->
+        <div class="hub-panel">
+          <div class="hub-panel__head" data-aos="fade-up">
+            <span class="hub-panel__index">03</span>
+            <div>
+              <h3 class="hub-panel__title">LinkedIn <span class="section__accent">Posts</span></h3>
+              <p class="hub-panel__sub">Placeholder feed for future career updates, launches and learning news.</p>
+            </div>
+          </div>
+          <div class="hub-posts">
+            <article class="hub-post" data-hub-reveal>
+              <span class="hub-post__icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
+              <div class="hub-post__body">
+                <span class="hub-post__label">LinkedIn Article Placeholder</span>
+                <h4 class="hub-post__title">Career Updates</h4>
+                <p class="hub-post__desc">Post placeholder. Future career milestones and announcements will appear here.</p>
+                <span class="hub-post__date">Planned</span>
+              </div>
+            </article>
+            <article class="hub-post" data-hub-reveal>
+              <span class="hub-post__icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
+              <div class="hub-post__body">
+                <span class="hub-post__label">LinkedIn Article Placeholder</span>
+                <h4 class="hub-post__title">Project Launches</h4>
+                <p class="hub-post__desc">Post placeholder. Completed product launches and case highlights will appear here.</p>
+                <span class="hub-post__date">Planned</span>
+              </div>
+            </article>
+            <article class="hub-post" data-hub-reveal>
+              <span class="hub-post__icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
+              <div class="hub-post__body">
+                <span class="hub-post__label">LinkedIn Article Placeholder</span>
+                <h4 class="hub-post__title">Learning Updates</h4>
+                <p class="hub-post__desc">Post placeholder. New certifications, courses and growth milestones will appear here.</p>
+                <span class="hub-post__date">Planned</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 5 · LEARNING JOURNAL (timeline) ======== -->
+        <div class="hub-panel">
+          <div class="hub-panel__head" data-aos="fade-up">
+            <span class="hub-panel__index">04</span>
+            <div>
+              <h3 class="hub-panel__title">Learning <span class="section__accent">Journal</span></h3>
+              <p class="hub-panel__sub">A living timeline of notes, books, courses and experiments.</p>
+            </div>
+          </div>
+          <div class="hub-journal">
+            <div class="hub-journal__rail" data-hub-journal-rail aria-hidden="true"></div>
+            <ol class="hub-journal__list">
+              <li class="hub-journal__item" data-hub-journal data-hub-reveal>
+                <span class="hub-journal__node" aria-hidden="true"><i class="fa-solid fa-check"></i></span>
+                <div class="hub-journal__card">
+                  <span class="hub-journal__status hub-status--done">Recently Learned</span>
+                  <span class="hub-journal__role">Frontend Architecture &amp; Design Systems</span>
+                  <p>Consolidated tokens, primitives and scaling practices into production-ready patterns.</p>
+                </div>
+              </li>
+              <li class="hub-journal__item" data-hub-journal data-hub-reveal>
+                <span class="hub-journal__node" aria-hidden="true"><i class="fa-solid fa-spinner"></i></span>
+                <div class="hub-journal__card">
+                  <span class="hub-journal__status hub-status--exploring">Currently Exploring</span>
+                  <span class="hub-journal__role">Next.js App Router &amp; Local AI Models</span>
+                  <p>Hands-on with server components and running open-source models locally.</p>
+                </div>
+              </li>
+              <li class="hub-journal__item" data-hub-journal data-hub-reveal>
+                <span class="hub-journal__node" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+                <div class="hub-journal__card">
+                  <span class="hub-journal__status hub-status--goal">Next Goal</span>
+                  <span class="hub-journal__role">Certification Track &amp; Python/Django</span>
+                  <p>Formalising learning through structured certifications and backend foundations.</p>
+                </div>
+              </li>
+            </ol>
+            <div class="hub-journal__study">
+              <div class="hub-study">
+                <span class="hub-study__icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+                <h4 class="hub-study__title">Books</h4>
+                <p class="hub-study__desc">Placeholder — reading list to be added.</p>
+              </div>
+              <div class="hub-study">
+                <span class="hub-study__icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></span>
+                <h4 class="hub-study__title">Courses</h4>
+                <p class="hub-study__desc">Placeholder — course list to be added.</p>
+              </div>
+              <div class="hub-study">
+                <span class="hub-study__icon" aria-hidden="true"><i class="fa-solid fa-flask"></i></span>
+                <h4 class="hub-study__title">Experiments</h4>
+                <p class="hub-study__desc">Placeholder — experiment log to be added.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 6 · OPEN SOURCE NOTES ======== -->
+        <div class="hub-panel">
+          <div class="hub-panel__head" data-aos="fade-up">
+            <span class="hub-panel__index">05</span>
+            <div>
+              <h3 class="hub-panel__title">Open <span class="section__accent">Source</span> Notes</h3>
+              <p class="hub-panel__sub">Notes and snippets shared openly with the community.</p>
+            </div>
+          </div>
+          <div class="hub-grid-oss">
+            <article class="hub-oss" data-hub-reveal data-tilt>
+              <span class="hub-oss__icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
+              <h4 class="hub-oss__title">React Components</h4>
+              <p class="hub-oss__desc">Reusable component notes shared as open snippets.</p>
+            </article>
+            <article class="hub-oss" data-hub-reveal data-tilt>
+              <span class="hub-oss__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
+              <h4 class="hub-oss__title">Reusable UI</h4>
+              <p class="hub-oss__desc">UI primitives and patterns released for others to build on.</p>
+            </article>
+            <article class="hub-oss" data-hub-reveal data-tilt>
+              <span class="hub-oss__icon" aria-hidden="true"><i class="fa-solid fa-arrow-trend-up"></i></span>
+              <h4 class="hub-oss__title">Portfolio Updates</h4>
+              <p class="hub-oss__desc">Changelog notes behind this very portfolio.</p>
+            </article>
+            <article class="hub-oss" data-hub-reveal data-tilt>
+              <span class="hub-oss__icon" aria-hidden="true"><i class="fa-solid fa-diagram-project"></i></span>
+              <h4 class="hub-oss__title">GitHub Projects</h4>
+              <p class="hub-oss__desc">Public repositories and experiment logs.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== SECTION 7 · AI EXPERIMENTS ======== -->
+        <div class="hub-panel">
+          <div class="hub-panel__head" data-aos="fade-up">
+            <span class="hub-panel__index">06</span>
+            <div>
+              <h3 class="hub-panel__title">AI <span class="section__accent">Experiments</span></h3>
+              <p class="hub-panel__sub">Hands-on explorations across local models and generative workflows.</p>
+            </div>
+          </div>
+          <div class="hub-grid-ai">
+            <article class="hub-ai" data-hub-reveal data-tilt>
+              <span class="hub-ai__icon" aria-hidden="true"><i class="fa-solid fa-keyboard"></i></span>
+              <h4 class="hub-ai__title">Prompt Engineering</h4>
+              <p class="hub-ai__desc">Notes on structuring effective prompts for reliable output.</p>
+            </article>
+            <article class="hub-ai" data-hub-reveal data-tilt>
+              <span class="hub-ai__icon" aria-hidden="true"><i class="fa-solid fa-microchip"></i></span>
+              <h4 class="hub-ai__title">Local LLM Testing</h4>
+              <p class="hub-ai__desc">Evaluating models on local hardware for privacy and speed.</p>
+            </article>
+            <article class="hub-ai" data-hub-reveal data-tilt>
+              <span class="hub-ai__icon" aria-hidden="true"><i class="fa-solid fa-robot"></i></span>
+              <h4 class="hub-ai__title">AI Coding Workflow</h4>
+              <p class="hub-ai__desc">Integrating AI tools into a practical frontend pipeline.</p>
+            </article>
+            <article class="hub-ai" data-hub-reveal data-tilt>
+              <span class="hub-ai__icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+              <h4 class="hub-ai__title">Open Source Models</h4>
+              <p class="hub-ai__desc">Running and comparing capable open-weight models.</p>
+            </article>
+            <article class="hub-ai" data-hub-reveal data-tilt>
+              <span class="hub-ai__icon" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+              <h4 class="hub-ai__title">ComfyUI Workflows</h4>
+              <p class="hub-ai__desc">Building reusable node-based generative pipelines.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ======== NEWSLETTER + CTA ======== -->
+        <div class="hub-newsletter-wrap">
+          <div class="rec-grid">
+            <div class="hub-newsletter" data-hub-reveal>
+              <div class="hub-newsletter__aura" aria-hidden="true"></div>
+              <span class="hub-newsletter__eyebrow">// stay updated</span>
+              <h3 class="hub-newsletter__title">Stay <span class="section__accent">Updated</span></h3>
+              <p class="hub-newsletter__desc">Subscribe to get new articles, experiments and updates as they land.</p>
+              <form class="hub-newsletter__form" data-newsletter aria-label="Newsletter subscription">
+                <label class="hub-newsletter__label" for="newsletter-email">Email Address</label>
+                <div class="hub-newsletter__row">
+                  <input type="email" id="newsletter-email" name="email" placeholder="you@example.com" autocomplete="email" required />
+                  <button type="submit" class="hub-newsletter__btn" data-ripple aria-label="Subscribe">Subscribe<i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
+                </div>
+              </form>
+              <p class="hub-newsletter__note">Placeholder — subscription will be wired to a real email provider later.</p>
+            </div>
+
+            <div class="hub-connect" data-hub-reveal>
+              <div class="hub-connect__aura" aria-hidden="true"></div>
+              <span class="hub-connect__eyebrow">// let's connect</span>
+              <h3 class="hub-connect__title">Interested in <span class="section__accent">Frontend, Product Design &amp; AI?</span></h3>
+              <p class="hub-connect__desc">Open to collaborations, interesting problems and thoughtful conversations.</p>
+              <div class="hub-connect__actions">
+                <a href="#" class="btn-magnetic hub-connect__btn hub-connect__btn--linkedin" data-magnetic data-ripple aria-label="Connect on LinkedIn">
+                  <i class="fa-brands fa-linkedin" aria-hidden="true"></i>LinkedIn
+                </a>
+                <a href="#" class="btn-magnetic hub-connect__btn hub-connect__btn--github" data-magnetic data-ripple aria-label="View GitHub">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i>GitHub
+                </a>
+                <a href="#contact" class="btn-magnetic hub-connect__btn hub-connect__btn--primary" data-magnetic data-ripple aria-label="Send an email">
+                  <i class="fa-solid fa-envelope" aria-hidden="true"></i>Email
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
       [08-G] GITHUB — live repository stats
       ================================================================ -->
     <section id="github" class="section section--alt" aria-labelledby="github-title">
@@ -3346,68 +5573,239 @@
       </div>
     </section>
 
-    <!-- ================================================================
-      [08-L] CONTACT — reach out terminal
+<!-- ================================================================
+      [08-L] CONTACT & HIRE ME — premium hiring experience
       ================================================================ -->
-    <section id="contact" class="section" aria-labelledby="contact-title">
+    <section id="contact" class="section contact-hire" aria-labelledby="contact-title">
+      <!-- Ambient background layer -->
+      <div class="hire-bg" aria-hidden="true">
+        <span class="hire-aurora hire-aurora--a"></span>
+        <span class="hire-aurora hire-aurora--b"></span>
+        <span class="hire-grid"></span>
+        <span class="hire-mesh"></span>
+        <span class="hire-orb hire-orb--one"></span>
+        <span class="hire-orb hire-orb--two"></span>
+        <span class="hire-orb hire-orb--three"></span>
+        <span class="hire-noise"></span>
+      </div>
+
       <div class="container">
         <div class="section__head" data-aos="fade-up">
-          <p class="section__eyebrow">// contact</p>
-          <h2 id="contact-title" class="section__title">Open a <span class="section__accent">Channel</span></h2>
-          <p class="section__sub">Send a transmission — response guaranteed.</p>
+          <p class="section__eyebrow">// contact &amp; hire me</p>
+          <h2 id="contact-title" class="section__title">Let's Build Something <span class="section__accent">Amazing Together</span></h2>
+          <p class="section__sub">Available for Frontend Engineering, React.js Development, UI/UX Design, Product Development and AI-powered Digital Solutions.</p>
         </div>
 
-        <div class="row g-5">
-          <!-- Contact details -->
+        <!-- ================= SPLIT: PROFILE + FORM ================= -->
+        <div class="row g-5 align-items-stretch">
+          <!-- Left · Contact information -->
           <div class="col-lg-5" data-aos="fade-right">
-            <ul class="contact__list list-unstyled">
-              <li class="contact__item">
-                <span class="contact__icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
-                <div>
-                  <span class="contact__label">Email</span>
-                  <a href="mailto:hello@anis-os.dev" class="contact__value">hello@anis-os.dev</a>
+            <!-- Profile glass card -->
+            <article class="hire-profile" data-hire-reveal data-tilt>
+              <div class="hire-profile__glow" aria-hidden="true"></div>
+              <div class="hire-profile__top">
+                <span class="hire-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                <div class="hire-profile__head">
+                  <h3 class="hire-profile__name">Anis Ansari</h3>
+                  <p class="hire-profile__role">Senior Frontend Developer · React.js · UI/UX Manager · AI Explorer</p>
+                  <p class="hire-profile__location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Mumbai, India</p>
                 </div>
-              </li>
-              <li class="contact__item">
-                <span class="contact__icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
-                <div>
-                  <span class="contact__label">Location</span>
-                  <span class="contact__value">Earth — Remote ready</span>
+              </div>
+              <div class="hire-profile__badges">
+                <span class="hire-status hire-status--open"><span class="hire-status__dot" aria-hidden="true"></span>Open to Work</span>
+                <span class="hire-status hire-status--reloc"><span class="hire-status__dot" aria-hidden="true"></span>Open to Relocation</span>
+              </div>
+              <p class="hire-profile__availability"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i>Available for Interviews</p>
+              <div class="hire-profile__metrics">
+                <div class="hire-metric">
+                  <span class="hire-metric__value">12+</span>
+                  <span class="hire-metric__label">Years</span>
                 </div>
-              </li>
-              <li class="contact__item">
-                <span class="contact__icon"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
-                <div>
-                  <span class="contact__label">Preferred channels</span>
-                  <span class="contact__value">Email · GitHub · X</span>
+                <div class="hire-metric">
+                  <span class="hire-metric__value">100+</span>
+                  <span class="hire-metric__label">Projects</span>
                 </div>
-              </li>
-            </ul>
+                <div class="hire-metric">
+                  <span class="hire-metric__value">7+</span>
+                  <span class="hire-metric__label">Leadership</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Contact cards -->
+            <div class="hire-cards">
+              <article class="hire-card" data-hire-reveal data-tilt>
+                <span class="hire-card__icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+                <div class="hire-card__body">
+                  <span class="hire-card__label">Email</span>
+                  <span class="hire-card__value" data-copy-value>hello@anis-os.dev</span>
+                </div>
+                <div class="hire-card__actions">
+                  <button type="button" class="hire-card__btn" data-copy data-tooltip="Copy email" aria-label="Copy email address"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+                  <a href="mailto:hello@anis-os.dev" class="hire-card__btn" data-tooltip="Open email" aria-label="Open email client"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </div>
+              </article>
+              <article class="hire-card" data-hire-reveal data-tilt>
+                <span class="hire-card__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+                <div class="hire-card__body">
+                  <span class="hire-card__label">Phone</span>
+                  <span class="hire-card__value hire-card__value--placeholder" data-copy-value>Phone Number Placeholder</span>
+                </div>
+                <div class="hire-card__actions">
+                  <button type="button" class="hire-card__btn" data-copy data-tooltip="Copy phone" aria-label="Copy phone number"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+                  <a href="tel:" class="hire-card__btn" data-tooltip="Call" aria-label="Call (placeholder)"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
+                </div>
+              </article>
+              <article class="hire-card" data-hire-reveal data-tilt>
+                <span class="hire-card__icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></span>
+                <div class="hire-card__body">
+                  <span class="hire-card__label">LinkedIn</span>
+                  <span class="hire-card__value" data-copy-value>linkedin.com/in/anisansari</span>
+                </div>
+                <div class="hire-card__actions">
+                  <button type="button" class="hire-card__btn" data-copy data-tooltip="Copy LinkedIn" aria-label="Copy LinkedIn URL"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+                  <a href="#" class="hire-card__btn" data-tooltip="Open LinkedIn" aria-label="Open LinkedIn profile"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </div>
+              </article>
+              <article class="hire-card" data-hire-reveal data-tilt>
+                <span class="hire-card__icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
+                <div class="hire-card__body">
+                  <span class="hire-card__label">GitHub</span>
+                  <span class="hire-card__value" data-copy-value>github.com/anis-ansari</span>
+                </div>
+                <div class="hire-card__actions">
+                  <button type="button" class="hire-card__btn" data-copy data-tooltip="Copy GitHub" aria-label="Copy GitHub URL"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+                  <a href="#" class="hire-card__btn" data-tooltip="Open GitHub" aria-label="Open GitHub profile"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </div>
+              </article>
+              <article class="hire-card" data-hire-reveal data-tilt>
+                <span class="hire-card__icon" aria-hidden="true"><i class="fa-solid fa-globe"></i></span>
+                <div class="hire-card__body">
+                  <span class="hire-card__label">Portfolio</span>
+                  <span class="hire-card__value hire-card__value--placeholder" data-copy-value>Portfolio URL Placeholder</span>
+                </div>
+                <div class="hire-card__actions">
+                  <button type="button" class="hire-card__btn" data-copy data-tooltip="Copy portfolio" aria-label="Copy portfolio URL"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+                  <a href="#" class="hire-card__btn" data-tooltip="Open portfolio" aria-label="Open portfolio"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+                </div>
+              </article>
+              <article class="hire-card" data-hire-reveal data-tilt>
+                <span class="hire-card__icon" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></span>
+                <div class="hire-card__body">
+                  <span class="hire-card__label">Location</span>
+                  <span class="hire-card__value" data-copy-value>Mumbai, India</span>
+                </div>
+                <div class="hire-card__actions">
+                  <button type="button" class="hire-card__btn" data-copy data-tooltip="Copy location" aria-label="Copy location"><i class="fa-solid fa-copy" aria-hidden="true"></i></button>
+                  <a href="#hire-map" class="hire-card__btn" data-tooltip="Open map" aria-label="Open map"><i class="fa-solid fa-map" aria-hidden="true"></i></a>
+                </div>
+              </article>
+            </div>
+
+            <!-- Quick action buttons -->
+            <div class="hire-actions">
+              <a href="#" class="btn-magnetic hire-action hire-action--primary" data-magnetic data-ripple aria-label="Download resume">
+                <i class="fa-solid fa-download" aria-hidden="true"></i>Download Resume
+              </a>
+              <a href="#" class="btn-magnetic hire-action" data-magnetic data-ripple aria-label="Schedule interview on Calendly">
+                <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>Schedule Interview
+              </a>
+              <a href="mailto:hello@anis-os.dev" class="btn-magnetic hire-action" data-magnetic data-ripple aria-label="Email me">
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>Email Me
+              </a>
+              <a href="#" class="btn-magnetic hire-action" data-magnetic data-ripple aria-label="Open LinkedIn">
+                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>Open LinkedIn
+              </a>
+              <a href="#" class="btn-magnetic hire-action" data-magnetic data-ripple aria-label="Open GitHub">
+                <i class="fa-brands fa-github" aria-hidden="true"></i>Open GitHub
+              </a>
+            </div>
           </div>
 
-          <!-- Contact form -->
+          <!-- Right · Premium contact form -->
           <div class="col-lg-7" data-aos="fade-left">
-            <form class="contact-form" data-contact-form novalidate>
+            <form id="hire-form" class="contact-form hire-form" data-contact-form novalidate>
+              <div class="hire-form__glow" aria-hidden="true"></div>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label for="contact-name" class="form-label">Name</label>
-                  <input type="text" id="contact-name" name="name" class="form-control" placeholder="Jane Doe" autocomplete="name" required>
+                  <div class="field">
+                    <input type="text" id="hire-name" name="name" class="field__input" placeholder=" " autocomplete="name" required>
+                    <label for="hire-name" class="field__label">Full Name</label>
+                    <span class="field__error" role="alert">Please enter your name.</span>
+                  </div>
                 </div>
                 <div class="col-md-6">
-                  <label for="contact-email" class="form-label">Email</label>
-                  <input type="email" id="contact-email" name="email" class="form-control" placeholder="jane@company.com" autocomplete="email" required>
+                  <div class="field">
+                    <input type="text" id="hire-company" name="company" class="field__input" placeholder=" " autocomplete="organization">
+                    <label for="hire-company" class="field__label">Company</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field">
+                    <input type="email" id="hire-email" name="email" class="field__input" placeholder=" " autocomplete="email" required>
+                    <label for="hire-email" class="field__label">Email</label>
+                    <span class="field__error" role="alert">Please enter a valid email address.</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field">
+                    <input type="tel" id="hire-phone" name="phone" class="field__input" placeholder=" " autocomplete="tel">
+                    <label for="hire-phone" class="field__label">Phone</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field">
+                    <input type="text" id="hire-country" name="country" class="field__input" placeholder=" " autocomplete="country-name">
+                    <label for="hire-country" class="field__label">Country</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field">
+                    <input type="text" id="hire-subject" name="subject" class="field__input" placeholder=" " required>
+                    <label for="hire-subject" class="field__label">Subject</label>
+                    <span class="field__error" role="alert">This field is required.</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field field--select">
+                    <select id="hire-project-type" name="projectType" class="field__input field__select">
+                      <option value="" selected disabled>Select a project type</option>
+                      <option value="frontend-development">Frontend Development</option>
+                      <option value="react-development">React.js Development</option>
+                      <option value="uiux-design">UI/UX Design</option>
+                      <option value="admin-dashboard">Admin Dashboard</option>
+                      <option value="enterprise-web">Enterprise Web Application</option>
+                      <option value="wordpress">WordPress</option>
+                      <option value="ai-integration">AI Integration</option>
+                      <option value="consultation">Consultation</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <label for="hire-project-type" class="field__label">Project Type</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="field">
+                    <input type="text" id="hire-budget" name="budget" class="field__input" placeholder=" " inputmode="numeric">
+                    <label for="hire-budget" class="field__label">Budget (Optional)</label>
+                  </div>
                 </div>
                 <div class="col-12">
-                  <label for="contact-subject" class="form-label">Subject</label>
-                  <input type="text" id="contact-subject" name="subject" class="form-control" placeholder="Project inquiry">
+                  <div class="field">
+                    <input type="text" id="hire-timeline" name="timeline" class="field__input" placeholder=" ">
+                    <label for="hire-timeline" class="field__label">Timeline</label>
+                  </div>
                 </div>
                 <div class="col-12">
-                  <label for="contact-message" class="form-label">Message</label>
-                  <textarea id="contact-message" name="message" class="form-control" rows="5" placeholder="Tell me about your mission…" required></textarea>
+                  <div class="field">
+                    <textarea id="hire-message" name="message" class="field__input field__textarea" rows="5" placeholder=" " data-auto-grow maxlength="500" required></textarea>
+                    <label for="hire-message" class="field__label">Message</label>
+                    <span class="field__error" role="alert">Message must be at least 10 characters.</span>
+                    <span class="field__count" data-charcount data-for="hire-message">0 / 500</span>
+                  </div>
                 </div>
                 <div class="col-12 d-flex align-items-center gap-3">
-                  <button type="submit" class="btn btn-glow" data-form-submit>
-                    <i class="fa-solid fa-paper-plane me-2" aria-hidden="true"></i>Transmit
+                  <button type="submit" class="btn-magnetic hire-submit" data-form-submit data-magnetic data-ripple>
+                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>Send Message
                   </button>
                   <span class="contact-form__status" data-form-status role="status" aria-live="polite"></span>
                 </div>
@@ -3415,38 +5813,336 @@
             </form>
           </div>
         </div>
+
+        <!-- ================= SOCIAL MEDIA ================= -->
+        <div class="hire-block">
+          <div class="hire-block__head" data-aos="fade-up">
+            <span class="hire-block__index">01</span>
+            <h3 class="hire-block__title">Social <span class="section__accent">Media</span></h3>
+          </div>
+          <div class="hire-socials">
+            <a href="#" class="hire-social" data-hire-reveal data-tilt aria-label="Open GitHub">
+              <i class="fa-brands fa-github" aria-hidden="true"></i><span>GitHub</span>
+            </a>
+            <a href="#" class="hire-social" data-hire-reveal data-tilt aria-label="Open LinkedIn">
+              <i class="fa-brands fa-linkedin" aria-hidden="true"></i><span>LinkedIn</span>
+            </a>
+            <a href="#" class="hire-social" data-hire-reveal data-tilt aria-label="Open YouTube">
+              <i class="fa-brands fa-youtube" aria-hidden="true"></i><span>YouTube</span>
+            </a>
+            <a href="#" class="hire-social" data-hire-reveal data-tilt aria-label="Open Instagram">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i><span>Instagram</span>
+            </a>
+            <a href="#" class="hire-social hire-social--future" data-hire-reveal data-tilt aria-label="Future Medium">
+              <i class="fa-brands fa-medium" aria-hidden="true"></i><span>Medium</span><em>Future</em>
+            </a>
+            <a href="#" class="hire-social hire-social--future" data-hire-reveal data-tilt aria-label="Future Dev.to">
+              <i class="fa-brands fa-dev" aria-hidden="true"></i><span>Dev.to</span><em>Future</em>
+            </a>
+          </div>
+        </div>
+
+        <!-- ================= GOOGLE MAP + WHY HIRE ME ================= -->
+        <div class="row g-5 align-items-stretch">
+          <div class="col-lg-6">
+            <div class="hire-block">
+              <div class="hire-block__head" data-aos="fade-up">
+                <span class="hire-block__index">02</span>
+                <h3 class="hire-block__title">Location <span class="section__accent">Map</span></h3>
+              </div>
+              <div id="hire-map" class="hire-map" data-hire-reveal>
+                <div class="hire-map__placeholder" aria-hidden="true">
+                  <span class="hire-map__pin"><i class="fa-solid fa-location-dot"></i></span>
+                  <span class="hire-map__label">Mumbai, India</span>
+                  <span class="hire-map__note">Google Maps Embed Placeholder</span>
+                </div>
+                <a href="#" class="hire-map__open" aria-label="Open location in Google Maps">
+                  <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>Open in Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="hire-block">
+              <div class="hire-block__head" data-aos="fade-up">
+                <span class="hire-block__index">03</span>
+                <h3 class="hire-block__title">Why <span class="section__accent">Hire Me</span></h3>
+              </div>
+              <div class="hire-stats">
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-solid fa-briefcase"></i></span>
+                  <span class="hire-stat__value">12+</span>
+                  <span class="hire-stat__label">Years Experience</span>
+                </article>
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-solid fa-rocket"></i></span>
+                  <span class="hire-stat__value">100+</span>
+                  <span class="hire-stat__label">Projects</span>
+                </article>
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-solid fa-users-gear"></i></span>
+                  <span class="hire-stat__value">7+</span>
+                  <span class="hire-stat__label">Leadership Experience</span>
+                </article>
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-brands fa-react"></i></span>
+                  <span class="hire-stat__value">React.js</span>
+                  <span class="hire-stat__label">Specialist</span>
+                </article>
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+                  <span class="hire-stat__value">Frontend</span>
+                  <span class="hire-stat__label">Engineering</span>
+                </article>
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-solid fa-pen-ruler"></i></span>
+                  <span class="hire-stat__value">UI/UX</span>
+                  <span class="hire-stat__label">Strategy</span>
+                </article>
+                <article class="hire-stat" data-hire-reveal data-tilt>
+                  <span class="hire-stat__icon" aria-hidden="true"><i class="fa-solid fa-robot"></i></span>
+                  <span class="hire-stat__value">AI</span>
+                  <span class="hire-stat__label">Assisted Development</span>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= WORK PREFERENCE ================= -->
+        <div class="hire-block">
+          <div class="hire-block__head" data-aos="fade-up">
+            <span class="hire-block__index">04</span>
+            <h3 class="hire-block__title">Work <span class="section__accent">Preference</span></h3>
+          </div>
+          <div class="hire-prefs" data-hire-reveal>
+            <span class="hire-pref">Full-Time</span>
+            <span class="hire-pref">Remote</span>
+            <span class="hire-pref">Hybrid</span>
+            <span class="hire-pref">Relocation</span>
+            <span class="hire-pref">Contract</span>
+            <span class="hire-pref">Freelance</span>
+          </div>
+        </div>
+
+        <!-- ================= FINAL CTA ================= -->
+        <div class="hire-cta" data-hire-reveal>
+          <div class="hire-cta__aura" aria-hidden="true"></div>
+          <span class="hire-cta__eyebrow">// ready when you are</span>
+          <h3 class="hire-cta__title">Ready to Build Something <span class="section__accent">Exceptional?</span></h3>
+          <p class="hire-cta__desc">Whether you're hiring a Frontend Engineer, React.js Developer, Product Designer or Technical Leader, let's discuss how I can contribute to your next product.</p>
+          <div class="hire-cta__actions">
+            <a href="#hire-form" class="btn-magnetic hire-cta__btn hire-cta__btn--primary" data-magnetic data-ripple aria-label="Let's talk">
+              <i class="fa-solid fa-comments" aria-hidden="true"></i>Let's Talk
+            </a>
+            <a href="#" class="btn-magnetic hire-cta__btn hire-cta__btn--ghost" data-magnetic data-ripple aria-label="Download resume">
+              <i class="fa-solid fa-download" aria-hidden="true"></i>Download Resume
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
   <!-- ==================================================================
-    [09] FOOTER — system footer
+    [09] TERMINAL FOOTER — the ANIS OS shutdown screen.
+    A futuristic operating-system footer: brand console, quick + pro
+    links, animated tech-stack bar, live system panels, uptime, visitor
+    counters, a hidden Dev Console (Ctrl+Shift+A) and a premium back-to-top.
     =================================================================== -->
-  <footer class="site-footer" role="contentinfo">
+  <footer class="terminal-footer" data-terminal-footer role="contentinfo" aria-label="ANIS OS footer">
+    <!-- Ambient shutdown-screen background -->
+    <div class="terminal-footer__bg" aria-hidden="true">
+      <span class="terminal-footer__aurora"></span>
+      <span class="terminal-footer__grid"></span>
+      <span class="terminal-footer__noise"></span>
+      <span class="terminal-footer__light terminal-footer__light--one"></span>
+      <span class="terminal-footer__light terminal-footer__light--two"></span>
+      <span class="terminal-footer__light terminal-footer__light--three"></span>
+    </div>
+
     <div class="container">
-      <div class="row g-4 align-items-center py-4">
-        <div class="col-md-6">
-          <p class="site-footer__brand">ANIS<span class="site-footer__os">OS</span></p>
-          <p class="site-footer__tagline mb-0">Designed &amp; engineered as a love letter to the future.</p>
+      <!-- ===================== ROW 1 — BRAND AREA ===================== -->
+      <div class="terminal-footer__hero" data-footer-reveal>
+        <a href="#hero" class="terminal-footer__logo" data-magnetic aria-label="ANIS OS — back to top">
+          <span class="terminal-footer__logo-text">ANIS<span class="terminal-footer__logo-os">OS</span></span>
+          <span class="terminal-footer__logo-underscore" aria-hidden="true">_</span>
+        </a>
+        <p class="terminal-footer__tagline">Building the Future with Design, Code &amp; AI</p>
+        <div class="terminal-footer__badges">
+          <span class="tf-badge tf-badge--version" role="status">
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i> v1.0.0
+          </span>
+          <span class="tf-badge tf-badge--live" role="status">
+            <span class="tf-badge__dot" aria-hidden="true"></span> System Online
+          </span>
         </div>
-        <div class="col-md-6 text-md-end">
-          <ul class="site-footer__socials list-inline mb-1">
-            <li class="list-inline-item"><a href="#" class="icon-btn icon-btn--sm" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="icon-btn icon-btn--sm" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a></li>
-            <li class="list-inline-item"><a href="#" class="icon-btn icon-btn--sm" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a></li>
+      </div>
+
+      <!-- ===================== ROW 2 — NAV + LINKS ===================== -->
+      <div class="terminal-footer__row" data-footer-reveal>
+        <nav class="terminal-footer__group" aria-label="Quick navigation">
+          <h3 class="terminal-footer__title"><i class="fa-solid fa-compass" aria-hidden="true"></i> Quick Navigation</h3>
+          <ul class="terminal-footer__links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#developer-dashboard">Developer Dashboard</a></li>
+            <li><a href="#knowledge-hub">Knowledge Hub</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
-          <p class="site-footer__copyright mb-0">&copy; <span data-footer-year>2026</span> ANIS OS. Built with pure web standards.</p>
+        </nav>
+
+        <div class="terminal-footer__group" aria-labelledby="ft-prof-heading">
+          <h3 class="terminal-footer__title" id="ft-prof-heading"><i class="fa-solid fa-link" aria-hidden="true"></i> Professional Links</h3>
+          <ul class="terminal-footer__links terminal-footer__links--prof">
+            <li><a href="#"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i> LinkedIn</a></li>
+            <li><a href="#"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</a></li>
+            <li><a href="#" data-ripple><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Resume</a></li>
+            <li><a href="mailto:hello@anis-os.dev"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</a></li>
+            <li><a href="#"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube</a></li>
+            <li><a href="#"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+          </ul>
         </div>
+
+        <aside class="terminal-footer__group terminal-footer__group--wide" aria-labelledby="ft-sys-heading">
+          <h3 class="terminal-footer__title" id="ft-sys-heading"><i class="fa-solid fa-microchip" aria-hidden="true"></i> System Information</h3>
+          <dl class="tf-sysinfo">
+            <div class="tf-sysinfo__row"><dt>Current Version</dt><dd>v1.0.0</dd></div>
+            <div class="tf-sysinfo__row"><dt>Portfolio Build</dt><dd>Production Ready</dd></div>
+            <div class="tf-sysinfo__row"><dt>Responsive</dt><dd>Fully Responsive</dd></div>
+            <div class="tf-sysinfo__row"><dt>Theme</dt><dd data-footer-theme>Dark</dd></div>
+            <div class="tf-sysinfo__row"><dt>Framework</dt><dd>HTML · CSS · JS</dd></div>
+            <div class="tf-sysinfo__row"><dt>Status</dt><dd class="tf-sysinfo__online">Online</dd></div>
+          </dl>
+        </aside>
+      </div>
+
+      <!-- ===================== ROW 3 — TECH STACK BAR ===================== -->
+      <div class="terminal-footer__stack" data-footer-reveal aria-label="Technology stack">
+        <h3 class="terminal-footer__title"><i class="fa-solid fa-layer-group" aria-hidden="true"></i> Technology Stack</h3>
+        <div class="tf-marquee" data-stack-marquee>
+          <div class="tf-marquee__track">
+            <!-- Watched + duplicated by app.js (loop the marquee seamlessly) -->
+            <span class="tf-chip">React.js</span>
+            <span class="tf-chip">JavaScript</span>
+            <span class="tf-chip">HTML5</span>
+            <span class="tf-chip">CSS3</span>
+            <span class="tf-chip">Bootstrap</span>
+            <span class="tf-chip">Tailwind CSS</span>
+            <span class="tf-chip">Python</span>
+            <span class="tf-chip">Django</span>
+            <span class="tf-chip">Flask</span>
+            <span class="tf-chip">Git</span>
+            <span class="tf-chip">GitHub</span>
+            <span class="tf-chip">WordPress</span>
+            <span class="tf-chip">Next.js</span>
+            <span class="tf-chip">TypeScript</span>
+            <span class="tf-chip">AI</span>
+            <span class="tf-chip">Ollama</span>
+            <span class="tf-chip">LM Studio</span>
+            <span class="tf-chip">ComfyUI</span>
+            <span class="tf-chip">OpenCode</span>
+            <span class="tf-chip">DeepSeek</span>
+            <span class="tf-chip">ChatGPT</span>
+            <span class="tf-chip">Claude</span>
+            <span class="tf-chip">Cursor</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== SYSTEM PANELS ===================== -->
+      <div class="terminal-footer__panels">
+        <section class="tf-panel" data-footer-reveal aria-label="Live system status">
+          <h3 class="tf-panel__title"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i> Live System Status</h3>
+          <ul class="tf-status">
+            <li class="tf-status__item" data-tf-status="online"><span class="tf-status__dot"></span><span>Portfolio</span><strong>Online</strong></li>
+            <li class="tf-status__item" data-tf-status="active"><span class="tf-status__dot"></span><span>Learning</span><strong>Active</strong></li>
+            <li class="tf-status__item" data-tf-status="enabled"><span class="tf-status__dot"></span><span>Open to Work</span><strong>Enabled</strong></li>
+            <li class="tf-status__item" data-tf-status="enabled"><span class="tf-status__dot"></span><span>Open to Relocation</span><strong>Enabled</strong></li>
+          </ul>
+        </section>
+
+        <section class="tf-panel" data-footer-reveal aria-label="Visitor counters">
+          <h3 class="tf-panel__title"><i class="fa-solid fa-chart-column" aria-hidden="true"></i> Visitor Counter</h3>
+          <div class="tf-counters">
+            <div class="tf-counter" data-tf-counter data-count-value="0" data-count-suffix="">
+              <span class="tf-counter__label">Visitors Today</span>
+              <strong class="tf-counter__value" data-count-up>0</strong>
+            </div>
+            <div class="tf-counter" data-tf-counter data-count-value="0">
+              <span class="tf-counter__label">Projects Viewed</span>
+              <strong class="tf-counter__value" data-count-up>0</strong>
+            </div>
+            <div class="tf-counter" data-tf-counter data-count-value="0">
+              <span class="tf-counter__label">Downloads</span>
+              <strong class="tf-counter__value" data-count-up>0</strong>
+            </div>
+            <div class="tf-counter" data-tf-counter data-count-value="0">
+              <span class="tf-counter__label">Messages Sent</span>
+              <strong class="tf-counter__value" data-count-up>0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="tf-panel" data-footer-reveal aria-label="Uptime information">
+          <h3 class="tf-panel__title"><i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Uptime Panel</h3>
+          <dl class="tf-uptime">
+            <div class="tf-uptime__row"><dt>Running Since</dt><dd><i class="fa-regular fa-calendar" aria-hidden="true"></i> <span data-footer-year>2026</span></dd></div>
+            <div class="tf-uptime__row"><dt>Current Year</dt><dd data-current-year>—</dd></div>
+            <div class="tf-uptime__row"><dt>Local Time</dt><dd data-local-time>—</dd></div>
+            <div class="tf-uptime__row"><dt>Timezone</dt><dd data-timezone>—</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <!-- ===================== BOTTOM BAR ===================== -->
+      <div class="terminal-footer__bottom" data-footer-reveal>
+        <p class="terminal-footer__copyright">
+          &copy; <span data-footer-year>2026</span> Anis Ansari · <span class="terminal-footer__copy-os">ANIS OS</span> · All Rights Reserved.
+        </p>
+        <ul class="terminal-footer__legal">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">License</a></li>
+        </ul>
+        <button type="button" class="terminal-footer__console" data-dev-console-open aria-label="Open Developer Console (Ctrl + Shift + A)">
+          <i class="fa-solid fa-terminal" aria-hidden="true"></i><span class="terminal-footer__console-kbd">Ctrl+Shift+A</span>
+        </button>
       </div>
     </div>
   </footer>
 
   <!-- ==================================================================
-    [10] BACK TO TOP — floating scroll button
+    [10] BACK TO TOP — floating premium scroll button
     =================================================================== -->
-  <button type="button" id="back-to-top" class="back-to-top" data-back-to-top aria-label="Back to top">
+  <button type="button" id="back-to-top" class="back-to-top terminal-backtop" data-back-to-top data-ripple aria-label="Back to top">
     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
   </button>
+
+  <!-- ==================================================================
+    [10b] DEV CONSOLE — hidden developer modal (Ctrl + Shift + A)
+    =================================================================== -->
+  <div class="dev-console" data-dev-console hidden role="dialog" aria-modal="true" aria-labelledby="dev-console-title">
+    <div class="dev-console__window">
+      <div class="dev-console__bar">
+        <span class="dev-console__title" id="dev-console-title"><i class="fa-solid fa-code" aria-hidden="true"></i> ANIS OS — Developer Console</span>
+        <button type="button" class="dev-console__close" data-dev-console-close aria-label="Close developer console"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      </div>
+      <div class="dev-console__body">
+        <dl class="tf-sysinfo tf-sysinfo--console">
+          <div class="tf-sysinfo__row"><dt>Portfolio Version</dt><dd>v1.0.0</dd></div>
+          <div class="tf-sysinfo__row"><dt>Developer</dt><dd>Anis Ansari</dd></div>
+          <div class="tf-sysinfo__row"><dt>Current Stack</dt><dd data-dev-stack>—</dd></div>
+          <div class="tf-sysinfo__row"><dt>System Information</dt><dd>ANIS OS · Production Ready</dd></div>
+          <div class="tf-sysinfo__row"><dt>Debug Mode</dt><dd class="tf-sysinfo__online">Enabled</dd></div>
+          <div class="tf-sysinfo__row"><dt>Console Commands</dt><dd class="tf-console-cmds">—</dd></div>
+        </dl>
+        <p class="dev-console__hint">Press <kbd>Esc</kbd> or click outside to close.</p>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================================================================
     [11] TERMINAL OVERLAY — hidden console for the curious
@@ -3464,7 +6160,83 @@
   </div>
 
   <!-- ==================================================================
-    [12] SCRIPTS — CDN libraries, then app modules
+    [12] INTERACTION ENGINE — cursor FX, mouse glow, scroll ring, page
+         transition, command palette, developer mode & notifications
+    =================================================================== -->
+
+  <!-- Global mouse glow — soft aurora light that follows the pointer -->
+  <div class="mouse-glow" data-mouse-glow aria-hidden="true"></div>
+
+  <!-- Circular scroll progress ring + live percentage -->
+  <div class="scroll-ring" data-scroll-ring aria-hidden="true"></div>
+  <div class="scroll-pct" data-scroll-pct aria-hidden="true">0%</div>
+
+  <!-- Page transition overlay — cinematic reveal on entry -->
+  <div class="page-transition" data-page-transition aria-hidden="true">
+    <div class="page-transition__veil"></div>
+    <div class="page-transition__core">
+      <span class="page-transition__logo">ANIS&nbsp;OS</span>
+      <span class="page-transition__bar"><span data-page-transition-bar></span></span>
+    </div>
+  </div>
+
+  <!-- Command palette — Ctrl + K -->
+  <div class="palette" data-palette role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette__panel">
+      <div class="palette__input-row">
+        <i class="fa-solid fa-magnifying-glass palette__search-icon" aria-hidden="true"></i>
+        <input type="text" class="palette__search" data-palette-input placeholder="Search projects, skills, commands…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="palette-results" aria-autocomplete="list">
+        <span class="palette__kbd">ESC</span>
+      </div>
+      <div class="palette__results" id="palette-results" role="listbox" data-palette-results></div>
+    </div>
+  </div>
+
+  <!-- Developer Mode overlay -->
+  <div class="devmode" data-devmode role="dialog" aria-modal="true" aria-labelledby="devmode-title">
+    <div class="devmode__panel">
+      <div class="devmode__bar">
+        <span class="devmode__title" id="devmode-title"><i class="fa-solid fa-microchip" aria-hidden="true"></i> Developer Mode</span>
+        <button type="button" class="devmode__close" data-devmode-close aria-label="Close developer mode"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      </div>
+      <div class="devmode__grid">
+        <div class="devmode__stat">
+          <span class="devmode__stat-label"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Performance</span>
+          <span class="devmode__stat-value devmode__stat-value--fps" data-devmode-fps>--</span>
+          <span class="devmode__stat-meta" data-devmode-fps-meter></span>
+        </div>
+        <div class="devmode__stat">
+          <span class="devmode__stat-label"><i class="fa-solid fa-globe" aria-hidden="true"></i> Browser</span>
+          <span class="devmode__stat-value" data-devmode-browser>—</span>
+        </div>
+        <div class="devmode__stat">
+          <span class="devmode__stat-label"><i class="fa-solid fa-display" aria-hidden="true"></i> Viewport</span>
+          <span class="devmode__stat-value" data-devmode-viewport>—</span>
+        </div>
+        <div class="devmode__stat">
+          <span class="devmode__stat-label"><i class="fa-solid fa-memory" aria-hidden="true"></i> Memory</span>
+          <span class="devmode__stat-value" data-devmode-memory>—</span>
+        </div>
+        <div class="devmode__stat">
+          <span class="devmode__stat-label"><i class="fa-solid fa-palette" aria-hidden="true"></i> Theme</span>
+          <span class="devmode__stat-value" data-devmode-theme>—</span>
+        </div>
+        <div class="devmode__stat">
+          <span class="devmode__stat-label"><i class="fa-solid fa-cubes" aria-hidden="true"></i> Uptime</span>
+          <span class="devmode__stat-value" data-devmode-uptime>—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Developer Mode badge — visible once unlocked (Konami / 7× logo / shortcut) -->
+  <div class="devmode__badge" data-devmode-badge aria-hidden="true">Developer Mode</div>
+
+  <!-- Notification stack — glass toasts -->
+  <div class="toast-stack" data-toast-stack aria-live="polite" aria-atomic="false"></div>
+
+  <!-- ==================================================================
+    [13] SCRIPTS — CDN libraries, then app modules
     Load order is critical: libraries → custom modules → entrypoint
     =================================================================== -->
 
@@ -3496,10 +6268,15 @@
   <!-- CountUp.js (animated counters) -->
   <script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.min.js"></script>
 
+  <!-- Lenis (buttery smooth scrolling) -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
   <!-- ============ Custom application modules (load in order) ============ -->
   <script src="assets/js/data.js" defer></script>
   <script src="assets/js/theme.js" defer></script>
   <script src="assets/js/animation.js" defer></script>
   <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/interaction.js" defer></script>
+  <script src="assets/js/pwa.js" defer></script>
 </body>
 </html>

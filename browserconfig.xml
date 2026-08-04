@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ANIS OS — browserconfig.xml (Microsoft Edge / Windows tiles)
+  Add the referenced PNG tiles under assets/icons/ to complete the set.
+-->
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="/assets/icons/tile-70x70.png"/>
+      <square150x150logo src="/assets/icons/tile-150x150.png"/>
+      <wide310x150logo src="/assets/icons/tile-310x150.png"/>
+      <square310x310logo src="/assets/icons/tile-310x310.png"/>
+      <TileColor>#0a0a0f</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>

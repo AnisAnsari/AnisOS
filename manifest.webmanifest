@@ -1,0 +1,45 @@
+{
+  "name": "ANIS OS — Portfolio Operating System",
+  "short_name": "ANIS OS",
+  "description": "Ultra-premium, cinematic portfolio experience built like a futuristic operating system.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "categories": ["portfolio", "developer tools", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "url": "./#projects",
+      "icons": [{ "src": "assets/icons/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Developer Dashboard",
+      "url": "./#developer-dashboard",
+      "icons": [{ "src": "assets/icons/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Contact",
+      "url": "./#contact",
+      "icons": [{ "src": "assets/icons/icon.svg", "sizes": "any" }]
+    }
+  ]
+}

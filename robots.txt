@@ -1,0 +1,13 @@
+# ANIS OS — robots.txt
+# Production rules for GitHub Pages.
+# Replace the Sitemap URL with your custom domain / canonical URL when deployed.
+
+User-agent: *
+Allow: /
+
+# Generated / internal files that should never be indexed
+Disallow: /assets/data/
+Disallow: /docs/
+
+# The sitemap lives at the site root
+Sitemap: https://anis-os.github.io/sitemap.xml
