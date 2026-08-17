@@ -37,7 +37,7 @@
  *  SectionAnimation    — reveal on scroll, stagger groups, icon bounces
  *  TimelineAnimation   — card reveals, glowing dots, progress line
  *  AboutAnimation      — dashboard stagger, parallax, floating icons
- *  ExperienceAnimation — career journey reveals, progress spine, toggles
+ *  ExperienceAnimation — career journey reveals, progress spine
  *  AILabAnimation      — lab stagger, workflow sequence, skill toggles
  *  SkillsGalaxyAnimation — filter, search, expandable skill cards
  *  FeaturedProjectsAnimation — carousel, filters/search, case-study modal,
@@ -1803,51 +1803,60 @@
       this.gsap = engine.gsap;
       this.section = $('#experience');
       this.played = false;
-      this.togglesBound = false;
     }
 
     init() {
       if (!this.section) return;
-      this.bindToggles();
       this.injectProgress();
-      if (!this.gsap || this.engine.reduced) return;
+      // Reduced motion, or no GSAP → reveal immediately, nothing is ever hidden.
+      if (!this.gsap || this.engine.reduced) {
+        this.ensureVisible();
+        return;
+      }
       this.entrance();
-      this.parallax();
-      this.floatIcons();
+      // Safety net: guarantee the section is visible even if the reveal
+      // timeline is interrupted before completion.
+      this.scheduleVisibilityGuard();
     }
 
-    /** Expand/collapse the per-card details (event delegation, a11y-safe) */
-    bindToggles() {
-      if (this.togglesBound) return;
-      this.togglesBound = true;
-
-      this.engine.perf.on(this.section, 'click', (e) => {
-        const btn = e.target.closest('.journey__toggle');
-        if (!btn) return;
-        const item = btn.closest('.journey__item');
-        if (!item) return;
-
-        const open = item.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', String(open));
-        const label = btn.querySelector('.journey__toggle-text');
-        if (label) label.textContent = open ? 'Hide details' : 'Show details';
-
-        // Re-measure ScrollTrigger positions after the card resizes
-        if (window.ANIS_OS_ANIMATIONS?.refresh) window.ANIS_OS_ANIMATIONS.refresh();
+    /**
+     * Hard guarantee that every career card is visible. Clears any inline
+     * opacity/visibility/transform a reveal might have left behind so the
+     * CSS defaults (visible) reassert themselves. Safe to call at any time.
+     */
+    ensureVisible() {
+      if (!this.section || !this.section.ownerDocument) return;
+      $$('[data-career-reveal]', this.section).forEach((el) => {
+        el.style.opacity = '';
+        el.style.visibility = '';
+        el.style.transform = '';
       });
     }
 
-    /** Animated gradient spine that fills as the user scrolls */
+    /** Fail-safe: reveal the section regardless of animation state. */
+    scheduleVisibilityGuard() {
+      if (this._guardSet) return;
+      this._guardSet = true;
+      const run = () => this.ensureVisible();
+      if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 1400 });
+      else window.setTimeout(run, 1800);
+    }
+
+    /** Gradient spine that draws progressively as the user scrolls */
     injectProgress() {
-      const rail = $('.journey__rail', this.section);
-      if (!rail || $('.journey__progress', this.section)) return;
+      const rail = $('.career', this.section);
+      if (!rail || $('.career__progress', this.section)) return;
 
       const line = document.createElement('div');
-      line.className = 'journey__progress';
+      line.className = 'career__progress';
       line.setAttribute('aria-hidden', 'true');
       rail.appendChild(line);
 
-      if (!this.gsap || this.engine.reduced) return;
+      if (!this.gsap || this.engine.reduced) {
+        // No motion available → fill the spine so it still reads premium.
+        line.style.transform = 'translateX(-50%) scaleY(1)';
+        return;
+      }
 
       this.engine.perf.registerTimeline(
         this.gsap.to(line, {
@@ -1863,30 +1872,38 @@
       );
     }
 
-    /** Staggered reveal — left cards slide from -x, right cards from +x */
+    /**
+     * Scroll-triggered staggered fade + slide for every career card.
+     *
+     * Fail-safe: hidden states are applied ONLY inside `reveal()`, the
+     * timeline clears its own inline styles on completion, and any failure
+     * path restores visibility immediately — content can never stay blank.
+     */
     entrance() {
-      const items = $$('.journey__item', this.section);
-      const next = $('.journey-next', this.section);
-      if (items.length === 0 && !next) return;
+      const cards = $$('[data-career-reveal]', this.section);
+      if (cards.length === 0) return;
 
-      const play = () => {
-        if (this.played) return;
+      const reveal = () => {
+        if (this.played || !this.gsap) return;
         this.played = true;
 
-        const tl = this.engine.perf.registerTimeline(
-          this.gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.7 } }),
-        );
-
-        items.forEach((item, index) => {
-          const fromLeft = index % 2 === 0;
-          tl.from(
-            item,
-            { x: fromLeft ? -72 : 72, autoAlpha: 0, filter: 'blur(6px)', clearProps: 'all' },
-            '-=0.25',
+        try {
+          const tl = this.engine.perf.registerTimeline(
+            this.gsap.timeline({
+              defaults: { ease: 'power3.out', duration: 0.7 },
+              onComplete: () => this.ensureVisible(),
+            }),
           );
-        });
-
-        if (next) tl.from(next, { y: 56, autoAlpha: 0, clearProps: 'all' }, '-=0.2');
+          tl.from(cards, {
+            y: 36,
+            autoAlpha: 0,
+            stagger: 0.12,
+            clearProps: 'all',
+          });
+        } catch (err) {
+          // Never allow a GSAP failure to leave the section blank.
+          this.ensureVisible();
+        }
       };
 
       if (this.engine.ScrollTrigger) {
@@ -1896,71 +1913,22 @@
               trigger: this.section,
               start: 'top 75%',
               once: true,
-              onEnter: play,
+              onEnter: reveal,
             },
           }),
         );
       } else if ('IntersectionObserver' in window) {
         const io = this.engine.perf.createObserver((entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
-            play();
+            reveal();
             io.disconnect();
           }
         }, { threshold: 0.12 });
         io.observe(this.section);
+      } else {
+        // No scroll detection available → show immediately, never hide.
+        reveal();
       }
-    }
-
-    /** Subtle depth parallax for the What's Next panel + its icon */
-    parallax() {
-      if (!this.engine.finePointer) return;
-      const panel = $('[data-journey-next]', this.section);
-      const icon = $('.journey-next__icon', this.section);
-      if (!panel) return;
-
-      const drift = (e) => {
-        const rect = panel.getBoundingClientRect();
-        if (
-          e.clientX < rect.left || e.clientX > rect.right ||
-          e.clientY < rect.top || e.clientY > rect.bottom
-        ) {
-          return;
-        }
-        const cx = (e.clientX - rect.left) / rect.width - 0.5;
-        const cy = (e.clientY - rect.top) / rect.height - 0.5;
-        this.gsap.to(panel, { x: cx * 10, y: cy * 6, duration: 1, ease: 'power2.out', overwrite: 'auto' });
-        if (icon) {
-          this.gsap.to(icon, { x: cx * 24, y: cy * 14, duration: 1, ease: 'power2.out', overwrite: 'auto' });
-        }
-      };
-
-      const reset = () => {
-        this.gsap.to([panel, icon].filter(Boolean), {
-          x: 0,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-          overwrite: 'auto',
-        });
-      };
-
-      this.engine.perf.on(panel, 'mousemove', drift);
-      this.engine.perf.on(panel, 'mouseleave', reset);
-    }
-
-    /** Gentle perpetual float for the What's Next icon (GPU-cheap) */
-    floatIcons() {
-      const icon = $('.journey-next__icon', this.section);
-      if (!icon) return;
-      this.engine.perf.registerTimeline(
-        this.gsap.to(icon, {
-          y: -8,
-          duration: 2.8,
-          yoyo: true,
-          repeat: -1,
-          ease: 'sine.inOut',
-        }),
-      );
     }
 
     rescan() {
