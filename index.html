@@ -533,380 +533,173 @@
     </section>
 
     <!-- ================================================================
-      [08-B] ABOUT — executive dashboard: professional intro + metrics
+      [08-B] ABOUT — premium personal introduction
       ================================================================ -->
-    <section id="about" class="section about-dash" aria-labelledby="about-title">
+    <section id="about" class="section about" aria-labelledby="about-title">
       <div class="container">
         <div class="section__head" data-aos="fade-up">
           <p class="section__eyebrow">// about</p>
           <h2 id="about-title" class="section__title">About <span class="section__accent">Me</span></h2>
-          <p class="section__sub">Building Digital Products, Leading Teams, Creating Modern User Experiences.</p>
+          <p class="section__sub">Building Digital Products. Leading Teams. Creating Modern User Experiences.</p>
         </div>
 
-        <div class="row g-5 align-items-start">
+        <div class="about-grid">
 
-          <!-- ==================== LEFT — PROFESSIONAL INTRODUCTION ==================== -->
-          <div class="col-lg-6" data-aos="fade-right">
-            <article class="about-profile" aria-label="Professional introduction">
+          <!-- ==================== LEFT — PROFILE + INTRODUCTION ==================== -->
+          <div class="about-stack" data-aos="fade-right">
 
-              <!-- Identity header -->
-              <header class="about-profile__identity">
-                <div class="about-profile__avatar tilt-card" data-tilt role="img" aria-label="Anis Ansari portrait">
-                  <i class="fa-solid fa-user-astronaut" aria-hidden="true"></i>
-                  <span class="about-profile__status">
-                    <span class="about-profile__status-dot" aria-hidden="true"></span>Available
-                  </span>
+            <!-- Compact profile card -->
+            <article class="about-card" data-about-reveal aria-label="Profile summary">
+              <div class="about-card__head">
+                <span class="about-card__avatar" aria-hidden="true">
+                  <i class="fa-solid fa-user-astronaut"></i>
+                </span>
+                <div class="about-card__titles">
+                  <h3 class="about-card__name">Anis Ansari</h3>
+                  <p class="about-card__role">UI/UX Manager · Frontend Developer · React.js Specialist</p>
                 </div>
-                <div class="about-profile__heading">
-                  <h3 class="about-profile__name">Anis Ansari</h3>
-                  <ul class="about-profile__roles" aria-label="Professional titles">
-                    <li>Senior Frontend Developer</li>
-                    <li>React.js Developer</li>
-                    <li>UI/UX Manager</li>
-                    <li>AI Explorer</li>
-                  </ul>
-                </div>
-              </header>
-
-              <!-- Quick facts -->
-              <ul class="about-profile__facts">
-                <li class="about-profile__fact">
-                  <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
-                  <span><strong>12+</strong> Years Experience</span>
-                </li>
-                <li class="about-profile__fact">
-                  <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
-                  <span><strong>7+</strong> Years Leadership</span>
-                </li>
-                <li class="about-profile__fact">
-                  <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-                  <span>Mumbai, <strong>India</strong></span>
-                </li>
-                <li class="about-profile__fact">
-                  <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
-                  <span><strong>Master</strong> in Information Technology</span>
-                </li>
-              </ul>
-
-              <!-- Specialization -->
-              <h4 class="about-profile__label">Specialization</h4>
-              <ul class="about-profile__chips" aria-label="Specializations">
-                <li>Frontend Development</li>
-                <li>React.js</li>
-                <li>UI/UX Design</li>
-                <li>Product Design</li>
-                <li>Admin Dashboard</li>
-                <li>Design Systems</li>
-                <li>AI Assisted Development</li>
-              </ul>
-
-              <!-- Industries served -->
-              <h4 class="about-profile__label">Industries Served</h4>
-              <ul class="about-profile__chips" aria-label="Industries served">
-                <li>Enterprise Applications</li>
-                <li>SaaS Platforms</li>
-                <li>Corporate Websites</li>
-                <li>Real Estate</li>
-                <li>Events</li>
-                <li>Analytics Dashboards</li>
-                <li>Business Applications</li>
-              </ul>
-
-              <!-- Narrative -->
-              <p class="about-profile__text">
-                For over 12 years I have shaped digital products across enterprise applications,
-                SaaS platforms and business-critical tools — architecting interfaces that hold up
-                at scale, not just in demos.
-              </p>
-              <p class="about-profile__text">
-                As a UI/UX Manager with 7+ years of leadership, I run design and frontend engineering
-                as one team: setting the design language, driving design-system adoption and unblocking
-                delivery. I partner closely with developers, product managers and business stakeholders
-                to translate complex requirements into elegant, measurable product experiences.
-              </p>
-
-              <!-- Recruitment badges -->
-              <ul class="about-profile__badges" aria-label="Recruitment status">
-                <li class="about-badge about-badge--work"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>Open to Work</li>
-                <li class="about-badge about-badge--reloc"><i class="fa-solid fa-plane-departure" aria-hidden="true"></i>Open to Relocation</li>
-              </ul>
-
-              <!-- Social cluster -->
-              <div class="about-profile__socials">
-                <a href="#" class="icon-btn" data-magnetic aria-label="GitHub profile"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
-                <a href="#" class="icon-btn" data-magnetic aria-label="LinkedIn profile"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
-                <a href="#" class="icon-btn" data-magnetic aria-label="X / Twitter profile"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
-                <a href="#" class="icon-btn" data-magnetic aria-label="Dribbble profile"><i class="fa-brands fa-dribbble" aria-hidden="true"></i></a>
               </div>
+              <dl class="about-card__meta">
+                <div class="about-card__cell">
+                  <dt>Location</dt>
+                  <dd>Mumbai, India</dd>
+                </div>
+                <div class="about-card__cell">
+                  <dt>Experience</dt>
+                  <dd>12+ Years</dd>
+                </div>
+                <div class="about-card__cell">
+                  <dt>Status</dt>
+                  <dd class="about-card__status is-open">Open to Opportunities</dd>
+                </div>
+                <div class="about-card__cell">
+                  <dt>Relocation</dt>
+                  <dd>Open to Relocation</dd>
+                </div>
+              </dl>
             </article>
-          </div>
 
-          <!-- ==================== RIGHT — EXECUTIVE DASHBOARD ==================== -->
-          <div class="col-lg-6" data-aos="fade-left">
-            <div class="about-dash" data-about-dashboard>
+            <!-- Concise introduction -->
+            <div class="about-intro" data-about-reveal>
+              <h3 class="about-intro__title">Design &amp; Engineering, One Discipline.</h3>
+              <p class="about-intro__text">
+                I'm Anis Ansari — a UI/UX Manager and hands-on frontend developer with 12+ years
+                shaping digital products across enterprise applications, SaaS platforms and
+                business-critical tools. I set the design language, build the interfaces, and
+                lead design and engineering as one team — from first sketch to production.
+              </p>
 
-              <!-- [01] Key metrics -->
-              <section class="about-dash__block" aria-label="Key metrics">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">01</span>
-                  <h4 class="about-dash__block-title">Key Metrics</h4>
-                </header>
-                <div class="row g-3">
-                  <div class="col-6 col-md-4 col-lg-6">
-                    <article class="about-stat" data-about-card>
-                      <i class="fa-solid fa-briefcase about-stat__icon" aria-hidden="true"></i>
-                      <span class="about-stat__value" data-count-up data-count-value="12" data-count-suffix="+">0</span>
-                      <span class="about-stat__label">Years Experience</span>
-                    </article>
-                  </div>
-                  <div class="col-6 col-md-4 col-lg-6">
-                    <article class="about-stat" data-about-card>
-                      <i class="fa-solid fa-rocket about-stat__icon" aria-hidden="true"></i>
-                      <span class="about-stat__value" data-count-up data-count-value="100" data-count-suffix="+">0</span>
-                      <span class="about-stat__label">Projects Delivered</span>
-                    </article>
-                  </div>
-                  <div class="col-6 col-md-4 col-lg-6">
-                    <article class="about-stat" data-about-card>
-                      <i class="fa-solid fa-diagram-project about-stat__icon" aria-hidden="true"></i>
-                      <span class="about-stat__value" data-count-up data-count-value="7" data-count-suffix="+">0</span>
-                      <span class="about-stat__label">Years Leadership</span>
-                    </article>
-                  </div>
-                  <div class="col-6 col-md-4 col-lg-6">
-                    <article class="about-stat" data-about-card>
-                      <i class="fa-solid fa-layer-group about-stat__icon" aria-hidden="true"></i>
-                      <span class="about-stat__value" data-count-up data-count-value="20" data-count-suffix="+">0</span>
-                      <span class="about-stat__label">Technologies</span>
-                    </article>
-                  </div>
-                  <div class="col-6 col-md-4 col-lg-6">
-                    <article class="about-stat" data-about-card>
-                      <i class="fa-solid fa-industry about-stat__icon" aria-hidden="true"></i>
-                      <span class="about-stat__value" data-count-up data-count-value="8" data-count-suffix="+">0</span>
-                      <span class="about-stat__label">Industries</span>
-                    </article>
-                  </div>
-                  <div class="col-6 col-md-4 col-lg-6">
-                    <article class="about-stat" data-about-card>
-                      <i class="fa-solid fa-mobile-screen-button about-stat__icon" aria-hidden="true"></i>
-                      <span class="about-stat__value" data-count-up data-count-value="100" data-count-suffix="%">0</span>
-                      <span class="about-stat__label">Responsive Development</span>
-                    </article>
-                  </div>
-                </div>
-              </section>
+              <div class="about-intro__detail">
+                <h4 class="about-intro__label">Open to Roles</h4>
+                <p class="about-intro__items">Frontend Developer · React.js Developer · Frontend Lead · UI/UX Lead · Product Designer · Full Stack Developer · Technical Lead</p>
+              </div>
 
-              <!-- [02] What I Do -->
-              <section class="about-dash__block" aria-label="What I do">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">02</span>
-                  <h4 class="about-dash__block-title">What I Do</h4>
-                </header>
-                <ul class="about-do" role="list">
-                  <li class="about-do__item"><i class="fa-solid fa-code" aria-hidden="true"></i><span>Frontend Engineering</span></li>
-                  <li class="about-do__item"><i class="fa-solid fa-compass-drafting" aria-hidden="true"></i><span>UI/UX Strategy</span></li>
-                  <li class="about-do__item"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span>Design Systems</span></li>
-                  <li class="about-do__item"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i><span>Enterprise Dashboards</span></li>
-                  <li class="about-do__item"><i class="fa-solid fa-robot" aria-hidden="true"></i><span>AI-Assisted Development</span></li>
-                  <li class="about-do__item"><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Technical Leadership</span></li>
-                </ul>
-              </section>
+              <div class="about-intro__detail">
+                <h4 class="about-intro__label">Core Strengths</h4>
+                <p class="about-intro__items">UI/UX · Frontend Engineering · React.js · JavaScript · Design Systems · Enterprise Dashboards · Product Design · Technical Leadership</p>
+              </div>
 
-              <!-- [03] Achievements -->
-              <section class="about-dash__block" aria-label="Achievements">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">03</span>
-                  <h4 class="about-dash__block-title">Achievements</h4>
-                </header>
-                <div class="row g-3">
-                  <div class="col-6">
-                    <article class="about-achieve" data-about-card data-tilt>
-                      <span class="about-achieve__icon"><i class="fa-solid fa-compass-drafting" aria-hidden="true"></i></span>
-                      <h5 class="about-achieve__title">UI/UX Strategy</h5>
-                    </article>
-                  </div>
-                  <div class="col-6">
-                    <article class="about-achieve" data-about-card data-tilt>
-                      <span class="about-achieve__icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
-                      <h5 class="about-achieve__title">Frontend Development</h5>
-                    </article>
-                  </div>
-                  <div class="col-6">
-                    <article class="about-achieve" data-about-card data-tilt>
-                      <span class="about-achieve__icon"><i class="fa-brands fa-react" aria-hidden="true"></i></span>
-                      <h5 class="about-achieve__title">React.js</h5>
-                    </article>
-                  </div>
-                  <div class="col-6">
-                    <article class="about-achieve" data-about-card data-tilt>
-                      <span class="about-achieve__icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span>
-                      <h5 class="about-achieve__title">Design Systems</h5>
-                    </article>
-                  </div>
-                  <div class="col-6">
-                    <article class="about-achieve" data-about-card data-tilt>
-                      <span class="about-achieve__icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></span>
-                      <h5 class="about-achieve__title">Leadership</h5>
-                    </article>
-                  </div>
-                  <div class="col-6">
-                    <article class="about-achieve" data-about-card data-tilt>
-                      <span class="about-achieve__icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></span>
-                      <h5 class="about-achieve__title">AI Workflows</h5>
-                    </article>
-                  </div>
-                </div>
-              </section>
+              <div class="about-intro__detail">
+                <h4 class="about-intro__label">Working Knowledge</h4>
+                <p class="about-intro__items">Python · Django · Flask · REST APIs</p>
+              </div>
 
-              <!-- [04] Career journey -->
-              <section class="about-dash__block" aria-label="Career journey">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">04</span>
-                  <h4 class="about-dash__block-title">Career Journey</h4>
-                </header>
-                <ol class="about-dash__timeline">
-                  <li class="about-dash__tl-item" data-about-card>
-                    <span class="about-dash__tl-node" aria-hidden="true"></span>
-                    <div class="about-dash__tl-card">
-                      <span class="about-dash__tl-date">01 · Foundation</span>
-                      <h5 class="about-dash__tl-title">Started Career</h5>
-                      <p class="about-dash__tl-body">Began hands-on as a web developer, mastering the craft from the first pixel.</p>
-                    </div>
-                  </li>
-                  <li class="about-dash__tl-item" data-about-card>
-                    <span class="about-dash__tl-node" aria-hidden="true"></span>
-                    <div class="about-dash__tl-card">
-                      <span class="about-dash__tl-date">02 · Growth</span>
-                      <h5 class="about-dash__tl-title">Senior UI Designer</h5>
-                      <p class="about-dash__tl-body">Owned end-to-end product visuals across marketing and application surfaces.</p>
-                    </div>
-                  </li>
-                  <li class="about-dash__tl-item" data-about-card>
-                    <span class="about-dash__tl-node" aria-hidden="true"></span>
-                    <div class="about-dash__tl-card">
-                      <span class="about-dash__tl-date">03 · Craft</span>
-                      <h5 class="about-dash__tl-title">Frontend Developer</h5>
-                      <p class="about-dash__tl-body">Shipped high-performance interfaces with React, design systems and clean CSS.</p>
-                    </div>
-                  </li>
-                  <li class="about-dash__tl-item" data-about-card>
-                    <span class="about-dash__tl-node" aria-hidden="true"></span>
-                    <div class="about-dash__tl-card">
-                      <span class="about-dash__tl-date">04 · Leadership</span>
-                      <h5 class="about-dash__tl-title">UI/UX Lead</h5>
-                      <p class="about-dash__tl-body">Led design teams, set standards and aligned design with business outcomes.</p>
-                    </div>
-                  </li>
-                  <li class="about-dash__tl-item" data-about-card>
-                    <span class="about-dash__tl-node" aria-hidden="true"></span>
-                    <div class="about-dash__tl-card">
-                      <span class="about-dash__tl-date">05 · Today</span>
-                      <h5 class="about-dash__tl-title">UI/UX Manager</h5>
-                      <p class="about-dash__tl-body">Directing product design and frontend engineering as one integrated team.</p>
-                    </div>
-                  </li>
-                </ol>
-              </section>
+              <div class="about-intro__detail">
+                <h4 class="about-intro__label">Now Learning</h4>
+                <p class="about-intro__items">Next.js · TypeScript · Advanced React · AI Engineering</p>
+              </div>
 
-              <!-- [05] Tech stack -->
-              <section class="about-dash__block" aria-label="Tech stack">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">05</span>
-                  <h4 class="about-dash__block-title">Tech Stack</h4>
-                </header>
-                <div class="about-stack">
-                  <div class="about-stack__group">
-                    <span class="about-stack__icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
-                    <h5 class="about-stack__title">Frontend</h5>
-                    <ul class="about-stack__list">
-                      <li>HTML5</li>
-                      <li>CSS3</li>
-                      <li>JavaScript</li>
-                      <li>Bootstrap</li>
-                      <li>Tailwind CSS</li>
-                      <li>React.js</li>
-                    </ul>
-                  </div>
-                  <div class="about-stack__group">
-                    <span class="about-stack__icon"><i class="fa-solid fa-database" aria-hidden="true"></i></span>
-                    <h5 class="about-stack__title">Backend</h5>
-                    <ul class="about-stack__list">
-                      <li>Python</li>
-                      <li>Django</li>
-                      <li>Flask</li>
-                      <li>REST APIs</li>
-                    </ul>
-                  </div>
-                  <div class="about-stack__group">
-                    <span class="about-stack__icon"><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i></span>
-                    <h5 class="about-stack__title">Design</h5>
-                    <ul class="about-stack__list">
-                      <li>Figma</li>
-                      <li>Adobe XD</li>
-                      <li>Photoshop</li>
-                      <li>WordPress</li>
-                    </ul>
-                  </div>
-                  <div class="about-stack__group">
-                    <span class="about-stack__icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></span>
-                    <h5 class="about-stack__title">AI</h5>
-                    <ul class="about-stack__list">
-                      <li>ChatGPT</li>
-                      <li>Claude</li>
-                      <li>DeepSeek</li>
-                      <li>Cursor</li>
-                      <li>OpenCode</li>
-                      <li>Ollama</li>
-                      <li>LM Studio</li>
-                      <li>Hugging Face</li>
-                      <li>ComfyUI</li>
-                    </ul>
-                  </div>
-                </div>
-              </section>
-
-              <!-- [06] Professional philosophy -->
-              <section class="about-dash__block" aria-label="Professional philosophy">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">06</span>
-                  <h4 class="about-dash__block-title">Professional Philosophy</h4>
-                </header>
-                <div class="about-philosophy">
-                  <i class="about-philosophy__mark fa-solid fa-quote-left" aria-hidden="true"></i>
-                  <p class="about-philosophy__text">
-                    The best interfaces are invisible — design and engineering should feel like one
-                    discipline, not two hand-offs. I build products where craft meets measurable
-                    outcomes: elegant, accessible, and engineered to hold up at real-world scale.
-                  </p>
-                  <span class="about-philosophy__byline">— Anis Ansari</span>
-                </div>
-              </section>
-
-              <!-- [07] Current goals -->
-              <section class="about-dash__block" aria-label="Current goals">
-                <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">07</span>
-                  <h4 class="about-dash__block-title">Current Goals</h4>
-                </header>
-                <ul class="about-goals">
-                  <li>
-                    <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
-                    <span>Work toward global product companies — including <strong>Google, Microsoft, Adobe, Atlassian</strong> and similar enterprise engineering organizations.</span>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-                    <span>Lead design systems and AI-assisted development practice at product scale.</span>
-                  </li>
-                  <li>
-                    <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
-                    <span>Deepen AI product engineering by shipping agentic workflows for the browser.</span>
-                  </li>
-                </ul>
-              </section>
-
+              <div class="about-intro__detail">
+                <h4 class="about-intro__label">AI Tooling</h4>
+                <p class="about-intro__items">Ollama · LM Studio · Hugging Face · OpenCode · ComfyUI · Local LLMs · AI-assisted development</p>
+              </div>
             </div>
           </div>
+
+          <!-- ==================== RIGHT — EXPERTISE + NUMBERS + FOCUS ==================== -->
+          <div class="about-stack" data-aos="fade-left">
+
+            <!-- Core expertise — four cards -->
+            <section class="about-expertise" data-about-reveal aria-labelledby="about-expertise-title">
+              <h3 id="about-expertise-title" class="about-block-label">Core Expertise</h3>
+              <div class="about-expertise__grid">
+                <article class="about-expert">
+                  <span class="about-expert__icon" aria-hidden="true"><i class="fa-solid fa-code"></i></span>
+                  <div>
+                    <h4 class="about-expert__title">Frontend Engineering</h4>
+                    <p class="about-expert__desc">Fast, accessible interfaces with React.js and modern CSS.</p>
+                  </div>
+                </article>
+                <article class="about-expert">
+                  <span class="about-expert__icon" aria-hidden="true"><i class="fa-solid fa-compass-drafting"></i></span>
+                  <div>
+                    <h4 class="about-expert__title">UI/UX &amp; Product Design</h4>
+                    <p class="about-expert__desc">Clean product experiences grounded in user needs.</p>
+                  </div>
+                </article>
+                <article class="about-expert">
+                  <span class="about-expert__icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+                  <div>
+                    <h4 class="about-expert__title">Design Systems</h4>
+                    <p class="about-expert__desc">Scalable component libraries that stay consistent.</p>
+                  </div>
+                </article>
+                <article class="about-expert">
+                  <span class="about-expert__icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
+                  <div>
+                    <h4 class="about-expert__title">Technical Leadership</h4>
+                    <p class="about-expert__desc">Guiding design and frontend teams end to end.</p>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <!-- Experience numbers -->
+            <section class="about-stats" data-about-reveal aria-label="Experience in numbers">
+              <div class="about-stat">
+                <span class="about-stat__num" data-count-up data-count-value="12" data-count-suffix="+">0</span>
+                <span class="about-stat__label">Years Experience</span>
+              </div>
+              <div class="about-stat">
+                <span class="about-stat__num" data-count-up data-count-value="100" data-count-suffix="+">0</span>
+                <span class="about-stat__label">Projects Delivered</span>
+              </div>
+              <div class="about-stat">
+                <span class="about-stat__num" data-count-up data-count-value="7" data-count-suffix="+">0</span>
+                <span class="about-stat__label">Years Leadership</span>
+              </div>
+              <div class="about-stat">
+                <span class="about-stat__num">React.js</span>
+                <span class="about-stat__label">Frontend Focus</span>
+              </div>
+            </section>
+
+            <!-- Current focus progression -->
+            <section class="about-focus" data-about-reveal aria-labelledby="about-focus-title">
+              <h3 id="about-focus-title" class="about-block-label">Currently Exploring</h3>
+              <ol class="about-focus__path" aria-label="Current learning path">
+                <li><span>React.js</span></li>
+                <li class="about-focus__step" aria-hidden="true"><i class="fa-solid fa-arrow-right-long"></i></li>
+                <li><span>Next.js</span></li>
+                <li class="about-focus__step" aria-hidden="true"><i class="fa-solid fa-arrow-right-long"></i></li>
+                <li><span>TypeScript</span></li>
+                <li class="about-focus__step" aria-hidden="true"><i class="fa-solid fa-arrow-right-long"></i></li>
+                <li><span>AI Engineering</span></li>
+              </ol>
+            </section>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="about-cta" data-about-reveal>
+          <span class="about-cta__chip about-cta__chip--work"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>Open to Work</span>
+          <span class="about-cta__chip"><i class="fa-solid fa-plane-departure" aria-hidden="true"></i>Open to Relocation</span>
+          <a class="btn-site-nav" href="#resume" data-magnetic data-ripple aria-label="View resume">
+            <i class="fa-solid fa-download" aria-hidden="true"></i><span>View Resume</span>
+          </a>
+          <a class="btn-premium" href="#contact" data-magnetic data-ripple aria-label="Contact Anis Ansari">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i><span>Contact Me</span>
+          </a>
         </div>
       </div>
     </section>

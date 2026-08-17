@@ -1688,7 +1688,7 @@
   }
 
   /* ====================================================================
-   * 16. ABOUT ANIMATION — executive dashboard choreography
+   * 16. ABOUT ANIMATION — lightweight fade/slide reveal
    * ================================================================== */
   class AboutAnimation {
     constructor(engine) {
@@ -1706,8 +1706,6 @@
         return;
       }
       this.entrance();
-      this.parallax();
-      this.floatIcons();
       // Safety net: guarantee the section is visible even if the reveal
       // timeline is interrupted before completion.
       this.scheduleVisibilityGuard();
@@ -1720,13 +1718,7 @@
      */
     ensureVisible() {
       if (!this.section || !this.section.ownerDocument) return;
-      const targets = [
-        $('.about-profile', this.section),
-        ...$$('.about-dash__block', this.section),
-        ...$$('[data-about-card]', this.section),
-        ...$$('.about-do__item', this.section),
-      ].filter(Boolean);
-      targets.forEach((el) => {
+      $$('[data-about-reveal]', this.section).forEach((el) => {
         el.style.opacity = '';
         el.style.visibility = '';
         el.style.transform = '';
@@ -1743,26 +1735,19 @@
     }
 
     /**
-     * Scroll-triggered staggered reveal for the profile and each dashboard
-     * block, then a lighter stagger for every metric / achievement card.
+     * Scroll-triggered staggered fade/slide for every `[data-about-reveal]`.
      *
      * Fail-safe: hidden states are applied ONLY inside `reveal()`, the
      * timeline clears its own inline styles on completion, and any failure
      * path restores visibility immediately — content can never stay blank.
      */
     entrance() {
-      const profile = $('.about-profile', this.section);
-      const blocks = $$('.about-dash__block', this.section);
-      const cards = $$('[data-about-card]', this.section);
-      const lineup = [];
-      if (profile) lineup.push(profile);
-      lineup.push(...blocks);
+      const targets = $$('[data-about-reveal]', this.section);
+      if (targets.length === 0) return;
 
       const reveal = () => {
         if (this.played || !this.gsap) return;
         this.played = true;
-
-        if (lineup.length === 0) return;
 
         try {
           const tl = this.engine.perf.registerTimeline(
@@ -1771,18 +1756,12 @@
               onComplete: () => this.ensureVisible(),
             }),
           );
-          tl.from(lineup, {
-            y: 44,
+          tl.from(targets, {
+            y: 32,
             autoAlpha: 0,
+            stagger: 0.08,
             clearProps: 'all',
           });
-          if (cards.length) {
-            tl.from(
-              cards,
-              { y: 24, opacity: 0, stagger: 0.05, duration: 0.5, clearProps: 'all' },
-              '-=0.6',
-            );
-          }
         } catch (err) {
           // Never allow a GSAP failure to leave the section blank.
           this.ensureVisible();
@@ -1812,70 +1791,6 @@
         // No scroll detection available → show immediately, never hide.
         reveal();
       }
-    }
-
-    /** Subtle depth parallax — dashboard blocks drift away from the pointer */
-    parallax() {
-      if (!this.engine.finePointer) return;
-      const dash = $('[data-about-dashboard]', this.section);
-      if (!dash) return;
-
-      const blocks = $$('.about-dash__block', dash);
-      if (blocks.length === 0) return;
-      const depths = blocks.map((_, index) => (index % 2 === 0 ? 6 : -6));
-
-      const drift = (e) => {
-        const rect = dash.getBoundingClientRect();
-        if (
-          e.clientX < rect.left || e.clientX > rect.right ||
-          e.clientY < rect.top || e.clientY > rect.bottom
-        ) {
-          return;
-        }
-        const cx = (e.clientX - rect.left) / rect.width - 0.5;
-        const cy = (e.clientY - rect.top) / rect.height - 0.5;
-        blocks.forEach((block, index) => {
-          this.gsap.to(block, {
-            x: cx * depths[index],
-            y: cy * depths[index] * 0.6,
-            duration: 1,
-            ease: 'power2.out',
-            overwrite: 'auto',
-          });
-        });
-      };
-
-      const reset = () => {
-        blocks.forEach((block) => {
-          this.gsap.to(block, {
-            x: 0,
-            y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            overwrite: 'auto',
-          });
-        });
-      };
-
-      this.engine.perf.on(dash, 'mousemove', drift);
-      this.engine.perf.on(dash, 'mouseleave', reset);
-    }
-
-    /** Gentle perpetual float for the achievement icons (GPU-cheap) */
-    floatIcons() {
-      const icons = $$('.about-achieve__icon', this.section);
-      if (icons.length === 0) return;
-      icons.forEach((icon, index) => {
-        this.engine.perf.registerTimeline(
-          this.gsap.to(icon, {
-            y: index % 2 === 0 ? -6 : 6,
-            duration: 2.6 + (index % 3) * 0.4,
-            yoyo: true,
-            repeat: -1,
-            ease: 'sine.inOut',
-          }),
-        );
-      });
     }
   }
 
