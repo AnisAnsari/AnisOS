@@ -496,7 +496,7 @@
       this.open = false;
       this.rafId = 0;
 
-      eastEggs.onUnlock(() => this.enable());
+      easterEggs.onUnlock(() => this.enable());
     }
 
     init() {

@@ -807,6 +807,14 @@ p, .section__sub, .hero__desc {
 /* Link cluster */
 .site-navbar__links {
   gap: var(--space-1);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.site-navbar__links::-webkit-scrollbar {
+  display: none;
 }
 
 .site-navbar__link {
@@ -848,14 +856,33 @@ p, .section__sub, .hero__desc {
   color: var(--color-white) !important;
 }
 
-/* Centered desktop menu — takes the middle column between brand & actions */
+/* Centered desktop menu — takes the middle column between brand & actions.
+   `min-width: 0` lets the column shrink below its content size so the
+   right-side actions + theme switcher are never pushed off-screen. */
 .site-navbar__collapse {
   flex: 1 1 0%;
   justify-content: center;
+  min-width: 0;
 }
 
 .site-navbar__links {
   align-items: center;
+}
+
+/* Tighten the centered menu on mid-size desktops (lg–xl) so the 11 links
+   fit without pushing the right-side actions / theme switcher off-screen.
+   The links fall back to an internal scroll strip when space is still tight. */
+@media (min-width: 992px) and (max-width: 1399.98px) {
+  .site-navbar__link {
+    padding: var(--space-2) var(--space-2) !important;
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-tight);
+  }
+
+  .site-navbar__link::after {
+    left: var(--space-2);
+    right: var(--space-2);
+  }
 }
 
 /* ---------- Right action cluster (desktop) ---------- */
@@ -16675,4 +16702,253 @@ html.has-mouse-glow .mouse-glow {
   .cursor--ring.is-loading {
     animation: none !important;
   }
+}
+
+/* ==================================================================
+   28. ABOUT DASHBOARD — REBUILD ENHANCEMENTS + FAIL-SAFE
+   ------------------------------------------------------------------
+   Fail-safe: the About section must NEVER be hidden by animation
+   state. These rules guarantee visibility even if GSAP or the reveal
+   timeline fails to run (JS inline styles are cleared by the module).
+   ================================================================== */
+
+/* ---- Fail-safe: content visible by default ---- */
+#about,
+#about .about-profile,
+#about .about-dash__block,
+#about [data-about-card],
+#about .about-do__item {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---- Role list (multi-title) ---- */
+.about-profile__roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-profile__roles li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-card-strong);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.about-profile__roles li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-brand);
+  flex-shrink: 0;
+}
+
+/* ---- Recruitment badges ---- */
+.about-profile__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.about-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  border: 1px solid var(--color-border);
+  background: var(--color-card-strong);
+  transition:
+    transform var(--transition-base) var(--ease-out),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.about-badge:hover {
+  transform: translateY(-2px);
+}
+
+.about-badge--work {
+  color: var(--color-success);
+  border-color: color-mix(in srgb, var(--color-success) 40%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-success) 18%, transparent);
+}
+
+.about-badge--reloc {
+  color: var(--color-secondary);
+  border-color: color-mix(in srgb, var(--color-secondary) 40%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-secondary) 18%, transparent);
+}
+
+/* ---- What I Do ---- */
+.about-do {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-do__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-card-strong);
+  border: 1px solid var(--color-border);
+  font-weight: var(--font-weight-medium);
+  transition:
+    transform var(--transition-bounce),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.about-do__item i {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: var(--shadow-glow);
+}
+
+.about-do__item:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+/* ---- Professional philosophy ---- */
+.about-philosophy {
+  position: relative;
+  padding: var(--space-5) var(--space-5) var(--space-5) var(--space-9);
+  border-radius: var(--radius-lg);
+  background: var(--color-card-strong);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+}
+
+.about-philosophy__mark {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+  font-size: var(--font-size-lg);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-philosophy__text {
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-sm);
+  line-height: 1.75;
+}
+
+.about-philosophy__byline {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* ---- Current goals ---- */
+.about-goals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-goals li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-card-strong);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+  line-height: 1.65;
+}
+
+.about-goals li strong {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-goals li i {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--color-secondary);
+}
+
+/* ---- Reduced-motion: never animate the reveal, always visible ---- */
+@media (prefers-reduced-motion: reduce) {
+  #about .about-profile,
+  #about .about-dash__block,
+  #about [data-about-card] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
+
+/* ---- Responsive: single column on mobile ---- */
+@media (max-width: 575.98px) {
+  .about-do {
+    grid-template-columns: 1fr;
+  }
+
+  .about-profile__roles li {
+    white-space: normal;
+  }
+}
+
+/* ==================================================================
+   29. AOS FAIL-SAFE — never let scroll-reveal blank the page
+   ------------------------------------------------------------------
+   `html.aos-fallback` is switched on by animation.js when AOS fails to
+   load or initialise. Every [data-aos] element becomes fully visible
+   so section titles and content can never be left at opacity 0.
+   ================================================================== */
+
+html.aos-fallback [data-aos],
+html.aos-fallback [data-aos][data-aos^="fade"],
+html.aos-fallback [data-aos][data-aos^="zoom"],
+html.aos-fallback [data-aos][data-aos^="flip"],
+html.aos-fallback [data-aos][data-aos^="slide"] {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
 }

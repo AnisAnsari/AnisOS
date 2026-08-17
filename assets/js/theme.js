@@ -452,7 +452,6 @@
       this.resolveSystemTheme();
       this.buildPanel();
       this.bindToggle();
-      this.bindShortcuts();
       this.watchSystemTheme();
 
       // Apply tokens after DOM is painted to avoid a flash of unthemed content

@@ -203,82 +203,98 @@
 
     /* ----- Boot ----- */
 
+    /**
+     * Run a module's init defensively: a single failing module must never
+     * take down the rest of the engine (especially AOS, which reveals every
+     * `[data-aos]` section title on the page).
+     */
+    safeInit(name, module) {
+      if (!module || typeof module.init !== 'function') return;
+      try {
+        module.init();
+      } catch (err) {
+        if (typeof console !== 'undefined') {
+          console.warn(`[ANIS OS] Module "${name}" failed to initialise:`, err);
+        }
+      }
+    }
+
     init() {
       // 1. Loader first (locks the composition during boot)
       this.modules.loader = new LoaderAnimation(this);
-      this.modules.loader.init();
+      this.safeInit('loader', this.modules.loader);
 
       // 2. Prepare hero for GSAP (disable AOS on hero to avoid double-reveal)
       this.disableAOSOnHero();
 
       // 3. Ambient background layers (orbs, noise, particles)
       this.modules.particles = new ParticleAnimation(this);
-      this.modules.particles.init();
+      this.safeInit('particles', this.modules.particles);
 
       // 4. Scroll systems (progress, parallax, reveals)
       this.modules.scroll = new ScrollAnimation(this);
-      this.modules.scroll.init();
+      this.safeInit('scroll', this.modules.scroll);
 
       this.modules.sections = new SectionAnimation(this);
-      this.modules.sections.init();
+      this.safeInit('sections', this.modules.sections);
 
       // 5. Component animation systems
       this.modules.cursor = new CursorAnimation(this);
-      this.modules.cursor.init();
+      this.safeInit('cursor', this.modules.cursor);
 
       this.modules.counter = new CounterAnimation(this);
-      this.modules.counter.init();
+      this.safeInit('counter', this.modules.counter);
 
       this.modules.text = new TextAnimation(this);
-      this.modules.text.init();
+      this.safeInit('text', this.modules.text);
 
       this.modules.navbar = new NavbarAnimation(this);
-      this.modules.navbar.init();
+      this.safeInit('navbar', this.modules.navbar);
 
       this.modules.cards = new CardAnimation(this);
-      this.modules.cards.init();
+      this.safeInit('cards', this.modules.cards);
 
       this.modules.timeline = new TimelineAnimation(this);
-      this.modules.timeline.init();
+      this.safeInit('timeline', this.modules.timeline);
 
       this.modules.about = new AboutAnimation(this);
-      this.modules.about.init();
+      this.safeInit('about', this.modules.about);
 
       this.modules.experience = new ExperienceAnimation(this);
-      this.modules.experience.init();
+      this.safeInit('experience', this.modules.experience);
 
       this.modules.aiLab = new AILabAnimation(this);
-      this.modules.aiLab.init();
+      this.safeInit('aiLab', this.modules.aiLab);
 
       this.modules.skills = new SkillsGalaxyAnimation(this);
-      this.modules.skills.init();
+      this.safeInit('skills', this.modules.skills);
 
       this.modules.expertise = new ExpertiseAnimation(this);
-      this.modules.expertise.init();
+      this.safeInit('expertise', this.modules.expertise);
 
       this.modules.projects = new FeaturedProjectsAnimation(this);
-      this.modules.projects.init();
+      this.safeInit('projects', this.modules.projects);
 
       this.modules.developer = new DeveloperDashboardAnimation(this);
-      this.modules.developer.init();
+      this.safeInit('developer', this.modules.developer);
 
       this.modules.roadmap = new RoadmapAnimation(this);
-      this.modules.roadmap.init();
+      this.safeInit('roadmap', this.modules.roadmap);
 
       this.modules.achievements = new AchievementsAnimation(this);
-      this.modules.achievements.init();
+      this.safeInit('achievements', this.modules.achievements);
 
       this.modules.recommendations = new RecommendationsAnimation(this);
-      this.modules.recommendations.init();
+      this.safeInit('recommendations', this.modules.recommendations);
 
       this.modules.knowledgeHub = new KnowledgeHubAnimation(this);
-      this.modules.knowledgeHub.init();
+      this.safeInit('knowledgeHub', this.modules.knowledgeHub);
 
       this.modules.terminalFooter = new TerminalFooterAnimation(this);
-      this.modules.terminalFooter.init();
+      this.safeInit('terminalFooter', this.modules.terminalFooter);
 
       this.modules.theme = new ThemeTransition(this);
-      this.modules.theme.init();
+      this.safeInit('theme', this.modules.theme);
 
       // AOS last so `[data-aos]` never fights GSAP on the hero
       this.initAOS();
@@ -322,13 +338,42 @@
     /* ----- AOS ----- */
 
     initAOS() {
-      if (!window.AOS) return;
-      window.AOS.init({
-        duration: 800,
-        easing: 'ease-out-cubic',
-        once: true,
-        offset: 80,
-        anchorPlacement: 'top-bottom',
+      // If the AOS library never loaded, force every `[data-aos]` element
+      // visible so section titles & content are never blanked by CDN failure.
+      if (!window.AOS) {
+        this.enableAOSFallback();
+        return;
+      }
+      try {
+        window.AOS.init({
+          duration: 800,
+          easing: 'ease-out-cubic',
+          once: true,
+          offset: 80,
+          anchorPlacement: 'top-bottom',
+        });
+      } catch (err) {
+        this.enableAOSFallback();
+        return;
+      }
+      // Sanity check: AOS.appied marks elements `.aos-init`. If none were
+      // initialised, treat the library as broken and reveal everything.
+      if (document.querySelectorAll('[data-aos].aos-init').length === 0) {
+        this.enableAOSFallback();
+      }
+    }
+
+    /**
+     * Hard fail-safe for scroll-reveals: switches the document into
+     * `aos-fallback` mode (CSS makes every [data-aos] fully visible) and
+     * also strips any pre-applied inline hidden state.
+     */
+    enableAOSFallback() {
+      const root = document.documentElement;
+      if (!root.classList.contains('aos-fallback')) root.classList.add('aos-fallback');
+      $$('[data-aos]').forEach((el) => {
+        el.classList.remove('aos-init', 'aos-animate');
+        if (el.style.opacity === '0') el.style.opacity = '';
       });
     }
 
@@ -1119,6 +1164,7 @@
   class ParticleAnimation {
     constructor(engine) {
       this.engine = engine;
+      this.gsap = engine.gsap;
       this.canvas = $('#particle-canvas');
     }
 
@@ -1653,39 +1699,93 @@
     }
 
     init() {
-      if (!this.section || !this.gsap || this.engine.reduced) return;
+      if (!this.section) return;
+      // Reduced motion, or no GSAP → reveal immediately, nothing is ever hidden.
+      if (!this.gsap || this.engine.reduced) {
+        this.ensureVisible();
+        return;
+      }
       this.entrance();
       this.parallax();
       this.floatIcons();
+      // Safety net: guarantee the section is visible even if the reveal
+      // timeline is interrupted before completion.
+      this.scheduleVisibilityGuard();
+    }
+
+    /**
+     * Hard guarantee that every About element is visible. Clears any inline
+     * opacity/visibility/transform a reveal might have left behind so the
+     * CSS defaults (visible) reassert themselves. Safe to call at any time.
+     */
+    ensureVisible() {
+      if (!this.section || !this.section.ownerDocument) return;
+      const targets = [
+        $('.about-profile', this.section),
+        ...$$('.about-dash__block', this.section),
+        ...$$('[data-about-card]', this.section),
+        ...$$('.about-do__item', this.section),
+      ].filter(Boolean);
+      targets.forEach((el) => {
+        el.style.opacity = '';
+        el.style.visibility = '';
+        el.style.transform = '';
+      });
+    }
+
+    /** Fail-safe: reveal the section regardless of animation state. */
+    scheduleVisibilityGuard() {
+      if (this._guardSet) return;
+      this._guardSet = true;
+      const run = () => this.ensureVisible();
+      if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 1400 });
+      else window.setTimeout(run, 1800);
     }
 
     /**
      * Scroll-triggered staggered reveal for the profile and each dashboard
      * block, then a lighter stagger for every metric / achievement card.
+     *
+     * Fail-safe: hidden states are applied ONLY inside `reveal()`, the
+     * timeline clears its own inline styles on completion, and any failure
+     * path restores visibility immediately — content can never stay blank.
      */
     entrance() {
       const profile = $('.about-profile', this.section);
       const blocks = $$('.about-dash__block', this.section);
       const cards = $$('[data-about-card]', this.section);
+      const lineup = [];
+      if (profile) lineup.push(profile);
+      lineup.push(...blocks);
 
-      const play = () => {
-        if (this.played) return;
+      const reveal = () => {
+        if (this.played || !this.gsap) return;
         this.played = true;
 
-        const lineup = [];
-        if (profile) lineup.push(profile);
-        lineup.push(...blocks);
+        if (lineup.length === 0) return;
 
-        const tl = this.engine.perf.registerTimeline(
-          this.gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.7 } }),
-        );
-        lineup.forEach((el) => tl.from(el, { y: 44, autoAlpha: 0 }, '+=0.04'));
-        if (cards.length) {
-          tl.from(
-            cards,
-            { y: 24, opacity: 0, stagger: 0.05, duration: 0.5, clearProps: 'transform' },
-            '-=0.6',
+        try {
+          const tl = this.engine.perf.registerTimeline(
+            this.gsap.timeline({
+              defaults: { ease: 'power3.out', duration: 0.7 },
+              onComplete: () => this.ensureVisible(),
+            }),
           );
+          tl.from(lineup, {
+            y: 44,
+            autoAlpha: 0,
+            clearProps: 'all',
+          });
+          if (cards.length) {
+            tl.from(
+              cards,
+              { y: 24, opacity: 0, stagger: 0.05, duration: 0.5, clearProps: 'all' },
+              '-=0.6',
+            );
+          }
+        } catch (err) {
+          // Never allow a GSAP failure to leave the section blank.
+          this.ensureVisible();
         }
       };
 
@@ -1694,20 +1794,23 @@
           this.gsap.timeline({
             scrollTrigger: {
               trigger: this.section,
-              start: 'top 80%',
+              start: 'top 85%',
               once: true,
-              onEnter: play,
+              onEnter: reveal,
             },
           }),
         );
       } else if ('IntersectionObserver' in window) {
         const io = this.engine.perf.createObserver((entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
-            play();
+            reveal();
             io.disconnect();
           }
         }, { threshold: 0.15 });
         io.observe(this.section);
+      } else {
+        // No scroll detection available → show immediately, never hide.
+        reveal();
       }
     }
 

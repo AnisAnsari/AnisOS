@@ -356,7 +356,7 @@
         this.modules.cards.init();
         this.modules.scroll.init();
         this.modules.nav.init();
-        this.modules.terminal();
+        this.terminal();
         this.printBranding();
       });
 

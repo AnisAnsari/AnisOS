@@ -559,7 +559,12 @@
                 </div>
                 <div class="about-profile__heading">
                   <h3 class="about-profile__name">Anis Ansari</h3>
-                  <p class="about-profile__role">UI/UX Manager</p>
+                  <ul class="about-profile__roles" aria-label="Professional titles">
+                    <li>Senior Frontend Developer</li>
+                    <li>React.js Developer</li>
+                    <li>UI/UX Manager</li>
+                    <li>AI Explorer</li>
+                  </ul>
                 </div>
               </header>
 
@@ -619,6 +624,12 @@
                 delivery. I partner closely with developers, product managers and business stakeholders
                 to translate complex requirements into elegant, measurable product experiences.
               </p>
+
+              <!-- Recruitment badges -->
+              <ul class="about-profile__badges" aria-label="Recruitment status">
+                <li class="about-badge about-badge--work"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>Open to Work</li>
+                <li class="about-badge about-badge--reloc"><i class="fa-solid fa-plane-departure" aria-hidden="true"></i>Open to Relocation</li>
+              </ul>
 
               <!-- Social cluster -->
               <div class="about-profile__socials">
@@ -686,10 +697,26 @@
                 </div>
               </section>
 
-              <!-- [02] Achievements -->
-              <section class="about-dash__block" aria-label="Achievements">
+              <!-- [02] What I Do -->
+              <section class="about-dash__block" aria-label="What I do">
                 <header class="about-dash__block-head">
                   <span class="about-dash__block-index" aria-hidden="true">02</span>
+                  <h4 class="about-dash__block-title">What I Do</h4>
+                </header>
+                <ul class="about-do" role="list">
+                  <li class="about-do__item"><i class="fa-solid fa-code" aria-hidden="true"></i><span>Frontend Engineering</span></li>
+                  <li class="about-do__item"><i class="fa-solid fa-compass-drafting" aria-hidden="true"></i><span>UI/UX Strategy</span></li>
+                  <li class="about-do__item"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span>Design Systems</span></li>
+                  <li class="about-do__item"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i><span>Enterprise Dashboards</span></li>
+                  <li class="about-do__item"><i class="fa-solid fa-robot" aria-hidden="true"></i><span>AI-Assisted Development</span></li>
+                  <li class="about-do__item"><i class="fa-solid fa-people-group" aria-hidden="true"></i><span>Technical Leadership</span></li>
+                </ul>
+              </section>
+
+              <!-- [03] Achievements -->
+              <section class="about-dash__block" aria-label="Achievements">
+                <header class="about-dash__block-head">
+                  <span class="about-dash__block-index" aria-hidden="true">03</span>
                   <h4 class="about-dash__block-title">Achievements</h4>
                 </header>
                 <div class="row g-3">
@@ -732,11 +759,11 @@
                 </div>
               </section>
 
-              <!-- [03] Professional highlights -->
-              <section class="about-dash__block" aria-label="Professional highlights">
+              <!-- [04] Career journey -->
+              <section class="about-dash__block" aria-label="Career journey">
                 <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">03</span>
-                  <h4 class="about-dash__block-title">Professional Highlights</h4>
+                  <span class="about-dash__block-index" aria-hidden="true">04</span>
+                  <h4 class="about-dash__block-title">Career Journey</h4>
                 </header>
                 <ol class="about-dash__timeline">
                   <li class="about-dash__tl-item" data-about-card>
@@ -782,10 +809,10 @@
                 </ol>
               </section>
 
-              <!-- [04] Tech stack -->
+              <!-- [05] Tech stack -->
               <section class="about-dash__block" aria-label="Tech stack">
                 <header class="about-dash__block-head">
-                  <span class="about-dash__block-index" aria-hidden="true">04</span>
+                  <span class="about-dash__block-index" aria-hidden="true">05</span>
                   <h4 class="about-dash__block-title">Tech Stack</h4>
                 </header>
                 <div class="about-stack">
@@ -808,6 +835,7 @@
                       <li>Python</li>
                       <li>Django</li>
                       <li>Flask</li>
+                      <li>REST APIs</li>
                     </ul>
                   </div>
                   <div class="about-stack__group">
@@ -836,6 +864,45 @@
                     </ul>
                   </div>
                 </div>
+              </section>
+
+              <!-- [06] Professional philosophy -->
+              <section class="about-dash__block" aria-label="Professional philosophy">
+                <header class="about-dash__block-head">
+                  <span class="about-dash__block-index" aria-hidden="true">06</span>
+                  <h4 class="about-dash__block-title">Professional Philosophy</h4>
+                </header>
+                <div class="about-philosophy">
+                  <i class="about-philosophy__mark fa-solid fa-quote-left" aria-hidden="true"></i>
+                  <p class="about-philosophy__text">
+                    The best interfaces are invisible — design and engineering should feel like one
+                    discipline, not two hand-offs. I build products where craft meets measurable
+                    outcomes: elegant, accessible, and engineered to hold up at real-world scale.
+                  </p>
+                  <span class="about-philosophy__byline">— Anis Ansari</span>
+                </div>
+              </section>
+
+              <!-- [07] Current goals -->
+              <section class="about-dash__block" aria-label="Current goals">
+                <header class="about-dash__block-head">
+                  <span class="about-dash__block-index" aria-hidden="true">07</span>
+                  <h4 class="about-dash__block-title">Current Goals</h4>
+                </header>
+                <ul class="about-goals">
+                  <li>
+                    <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
+                    <span>Work toward global product companies — including <strong>Google, Microsoft, Adobe, Atlassian</strong> and similar enterprise engineering organizations.</span>
+                  </li>
+                  <li>
+                    <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                    <span>Lead design systems and AI-assisted development practice at product scale.</span>
+                  </li>
+                  <li>
+                    <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+                    <span>Deepen AI product engineering by shipping agentic workflows for the browser.</span>
+                  </li>
+                </ul>
               </section>
 
             </div>
