@@ -4550,10 +4550,32 @@ p, .section__sub, .hero__desc {
   color: var(--text-primary);
 }
 
-/* ---- Why work with me ---- */
-.exp-why {
-  margin-bottom: var(--space-11);
+/* ---- Why work with me — standalone section ---- */
+.why-work {
+  position: relative;
 }
+
+/* Fail-safe: ensure cards visible without JS */
+[data-why-reveal] .exp-why__card {
+  opacity: 1;
+}
+
+/* Cards animation: fade in on scroll */
+[data-why-reveal] .exp-why__card {
+  transform: translateY(24px);
+}
+
+[data-why-reveal].is-visible .exp-why__card {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+[data-why-reveal].is-visible .exp-why__card:nth-child(2) { transition-delay: .08s; }
+[data-why-reveal].is-visible .exp-why__card:nth-child(3) { transition-delay: .16s; }
+[data-why-reveal].is-visible .exp-why__card:nth-child(4) { transition-delay: .24s; }
+[data-why-reveal].is-visible .exp-why__card:nth-child(5) { transition-delay: .32s; }
+[data-why-reveal].is-visible .exp-why__card:nth-child(6) { transition-delay: .40s; }
 
 .exp-why__grid {
   display: grid;
@@ -14793,11 +14815,12 @@ html[data-theme="light"] .theme-switcher__btn [data-theme-icon-sun] {
     gap: var(--space-4, 1rem);
   }
 
-  /* Expertise: cards and why-grid to a single column, workflow to 2-across */
+  /* Expertise: cards to single column, workflow to 2-across */
   .exp-grid {
     grid-template-columns: 1fr;
   }
 
+  /* Why Work With Me: single column on mobile */
   .exp-why__grid {
     grid-template-columns: 1fr;
   }

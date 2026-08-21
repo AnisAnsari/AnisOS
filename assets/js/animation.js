@@ -272,6 +272,9 @@
       this.modules.expertise = new ExpertiseAnimation(this);
       this.safeInit('expertise', this.modules.expertise);
 
+      this.modules.whyWork = new WhyWorkAnimation(this);
+      this.safeInit('whyWork', this.modules.whyWork);
+
       this.modules.projects = new FeaturedProjectsAnimation(this);
       this.safeInit('projects', this.modules.projects);
 
@@ -2235,6 +2238,87 @@
 
     refresh() {
       if (window.ANIS_OS_ANIMATIONS?.refresh) window.ANIS_OS_ANIMATIONS.refresh();
+    }
+
+    rescan() {
+      this.init();
+    }
+  }
+
+  /* ====================================================================
+   * 16e2. WHY WORK WITH ME — scroll-triggered card stagger
+   * ================================================================== */
+  class WhyWorkAnimation {
+    constructor(engine) {
+      this.engine = engine;
+      this.gsap = engine.gsap;
+      this.section = $('#why-work');
+      this.grid = this.section?.querySelector('[data-why-reveal]');
+      this.cards = [];
+      this.bound = false;
+      this.played = false;
+    }
+
+    init() {
+      if (!this.section || !this.grid) return;
+      this.cards = [...this.grid.querySelectorAll('[data-why-item]')];
+      this._bind();
+    }
+
+    _bind() {
+      if (this.bound) return;
+      this.bound = true;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        this._forceVisible();
+        return;
+      }
+
+      if ('IntersectionObserver' in window) {
+        this._io = new IntersectionObserver((entries) => {
+          if (entries.some(e => e.isIntersecting)) {
+            this._play();
+            this._io.disconnect();
+          }
+        }, { threshold: 0.1 });
+        this._io.observe(this.section);
+      } else {
+        this._forceVisible();
+      }
+    }
+
+    _play() {
+      if (this.played) return;
+      this.played = true;
+
+      this.grid.classList.add('is-visible');
+
+      if (this.gsap && !this.engine.reduced) {
+        this.engine.perf.registerTimeline(
+          this.gsap.to(
+            this.cards,
+            {
+              y: 0,
+              opacity: 1,
+              duration: .45,
+              ease: 'power3.out',
+              stagger: .08,
+              clearProps: 'all',
+            },
+          ),
+        );
+      }
+    }
+
+    _forceVisible() {
+      this.grid?.classList.add('is-visible');
+      if (this.gsap) {
+        this.gsap.set(this.cards, { opacity: 1, y: 0, clearProps: 'all' });
+      }
+    }
+
+    refresh() {
+      if (this.engine?.refresh) this.engine.refresh();
     }
 
     rescan() {
