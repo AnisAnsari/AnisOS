@@ -10,7 +10,7 @@
  * ========================================================================== */
 'use strict';
 
-const VERSION = 'anis-os-v1.0.0';
+const VERSION = 'anis-os-v1.0.1';
 const CORE_CACHE = `${VERSION}-core`;
 const RUNTIME_CACHE = `${VERSION}-runtime`;
 

@@ -39,7 +39,7 @@
  *  AboutAnimation      — dashboard stagger, parallax, floating icons
  *  ExperienceAnimation — career journey reveals, progress spine
  *  AILabAnimation      — lab stagger, workflow sequence, skill toggles
- *  SkillsGalaxyAnimation — filter, search, expandable skill cards
+ *  SkillsAnimation      — tech wall reveal with category/item stagger
  *  FeaturedProjectsAnimation — carousel, filters/search, case-study modal,
  *                              gallery zoom, fullscreen + lightbox
  *  ThemeTransition     — 400ms blur/scale pulse on theme change
@@ -266,7 +266,7 @@
       this.modules.aiLab = new AILabAnimation(this);
       this.safeInit('aiLab', this.modules.aiLab);
 
-      this.modules.skills = new SkillsGalaxyAnimation(this);
+      this.modules.skills = new SkillsAnimation(this);
       this.safeInit('skills', this.modules.skills);
 
       this.modules.expertise = new ExpertiseAnimation(this);
@@ -1795,7 +1795,7 @@
   }
 
   /* ====================================================================
-   * 16b. EXPERIENCE ANIMATION — career journey choreography
+   * 16b. EXPERIENCE ANIMATION — alternating career timeline choreography
    * ================================================================== */
   class ExperienceAnimation {
     constructor(engine) {
@@ -1808,22 +1808,15 @@
     init() {
       if (!this.section) return;
       this.injectProgress();
-      // Reduced motion, or no GSAP → reveal immediately, nothing is ever hidden.
       if (!this.gsap || this.engine.reduced) {
         this.ensureVisible();
         return;
       }
       this.entrance();
-      // Safety net: guarantee the section is visible even if the reveal
-      // timeline is interrupted before completion.
       this.scheduleVisibilityGuard();
     }
 
-    /**
-     * Hard guarantee that every career card is visible. Clears any inline
-     * opacity/visibility/transform a reveal might have left behind so the
-     * CSS defaults (visible) reassert themselves. Safe to call at any time.
-     */
+    /** Clear any inline styles GSAP may have set — CSS defaults reassert. */
     ensureVisible() {
       if (!this.section || !this.section.ownerDocument) return;
       $$('[data-career-reveal]', this.section).forEach((el) => {
@@ -1833,7 +1826,7 @@
       });
     }
 
-    /** Fail-safe: reveal the section regardless of animation state. */
+    /** Safety net: guarantee visibility if the timeline is interrupted. */
     scheduleVisibilityGuard() {
       if (this._guardSet) return;
       this._guardSet = true;
@@ -1842,7 +1835,7 @@
       else window.setTimeout(run, 1800);
     }
 
-    /** Gradient spine that draws progressively as the user scrolls */
+    /** Spine that draws progressively as the user scrolls. */
     injectProgress() {
       const rail = $('.career', this.section);
       if (!rail || $('.career__progress', this.section)) return;
@@ -1853,7 +1846,6 @@
       rail.appendChild(line);
 
       if (!this.gsap || this.engine.reduced) {
-        // No motion available → fill the spine so it still reads premium.
         line.style.transform = 'translateX(-50%) scaleY(1)';
         return;
       }
@@ -1873,15 +1865,12 @@
     }
 
     /**
-     * Scroll-triggered staggered fade + slide for every career card.
-     *
-     * Fail-safe: hidden states are applied ONLY inside `reveal()`, the
-     * timeline clears its own inline styles on completion, and any failure
-     * path restores visibility immediately — content can never stay blank.
+     * Alternating card reveal — left cards slide from left, right cards from right.
+     * Nodes scale in, year labels fade up. All staggered on scroll.
      */
     entrance() {
-      const cards = $$('[data-career-reveal]', this.section);
-      if (cards.length === 0) return;
+      const items = $$('[data-career-item]', this.section);
+      if (items.length === 0) return;
 
       const reveal = () => {
         if (this.played || !this.gsap) return;
@@ -1894,14 +1883,53 @@
               onComplete: () => this.ensureVisible(),
             }),
           );
-          tl.from(cards, {
-            y: 36,
-            autoAlpha: 0,
-            stagger: 0.12,
-            clearProps: 'all',
+
+          items.forEach((item) => {
+            const card = $('[data-career-reveal]', item);
+            const node = $('.career__node', item);
+            const year = $('.career__years', item);
+            const isLeft = item.classList.contains('career__item--left');
+
+            if (card) {
+              tl.from(card, {
+                x: isLeft ? -36 : 36,
+                autoAlpha: 0,
+                duration: 0.7,
+                clearProps: 'transform,opacity,visibility',
+              }, '<0.1');
+            }
+
+            if (node) {
+              tl.from(node, {
+                scale: 0,
+                autoAlpha: 0,
+                duration: 0.5,
+                ease: 'back.out(2)',
+                clearProps: 'transform,opacity,visibility',
+              }, '<0.05');
+            }
+
+            if (year) {
+              tl.from(year, {
+                y: 16,
+                autoAlpha: 0,
+                duration: 0.5,
+                clearProps: 'transform,opacity,visibility',
+              }, '<0.05');
+            }
           });
+
+          /* Progression ribbon — fade up last */
+          const ribbon = $('.career-progression', this.section);
+          if (ribbon) {
+            tl.from(ribbon, {
+              y: 24,
+              autoAlpha: 0,
+              duration: 0.6,
+              clearProps: 'all',
+            }, '-=0.3');
+          }
         } catch (err) {
-          // Never allow a GSAP failure to leave the section blank.
           this.ensureVisible();
         }
       };
@@ -1926,7 +1954,6 @@
         }, { threshold: 0.12 });
         io.observe(this.section);
       } else {
-        // No scroll detection available → show immediately, never hide.
         reveal();
       }
     }
@@ -2127,795 +2154,82 @@
   }
 
   /* ====================================================================
-   * 16d. SKILL DETAILS — content backing the expandable skill chips
+   * 16d. SKILLS — clean tech wall reveal
    * ================================================================== */
-  const SKILL_DETAILS = {
-    /* ---- Frontend Engineering ---- */
-    'HTML5': {
-      overview: 'Semantic, accessible markup is the foundation of every interface I build.',
-      experience: 'Used daily across marketing sites, dashboards and web applications.',
-      projects: ['Marketing websites', 'Admin dashboards', 'Landing pages'],
-      learning: 'Keeping up with modern semantic tags and performance hints.',
-      related: ['CSS3', 'Accessibility', 'SEO'],
-    },
-    'CSS3': {
-      overview: 'Modern layout systems and design tokens power clean, consistent styling.',
-      experience: 'Deep experience with Flexbox, Grid, custom properties and animation.',
-      projects: ['ANIS OS portfolio', 'Dashboard UIs', 'Design systems'],
-      learning: 'Exploring container queries and new color functions.',
-      related: ['Sass', 'Design Systems', 'Tailwind CSS'],
-    },
-    'JavaScript ES6+': {
-      overview: 'The core language behind all interactive work — from DOM choreography to data flows.',
-      experience: 'Daily use across interactivity, animations, API calls and state management.',
-      projects: ['ANIS OS portfolio', 'Interactive dashboards', 'Web tooling'],
-      learning: 'Sharpening async patterns and modern APIs.',
-      related: ['React.js', 'TypeScript', 'ES Modules'],
-    },
-    'Bootstrap 5': {
-      overview: 'Rapid, responsive layouts built on a proven component grid.',
-      experience: 'Used to ship cleanly responsive pages and components quickly.',
-      projects: ['Business websites', 'Admin templates'],
-      learning: 'Nothing new required — used when speed matters.',
-      related: ['Grid systems', 'Responsive Design'],
-    },
-    'Tailwind CSS': {
-      overview: 'Utility-first styling for fast, consistent interface iteration.',
-      experience: 'Built prototypes and components where the utility workflow fits.',
-      projects: ['Rapid prototypes', 'Component experiments'],
-      learning: 'Deepening configuration and design-token mapping.',
-      related: ['CSS3', 'PostCSS'],
-    },
-    'React.js': {
-      overview: 'Component-driven UI development with a strong focus on state and reuse.',
-      experience: 'Core skill for building interactive frontends and dashboards.',
-      projects: ['ANIS OS portfolio', 'Interactive dashboards', 'React components'],
-      learning: 'Keeping pace with hooks and modern data-fetching patterns.',
-      related: ['JavaScript ES6+', 'TypeScript', 'Vite'],
-    },
-    'REST APIs': {
-      overview: 'Consuming and structuring APIs to feed data into polished interfaces.',
-      experience: 'Integrated third-party and internal APIs across projects.',
-      projects: ['Dashboard widgets', 'Data feeds', 'Form backends'],
-      learning: 'Exploring auth flows and robust error handling.',
-      related: ['JSON', 'API Integration', 'Python'],
-    },
-    'Responsive Design': {
-      overview: 'Every layout is built mobile-first and tested across breakpoints.',
-      experience: 'Applied across all frontend work, from marketing pages to dashboards.',
-      projects: ['All responsive builds', 'ANIS OS portfolio'],
-      learning: 'Refining container queries and fluid typography.',
-      related: ['CSS3', 'Bootstrap 5', 'Accessibility'],
-    },
-
-    /* ---- Backend Knowledge ---- */
-    'Python': {
-      overview: 'The scripting language behind automation, data work and AI exploration.',
-      experience: 'Comfortable writing scripts, tooling and backend logic in Python.',
-      projects: ['Automation scripts', 'AI experiments', 'API helpers'],
-      learning: 'Deepening into agents and AI frameworks.',
-      related: ['Django', 'Flask', 'AI Tools'],
-    },
-    'Django': {
-      overview: 'Full-featured Python web framework for structured backend work.',
-      experience: 'Built and maintained Django apps with models, views and templates.',
-      projects: ['Content platforms', 'CRUD applications'],
-      learning: 'Expanding with Django REST Framework.',
-      related: ['Python', 'REST APIs'],
-    },
-    'Flask': {
-      overview: 'Lightweight Python micro-framework for focused APIs and tools.',
-      experience: 'Prototyped small services and API endpoints with Flask.',
-      projects: ['API prototypes', 'Internal tools'],
-      learning: 'Nothing new required — used when lean is best.',
-      related: ['Python', 'API Integration'],
-    },
-    'Authentication': {
-      overview: 'Implementing login, sessions, roles and protected routes.',
-      experience: 'Hands-on with session auth, tokens and access control.',
-      projects: ['Member areas', 'Admin panels', 'API keys'],
-      learning: 'Exploring OAuth2 and passkeys.',
-      related: ['Security', 'REST APIs', 'Django'],
-    },
-    'API Integration': {
-      overview: 'Wiring frontends to backends and third-party services.',
-      experience: 'Connected payment, data and AI services into interfaces.',
-      projects: ['Dashboard integrations', 'AI tool integrations'],
-      learning: 'Improving resilience and retry patterns.',
-      related: ['REST APIs', 'JSON', 'Python'],
-    },
-    'JSON': {
-      overview: 'The data language of APIs — parsing, shaping and validating it.',
-      experience: 'Daily work serializing and consuming JSON payloads.',
-      projects: ['All API work', 'Data rendering'],
-      learning: 'Nothing new required — core fluency.',
-      related: ['REST APIs', 'JavaScript ES6+'],
-    },
-
-    /* ---- UI/UX & Product Design ---- */
-    'Figma': {
-      overview: 'The primary tool for designing interfaces, systems and prototypes.',
-      experience: 'Strong experience with components, auto-layout and handoff.',
-      projects: ['Dashboard designs', 'Design systems', 'Prototypes'],
-      learning: 'Exploring AI-assisted design workflows.',
-      related: ['Design Systems', 'Prototyping', 'UI/UX'],
-    },
-    'Adobe XD': {
-      overview: 'Rapid wireframing and prototype flows for client concepts.',
-      experience: 'Produced clickable prototypes and shared specifications.',
-      projects: ['Client concepts', 'Flow prototypes'],
-      learning: 'Nothing new required — used when clients prefer it.',
-      related: ['Wireframing', 'Prototyping'],
-    },
-    'Photoshop': {
-      overview: 'Image editing, asset preparation and visual polish.',
-      experience: 'Working knowledge for retouching, export and mockups.',
-      projects: ['Social visuals', 'Asset preparation'],
-      learning: 'Improving non-destructive workflows.',
-      related: ['Design Systems', 'UI/UX'],
-    },
-    'Wireframing': {
-      overview: 'Low-fidelity structure first — layout, hierarchy, flow.',
-      experience: 'Consistently start projects with wireframes before pixels.',
-      projects: ['Dashboards', 'Web apps', 'Landing pages'],
-      learning: 'Nothing new required — core practice.',
-      related: ['Figma', 'User Research'],
-    },
-    'Prototyping': {
-      overview: 'Interactive models that validate flows before build.',
-      experience: 'Strong experience creating clickable prototypes for stakeholders.',
-      projects: ['Client demos', 'Feature validation'],
-      learning: 'Exploring micro-interaction prototyping.',
-      related: ['Figma', 'Adobe XD'],
-    },
-    'Design Systems': {
-      overview: 'Token-driven component libraries that keep products consistent and scalable.',
-      experience: 'Built and maintained design systems across multiple projects.',
-      projects: ['ANIS OS design system', 'Product component libraries'],
-      learning: 'Deepening token architecture and documentation.',
-      related: ['Figma', 'React.js', 'CSS3'],
-    },
-    'User Research': {
-      overview: 'Gathering insights that inform layout, copy and decisions.',
-      experience: 'Hands-on with interviews, usability checks and feedback loops.',
-      projects: ['Product discovery', 'UX improvements'],
-      learning: 'Exploring structured usability testing.',
-      related: ['Wireframing', 'Prototyping'],
-    },
-    'Dashboard Design': {
-      overview: 'Data-dense layouts that stay legible, focused and actionable.',
-      experience: 'Designed dashboards balancing density with clarity.',
-      projects: ['Admin dashboards', 'Analytics views'],
-      learning: 'Refining data-viz hierarchy and KPI layouts.',
-      related: ['UI/UX', 'Design Systems', 'Data visualization'],
-    },
-
-    /* ---- Tools & Workflow ---- */
-    'Git': {
-      overview: 'Version control for every project — commits, branches, history.',
-      experience: 'Daily usage with clean history and collaborative flows.',
-      projects: ['All repositories', 'Collaborative builds'],
-      learning: 'Exploring advanced history and bisect workflows.',
-      related: ['GitHub', 'CLI'],
-    },
-    'GitHub': {
-      overview: 'Remote hosting, pull requests, issues and CI-friendly workflows.',
-      experience: 'Runs personal and client repositories with review workflows.',
-      projects: ['All open work', 'Team projects'],
-      learning: 'Automating with GitHub Actions.',
-      related: ['Git', 'Code Review'],
-    },
-    'WordPress': {
-      overview: 'CMS builds with themes and page-builder flexibility.',
-      experience: 'Hands-on building and customizing WordPress sites.',
-      projects: ['Business sites', 'Content portals'],
-      learning: 'Nothing new required — used when clients use it.',
-      related: ['PHP', 'CSS3'],
-    },
-    'VS Code': {
-      overview: 'The daily editor for frontend, backend and AI-assisted coding.',
-      experience: 'Heavily customized with extensions and keybindings.',
-      projects: ['All coding work'],
-      learning: 'Exploring AI-native extensions.',
-      related: ['AI Tools', 'OpenCode'],
-    },
-    'npm': {
-      overview: 'Package management for JavaScript tooling and dependencies.',
-      experience: 'Publishing, installing and scripting with npm daily.',
-      projects: ['All JS projects'],
-      learning: 'Nothing new required — core fluency.',
-      related: ['JavaScript ES6+', 'Vite'],
-    },
-    'Vite': {
-      overview: 'Fast modern build tooling for frontend projects.',
-      experience: 'Scaffolded and configured Vite apps for prototypes and projects.',
-      projects: ['React prototypes', 'Tooling setups'],
-      learning: 'Exploring the plugin architecture.',
-      related: ['React.js', 'npm'],
-    },
-    'Chrome DevTools': {
-      overview: 'The debugging surface for layout, performance and network.',
-      experience: 'Daily use for CSS, JavaScript and performance inspection.',
-      projects: ['Debugging all projects'],
-      learning: 'Keeping pace with new panels and features.',
-      related: ['Performance Optimization', 'JavaScript ES6+'],
-    },
-    'Jira': {
-      overview: 'Issue tracking and sprint boards for team delivery.',
-      experience: 'Working knowledge of tickets, boards and sprint rituals.',
-      projects: ['Client sprints', 'Team delivery'],
-      learning: 'Nothing new required — used when teams use it.',
-      related: ['Sprint Planning'],
-    },
-    'Trello': {
-      overview: 'Lightweight kanban for personal and small-team flow.',
-      experience: 'Organized tasks and boards for flexible workflows.',
-      projects: ['Personal planning', 'Small teams'],
-      learning: 'Nothing new required.',
-      related: ['Sprint Planning'],
-    },
-
-    /* ---- AI Development ---- */
-    'AI Tools': {
-      overview: 'Daily rotation of AI assistants for coding, design and research.',
-      experience: 'Core workflow across ChatGPT, Claude, Cursor, OpenCode and more.',
-      projects: ['AI-assisted builds', 'This portfolio'],
-      learning: 'Evaluating new agents and local models.',
-      related: ['Prompt Engineering', 'OpenCode', 'Ollama'],
-    },
-    'Prompt Engineering': {
-      overview: 'Crafting precise instructions to get reliable, structured results.',
-      experience: 'Core skill used daily for code, content and design tasks.',
-      projects: ['AI workflows', 'Automation experiments'],
-      learning: 'Refining system prompts and structured outputs.',
-      related: ['AI Tools', 'AI Agents'],
-    },
-    'ChatGPT': {
-      overview: 'General-purpose assistant for code, writing and reasoning.',
-      experience: 'Strong experience in daily assisted problem-solving.',
-      projects: ['Code assistance', 'Content drafts', 'Explorations'],
-      learning: 'Nothing new required — used daily.',
-      related: ['AI Tools', 'Prompt Engineering'],
-    },
-    'Claude': {
-      overview: 'Assistant for longer context, code review and nuanced tasks.',
-      experience: 'Strong experience in reviews, planning and documentation.',
-      projects: ['Code reviews', 'Architecture notes'],
-      learning: 'Exploring artifacts and large-context workflows.',
-      related: ['AI Tools', 'Code Review'],
-    },
-    'Cursor': {
-      overview: 'AI-native code editor for assisted, in-flow development.',
-      experience: 'Strong experience building features with AI in the loop.',
-      projects: ['Feature development', 'Refactors'],
-      learning: 'Keeping pace with new agent features.',
-      related: ['OpenCode', 'VS Code', 'AI Tools'],
-    },
-    'OpenCode': {
-      overview: 'Terminal-native open-source AI coding agent.',
-      experience: 'Hands-on experimentation with agentic CLI workflows.',
-      projects: ['This ANIS OS project', 'CLI experiments'],
-      learning: 'Deepening agent configuration and MCP use.',
-      related: ['AI Tools', 'MCP', 'CLI'],
-    },
-    'DeepSeek': {
-      overview: 'Cost-efficient open-weight models for local and API experiments.',
-      experience: 'Hands-on with reasoning and coding tasks.',
-      projects: ['Model comparisons', 'Cost experiments'],
-      learning: 'Comparing against other open models.',
-      related: ['Ollama', 'LM Studio'],
-    },
-    'Ollama': {
-      overview: 'Running open-source LLMs locally with simple CLI control.',
-      experience: 'Hands-on running models for private, offline experiments.',
-      projects: ['Local model experiments', 'Offline assistants'],
-      learning: 'Quantization and model selection.',
-      related: ['LM Studio', 'DeepSeek', 'OpenCode'],
-    },
-    'LM Studio': {
-      overview: 'Desktop app for browsing and running local models.',
-      experience: 'Exploring — trialing the UI and model management.',
-      projects: ['Local model trials'],
-      learning: 'Currently learning model management and benchmarks.',
-      related: ['Ollama', 'Hugging Face'],
-    },
-    'Hugging Face': {
-      overview: 'Model hub and libraries for open-source AI assets.',
-      experience: 'Working knowledge of browsing and pulling models.',
-      projects: ['Model discovery', 'Embeddings experiments'],
-      learning: 'Exploring transformers and datasets.',
-      related: ['Ollama', 'RAG', 'Vector Databases'],
-    },
-    'ComfyUI': {
-      overview: 'Node-based visual workflows for AI image generation.',
-      experience: 'Exploring — mapping node graphs and workflows.',
-      projects: ['Image generation experiments'],
-      learning: 'Currently learning nodes and workflow automation.',
-      related: ['AI Tools', 'Prompt Engineering'],
-    },
-
-    /* ---- Leadership ---- */
-    'Team Leadership': {
-      overview: 'Guiding developers and designers toward shared goals.',
-      experience: 'Strong experience leading UI teams and sprint delivery.',
-      projects: ['Team delivery', 'UI squads'],
-      learning: 'Deepening coaching and delegation.',
-      related: ['Mentoring', 'Sprint Planning'],
-    },
-    'Sprint Planning': {
-      overview: 'Breaking work into achievable, reviewable increments.',
-      experience: 'Hands-on planning and running sprint rituals.',
-      projects: ['Client sprints', 'Feature releases'],
-      learning: 'Improving estimation and scope control.',
-      related: ['Jira', 'Team Leadership'],
-    },
-    'Client Communication': {
-      overview: 'Clear, calm updates and expectation setting with clients.',
-      experience: 'Strong experience translating needs into scoped delivery.',
-      projects: ['Client projects', 'Stakeholder demos'],
-      learning: 'Refining reporting and demo narratives.',
-      related: ['Team Leadership', 'Prototyping'],
-    },
-    'Mentoring': {
-      overview: 'Helping teammates grow through review and guidance.',
-      experience: 'Hands-on mentoring juniors on code and craft.',
-      projects: ['Team growth', 'Onboarding'],
-      learning: 'Building structured mentorship paths.',
-      related: ['Team Leadership', 'Code Review'],
-    },
-    'Code Review': {
-      overview: 'Reading code for quality, clarity and consistency.',
-      experience: 'Strong experience reviewing PRs and giving feedback.',
-      projects: ['Team PRs', 'Open projects'],
-      learning: 'Balancing speed and thoroughness.',
-      related: ['Git', 'GitHub'],
-    },
-    'UI Review': {
-      overview: 'Design-quality checks before release — spacing, state, polish.',
-      experience: 'Strong experience auditing interfaces against specs.',
-      projects: ['Release QA', 'Design audits'],
-      learning: 'Automating visual regression checks.',
-      related: ['Design Systems', 'Accessibility'],
-    },
-    'Cross-functional Collaboration': {
-      overview: 'Working across design, engineering and product.',
-      experience: 'Hands-on coordination across disciplines and timelines.',
-      projects: ['Product launches', 'Design-dev handoff'],
-      learning: 'Improving handoff clarity.',
-      related: ['Client Communication', 'Team Leadership'],
-    },
-
-    /* ---- Architecture ---- */
-    'Component Based Design': {
-      overview: 'Building UIs from small, composable, reusable pieces.',
-      experience: 'Core practice across React and design systems.',
-      projects: ['React apps', 'Design systems', 'ANIS OS'],
-      learning: 'Nothing new required — core fluency.',
-      related: ['React.js', 'Design Systems'],
-    },
-    'Reusable UI': {
-      overview: 'Designing once and reusing everywhere without drift.',
-      experience: 'Core practice shipping token-driven component libraries.',
-      projects: ['Component libraries', 'Dashboards'],
-      learning: 'Refining the API design of components.',
-      related: ['Component Based Design', 'Design Systems'],
-    },
-    'Responsive Systems': {
-      overview: 'One layout that adapts fluidly across every device.',
-      experience: 'Core practice applied to every interface shipped.',
-      projects: ['All responsive products'],
-      learning: 'Container queries and fluid typography.',
-      related: ['CSS3', 'Responsive Design'],
-    },
-    'Performance Optimization': {
-      overview: 'Cutting load time and jank through budgets and profiling.',
-      experience: 'Strong experience with lazy loading, caching and bundle care.',
-      projects: ['Marketing sites', 'Dashboards'],
-      learning: 'Core Web Vitals tuning.',
-      related: ['Chrome DevTools', 'Frontend Architecture'],
-    },
-    'Accessibility': {
-      overview: 'Interfaces usable by everyone — keyboard, screen reader, contrast.',
-      experience: 'Strong experience with semantic markup and ARIA.',
-      projects: ['Public sites', 'Admin tools'],
-      learning: 'Automated accessibility testing.',
-      related: ['HTML5', 'UI Review'],
-    },
-    'SEO': {
-      overview: 'Structured, semantic, crawlable pages that rank and load fast.',
-      experience: 'Strong experience with meta, structure and performance.',
-      projects: ['Marketing pages', 'Business sites'],
-      learning: 'Schema markup and rich results.',
-      related: ['HTML5', 'Performance Optimization'],
-    },
-    'Frontend Architecture': {
-      overview: 'Structuring codebases for growth, clarity and maintainability.',
-      experience: 'Strong experience organizing files, state and shared UI.',
-      projects: ['Scale-up projects', 'Design systems'],
-      learning: 'Evaluating new framework patterns.',
-      related: ['React.js', 'Component Based Design'],
-    },
-
-    /* ---- Currently Learning ---- */
-    'Next.js': {
-      overview: 'React framework for SSR, routing and full-stack delivery.',
-      experience: 'Currently learning — building with the App Router.',
-      projects: ['Framework experiments'],
-      learning: 'App Router, server components, deployment.',
-      related: ['React.js', 'TypeScript'],
-    },
-    'TypeScript': {
-      overview: 'Typed JavaScript for safer, more maintainable code.',
-      experience: 'Currently learning — adding types to projects progressively.',
-      projects: ['Type-safe experiments'],
-      learning: 'Generics, strict mode, project configuration.',
-      related: ['JavaScript ES6+', 'Next.js'],
-    },
-    'AI Agents': {
-      overview: 'Autonomous LLM-driven systems that plan and act.',
-      experience: 'Currently learning — orchestrating agents for real tasks.',
-      projects: ['Agent experiments', 'Automation ideas'],
-      learning: 'Agent loops, tool calling, memory.',
-      related: ['LangGraph', 'CrewAI', 'MCP'],
-    },
-    'MCP': {
-      overview: 'Model Context Protocol — standard connectors between AI and tools.',
-      experience: 'Currently learning — wiring tools into coding agents.',
-      projects: ['OpenCode integrations'],
-      learning: 'Servers, tools, resources, sampling.',
-      related: ['OpenCode', 'AI Agents'],
-    },
-    'LangGraph': {
-      overview: 'Graph framework for building stateful agent workflows.',
-      experience: 'Exploring — mapping agent state and control flow.',
-      projects: ['Agent workflow experiments'],
-      learning: 'Graphs, checkpoints, human-in-the-loop.',
-      related: ['AI Agents', 'CrewAI'],
-    },
-    'CrewAI': {
-      overview: 'Multi-agent orchestration for collaborative AI teams.',
-      experience: 'Exploring — trialing role-based agent crews.',
-      projects: ['Multi-agent prototypes'],
-      learning: 'Crews, tasks, process flows.',
-      related: ['AI Agents', 'LangGraph'],
-    },
-    'RAG': {
-      overview: 'Retrieval-augmented generation — grounding LLMs in your data.',
-      experience: 'Currently learning — chunking, embedding and retrieval.',
-      projects: ['Knowledge-base experiments'],
-      learning: 'Chunking strategies, embedding models, reranking.',
-      related: ['Vector Databases', 'Hugging Face'],
-    },
-    'Vector Databases': {
-      overview: 'Storing and searching embeddings for semantic recall.',
-      experience: 'Exploring — evaluating options and indexing patterns.',
-      projects: ['RAG experiments'],
-      learning: 'Collections, similarity search, hybrid search.',
-      related: ['RAG', 'Hugging Face'],
-    },
-  };
-
-  /* ====================================================================
-   * 16e. SKILLS GALAXY — filter, search, expandable skill cards
-   * ================================================================== */
-  class SkillsGalaxyAnimation {
+  class SkillsAnimation {
     constructor(engine) {
       this.engine = engine;
       this.gsap = engine.gsap;
       this.section = $('#skills');
-      this.cards = [];
-      this.chips = [];
+      this.wall = this.section?.querySelector('[data-tech-wall]');
+      this.categories = [];
+      this.items = [];
       this.bound = false;
       this.played = false;
-      this.activeCategory = 'all';
-      this.query = '';
-      this.visible = new Set();
-      this.open = new Map();
-      this.searchTimer = 0;
     }
 
     init() {
-      if (!this.section) return;
-      this.cards = $$('[data-galaxy-card]', this.section);
-      this.chips = $$('.skill-chip', this.section);
-      this.visible = new Set(this.cards);
-      this.bind();
-      if (!this.gsap || this.engine.reduced) return;
-      this.entrance();
+      if (!this.section || !this.wall) return;
+      this.categories = [...this.section.querySelectorAll('[data-tech-category]')];
+      this.items = [...this.section.querySelectorAll('[data-tech-item]')];
+
+      // Assign pill index for stagger
+      this.items.forEach((el, i) => { el.style.setProperty('--pill-i', i % 12); });
+
+      this._defaultState();
+      this._bind();
     }
 
-    /* ----- Event wiring (delegated, a11y-safe) ----- */
-    bind() {
+    _defaultState() {
+      if (window.ANIS_OS_ANIMATIONS?.gsap) {
+        const gsap = window.ANIS_OS_ANIMATIONS.gsap;
+        gsap.set(this.categories, { opacity: 0, y: 28 });
+        gsap.set(this.items, { opacity: 0, y: 12 });
+      }
+    }
+
+    _bind() {
       if (this.bound) return;
       this.bound = true;
 
-      this.engine.perf.on(this.section, 'click', (e) => {
-        const filter = e.target.closest('[data-galaxy-filter]');
-        if (filter) {
-          this.setCategory(filter.dataset.galaxyFilter);
-          return;
-        }
-        const chip = e.target.closest('.skill-chip');
-        if (chip) {
-          this.toggleSkill(chip);
-          return;
-        }
-        const collapse = e.target.closest('[data-galaxy-collapse]');
-        if (collapse) {
-          const card = collapse.closest('.galaxy-card');
-          if (card) this.collapseDetail(card);
-        }
-      });
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) { this._forceVisible(); return; }
 
-      const input = $('[data-galaxy-search]', this.section);
-      if (input) {
-        this.engine.perf.on(input, 'input', () => {
-          clearTimeout(this.searchTimer);
-          this.searchTimer = setTimeout(() => this.setQuery(input.value.trim()), 150);
-        });
-        const clear = $('[data-galaxy-clear]', this.section);
-        if (clear) {
-          this.engine.perf.on(clear, 'click', () => {
-            input.value = '';
-            input.focus();
-            this.setQuery('');
-          });
-        }
-      }
-    }
-
-    /* ----- Category filtering ----- */
-    setCategory(category) {
-      if (category === this.activeCategory) return;
-      this.activeCategory = category;
-      $$('[data-galaxy-filter]', this.section).forEach((btn) => {
-        const active = btn.dataset.galaxyFilter === category;
-        btn.classList.toggle('is-active', active);
-        btn.setAttribute('aria-pressed', String(active));
-      });
-      this.applyFilters();
-    }
-
-    /* ----- Live search ----- */
-    setQuery(query) {
-      this.query = query.toLowerCase();
-      const clear = $('[data-galaxy-clear]', this.section);
-      if (clear) clear.classList.toggle('is-visible', this.query.length > 0);
-
-      this.chips.forEach((chip) => {
-        chip.classList.toggle('is-muted', this.query.length > 0 && !this.chipMatches(chip, this.query));
-      });
-
-      this.applyFilters();
-    }
-
-    chipMatches(chip, query) {
-      const name = (chip.dataset.skill || '').toLowerCase();
-      const info = SKILL_DETAILS[chip.dataset.skill];
-      const hay = name + ' ' + (info
-        ? [info.overview, info.experience, info.learning, (info.related || []).join(' ')].join(' ')
-        : '');
-      return hay.includes(query);
-    }
-
-    shouldShow(card) {
-      if (this.activeCategory !== 'all' && card.dataset.category !== this.activeCategory) return false;
-      if (this.query) {
-        const name = (card.dataset.galaxyName || '').toLowerCase();
-        if (name.includes(this.query)) return true;
-        return $$('.skill-chip', card).some((chip) => this.chipMatches(chip, this.query));
-      }
-      return true;
-    }
-
-    applyFilters() {
-      if (!this.gsap || this.engine.reduced) {
-        this.cards.forEach((card) => {
-          const show = this.shouldShow(card);
-          card.style.display = show ? '' : 'none';
-          if (show) this.visible.add(card);
-          else this.visible.delete(card);
-        });
-        return;
-      }
-
-      const toShow = [];
-      const toHide = [];
-
-      this.cards.forEach((card) => {
-        const show = this.shouldShow(card);
-        const currentlyVisible = this.visible.has(card);
-        if (show && !currentlyVisible) toShow.push(card);
-        if (!show && currentlyVisible) toHide.push(card);
-      });
-
-      if (toHide.length) {
-        this.gsap.to(toHide, {
-          autoAlpha: 0,
-          scale: 0.96,
-          y: 10,
-          duration: 0.3,
-          ease: 'power2.in',
-          stagger: 0.03,
-          onComplete: () => {
-            toHide.forEach((card) => {
-              card.style.display = 'none';
-              this.visible.delete(card);
-            });
-            this.refresh();
-          },
-        });
-      }
-
-      if (toShow.length) {
-        toShow.forEach((card) => {
-          card.style.display = '';
-        });
-        this.gsap.fromTo(
-          toShow,
-          { autoAlpha: 0, scale: 0.96, y: 10 },
-          {
-            autoAlpha: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.45,
-            ease: 'power3.out',
-            stagger: 0.05,
-            onStart: () => toShow.forEach((card) => this.visible.add(card)),
-            onComplete: () => this.refresh(),
-          },
-        );
-      }
-    }
-
-    /* ----- Expandable skill detail ----- */
-    toggleSkill(chip) {
-      const card = chip.closest('.galaxy-card');
-      if (!card) return;
-      const detail = $('.galaxy-card__detail', card);
-      if (!detail) return;
-
-      const activeChip = this.open.get(card);
-      if (activeChip === chip) {
-        this.collapseDetail(card);
-        return;
-      }
-      const wasOpen = !!activeChip;
-      if (activeChip) {
-        activeChip.classList.remove('is-active');
-        activeChip.setAttribute('aria-expanded', 'false');
-      }
-
-      this.populateDetail(detail, chip.dataset.skill);
-      chip.classList.add('is-active');
-      chip.setAttribute('aria-expanded', 'true');
-      this.open.set(card, chip);
-      if (wasOpen) {
-        // Already expanded — just swap the content in place
-        this.refresh();
-      } else {
-        this.revealDetail(detail);
-      }
-    }
-
-    collapseDetail(card) {
-      const activeChip = this.open.get(card);
-      if (activeChip) {
-        activeChip.classList.remove('is-active');
-        activeChip.setAttribute('aria-expanded', 'false');
-      }
-      this.open.delete(card);
-      const detail = $('.galaxy-card__detail', card);
-      if (detail) this.hideDetail(detail);
-    }
-
-    populateDetail(detail, skillName) {
-      const body = $('.galaxy-detail__body', detail);
-      if (!body) return;
-      const info = SKILL_DETAILS[skillName] || {};
-
-      const field = (icon, title, content) => `
-        <section class="galaxy-detail__field">
-          <h4><i class="fa-solid ${icon}" aria-hidden="true"></i>${title}</h4>
-          ${content}
-        </section>`;
-
-      const parts = [];
-      if (info.overview) parts.push(field('fa-circle-info', 'Overview', `<p>${info.overview}</p>`));
-      if (info.experience) parts.push(field('fa-briefcase', 'Experience', `<p>${info.experience}</p>`));
-      if (info.projects && info.projects.length) {
-        parts.push(field(
-          'fa-folder-open',
-          'Projects used in',
-          `<ul class="galaxy-detail__list">${info.projects.map((item) => `<li>${item}</li>`).join('')}</ul>`,
-        ));
-      }
-      if (info.learning) parts.push(field('fa-seedling', 'Learning', `<p>${info.learning}</p>`));
-      if (info.related && info.related.length) {
-        parts.push(field(
-          'fa-link',
-          'Related technologies',
-          `<ul class="galaxy-detail__tags">${info.related.map((item) => `<li class="galaxy-detail__tag">${item}</li>`).join('')}</ul>`,
-        ));
-      }
-      body.innerHTML = parts.join('');
-    }
-
-    revealDetail(detail) {
-      if (detail.hidden) detail.hidden = false;
-      if (!this.gsap || this.engine.reduced) {
-        this.refresh();
-        return;
-      }
-      this.gsap.fromTo(
-        detail,
-        { height: 0, autoAlpha: 0 },
-        {
-          height: 'auto',
-          autoAlpha: 1,
-          duration: 0.5,
-          ease: 'power3.out',
-          clearProps: 'height',
-          onComplete: () => this.refresh(),
-        },
-      );
-    }
-
-    hideDetail(detail) {
-      if (!this.gsap || this.engine.reduced) {
-        detail.hidden = true;
-        this.refresh();
-        return;
-      }
-      this.gsap.to(detail, {
-        height: 0,
-        autoAlpha: 0,
-        duration: 0.35,
-        ease: 'power2.in',
-        onComplete: () => {
-          detail.hidden = true;
-          this.refresh();
-        },
-      });
-    }
-
-    /* ----- Entrance choreography ----- */
-    entrance() {
-      const toolbar = $('[data-galaxy-toolbar]', this.section);
-      const cards = this.cards;
-      if (!toolbar && cards.length === 0) return;
-
-      const play = () => {
-        if (this.played) return;
-        this.played = true;
-        const tl = this.engine.perf.registerTimeline(
-          this.gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.7 } }),
-        );
-        if (toolbar) tl.from(toolbar, { y: 32, autoAlpha: 0, clearProps: 'all' });
-        if (cards.length) {
-          tl.from(cards, { y: 40, autoAlpha: 0, scale: 0.97, stagger: 0.06, clearProps: 'all' }, '-=0.3');
-        }
-      };
-
-      if (this.engine.ScrollTrigger) {
-        this.engine.perf.registerTimeline(
-          this.gsap.timeline({
-            scrollTrigger: {
-              trigger: this.section,
-              start: 'top 70%',
-              once: true,
-              onEnter: play,
-            },
-          }),
-        );
-      } else if ('IntersectionObserver' in window) {
-        const io = this.engine.perf.createObserver((entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
-            play();
-            io.disconnect();
+      if ('IntersectionObserver' in window) {
+        this._io = new IntersectionObserver((entries) => {
+          if (entries.some(e => e.isIntersecting)) {
+            this._play();
+            this._io.disconnect();
           }
-        }, { threshold: 0.1 });
-        io.observe(this.section);
+        }, { threshold: 0.08 });
+        this._io.observe(this.section);
+      } else {
+        this._forceVisible();
+      }
+    }
+
+    _play() {
+      if (this.played) return;
+      this.played = true;
+
+      const gsap = window.ANIS_OS_ANIMATIONS?.gsap;
+      if (!gsap) { this._forceVisible(); return; }
+
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      this.categories.forEach((cat, ci) => {
+        const catItems = [...cat.querySelectorAll('[data-tech-item]')];
+        tl.to(cat, { opacity: 1, y: 0, duration: .45 }, ci * .08);
+        tl.to(catItems, { opacity: 1, y: 0, duration: .3, stagger: .04 }, ci * .08 + .15);
+      });
+    }
+
+    _forceVisible() {
+      this.wall?.classList.add('is-visible');
+      if (window.ANIS_OS_ANIMATIONS?.gsap) {
+        const gsap = window.ANIS_OS_ANIMATIONS.gsap;
+        gsap.set(this.categories, { opacity: 1, y: 0, clearProps: 'all' });
+        gsap.set(this.items, { opacity: 1, y: 0, clearProps: 'all' });
       }
     }
 
@@ -2924,7 +2238,7 @@
     }
 
     rescan() {
-      // Static markup — nothing to re-scan
+      this.init();
     }
   }
 
